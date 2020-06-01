@@ -39,7 +39,7 @@ public class Gamescreen extends AbstractScreen{
         batch.end();
         
         if(Gdx.input.justTouched()){
-            game.setScreen(new Titlescreen(game));
+            game.setScreen(new Levelscreen(game));
         }
     }
 
