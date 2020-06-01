@@ -5,10 +5,17 @@
  */
 package controller;
 
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.InputProcessor;
+import view.Titlescreen;
+
 /**
  *
  * @author Jan
  */
-public class Controller {
+public class Controller{
+
+   
+
     
 }
