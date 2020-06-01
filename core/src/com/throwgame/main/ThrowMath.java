@@ -1,5 +1,7 @@
 package com.throwgame.main;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class ThrowMath {
     private double tanA;
     private double coefficient;
@@ -29,5 +31,13 @@ public class ThrowMath {
             System.out.println("Der Wurf wurde nicht initialisiert!");
             return -1;
         }
+    }
+
+    public Vector2 pivotGetNewPos(double alpha, int xPosPivot, int yPosPivot, int radius){
+        Vector2 vector = new Vector2();
+        vector.x = (float) (radius * Math.sin(alpha));
+        vector.y = (float) (radius * Math.cos(alpha));
+
+        return vector;
     }
 }
