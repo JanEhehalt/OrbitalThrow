@@ -10,7 +10,7 @@ public class Projectile {
     private double vY;
     private final int type;
 
-    Projectile(int xPos, int yPos, int type){
+    public Projectile(int xPos, int yPos, int type){
         this.xPos = xPos;
         this.yPos = yPos;
         this.type = type;

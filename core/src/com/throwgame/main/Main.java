@@ -8,17 +8,20 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import controller.Controller;
+import model.Level;
 import view.Levelscreen;
 import view.Titlescreen;
 
 public class Main  extends Game implements InputProcessor{
 	
-        //Controller c;
+        int screenId;
+        Controller c;
+        Level level;
     
 	@Override
 	public void create () {
-		//c = new Controller();
-                
+		c = new Controller();
+                screenId = 0;
                 setScreen(new Titlescreen(this));
 	}
 
@@ -48,7 +51,8 @@ public class Main  extends Game implements InputProcessor{
     }
 
     @Override
-    public boolean touchDown(int i, int i1, int i2, int i3) {
+    public boolean touchDown(int x, int y, int i2, int i3) {
+        //screen.touchDown(x,y);
         return true;
     }
 
@@ -70,5 +74,9 @@ public class Main  extends Game implements InputProcessor{
     @Override
     public boolean scrolled(int i) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public void createLvl(){
+        
     }
 }

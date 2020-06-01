@@ -52,7 +52,7 @@ public class Levelscreen extends AbstractScreen{
                 if(buttonLeft.getX() <= 0){
                     movement = true;
                 }
-                if(buttonLeft.getX() + buttonLeft.getWidth() > Gdx.graphics.getWidth() * 0.2){
+                if(buttonLeft.getX() + buttonLeft.getWidth() > Gdx.graphics.getWidth() * 0.12){
                     movement = false;
                 }
                 if(movement){
@@ -64,8 +64,9 @@ public class Levelscreen extends AbstractScreen{
                     buttonLeft.setX(buttonLeft.getX() - 2);
                 }
             }
-        },0 , 0.04f);
+        },0 , 0.045f);
     }
+    
     
     @Override
     public void show() {
@@ -90,11 +91,11 @@ public class Levelscreen extends AbstractScreen{
         batch.end();
         
         if(Gdx.input.justTouched()){
-            if(Gdx.input.getX() < Gdx.graphics.getWidth() * 0.2){
+            if(Gdx.input.getX() < Gdx.graphics.getWidth() * 0.15){
                 if(selectedLevel > 0)
                 selectedLevel --;
             }
-            else if(Gdx.input.getX() > Gdx.graphics.getWidth() * 0.8){
+            else if(Gdx.input.getX() > Gdx.graphics.getWidth() * 0.85){
                 if(selectedLevel < levelPreview.length)
                 selectedLevel ++;
             }

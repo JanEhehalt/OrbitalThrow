@@ -47,4 +47,9 @@ public class AbstractScreen implements Screen{
     public void dispose() {
     }
     
+    public void touch(int x, int y){
+    
+    }
+
+    
 }
