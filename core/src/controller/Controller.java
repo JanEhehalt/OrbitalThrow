@@ -30,6 +30,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     int levelAmount;
     SpriteBatch batch;
     Timer stepTimer;
+    Level level;
     
     @Override
     public void create(){
@@ -40,11 +41,15 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
 
+        level = new Level(new Goal(500,500,200,150), new Projectile(100,100,0),400,400);
+
         stepTimer = new Timer();
         stepTimer.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
-
+                if(ls != null) {
+                    level.step();
+                }
             }
         }, 0, 0.1f);
     }
@@ -56,7 +61,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         batch.begin();
         if(ts != null) ts.render(batch);
         else if(ls != null) ls.render(batch);
-        else if(gs != null) gs.render(batch, new Level(new Goal(500,500,200,150), new Projectile(100,100,0),50,50));
+        else if(gs != null) gs.render(batch, level);
         batch.end();
     }
     
@@ -99,12 +104,10 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             else{
                 ls.dispose();
                 ls = null;
-                gs = new Gamescreen(new Level(new Goal(500,500,200,150), new Projectile(100,100,0),50,50));
+                gs = new Gamescreen(level);
             }
         }
         else if(gs != null){
-            gs = null;
-            ls = new Levelscreen(levelAmount);
         }
         return true;
     }
