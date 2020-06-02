@@ -8,6 +8,8 @@ package controller;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.Timer;
+
 import view.AbstractScreen;
 import view.Titlescreen;
 
@@ -17,9 +19,19 @@ import view.Titlescreen;
  */
 public class Controller extends Game{
 
+    Timer stepTimer;
+
     @Override
     public void create() {
         setScreen(new Titlescreen(this));
+
+        stepTimer = new Timer();
+        stepTimer.scheduleTask(new Timer.Task() {
+            @Override
+            public void run() {
+
+            }
+        }, 0, 0.1f);
     }
     
     @Override

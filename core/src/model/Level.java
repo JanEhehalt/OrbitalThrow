@@ -15,7 +15,7 @@ import com.throwgame.main.ThrowMath;
  */
 public class Level {
     private final double G = 9.81;
-    private final int RADIUS = 5;
+    private final int RADIUS = 50;
 
     private Goal goal;
     private Projectile projectile;
@@ -29,6 +29,8 @@ public class Level {
     public Level(Goal goal, Projectile projectile, int xPosPivot, int yPosPivot){
         this.goal = goal;
         this.projectile = projectile;
+        this.projectile.setxPos(xPosPivot + RADIUS);
+        this.projectile.setyPos(yPosPivot);
         this.math = new ThrowMath();
         this.isReleased = false;
 
