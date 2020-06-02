@@ -60,8 +60,7 @@ public class Titlescreen extends AbstractScreen{
 
     @Override
     public void render(float f) {
-        Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
         
         batch.begin();
         clicktostart.draw(batch);

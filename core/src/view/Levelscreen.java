@@ -15,6 +15,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
+import model.Goal;
+import model.Level;
+import model.Projectile;
 
 /**
  *
@@ -74,8 +77,7 @@ public class Levelscreen extends AbstractScreen{
 
     @Override
     public void render(float f) {
-        Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
         
         SpriteBatch batch = new SpriteBatch();
         
@@ -101,7 +103,7 @@ public class Levelscreen extends AbstractScreen{
             }
             else{
                 dispose();
-                game.setScreen(new Gamescreen(game));
+                game.setScreen(new Gamescreen(game, new Level(new Goal(400,400,200,100), new Projectile(160,160,0))));
             }
         }
     }

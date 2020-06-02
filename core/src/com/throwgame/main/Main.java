@@ -12,7 +12,7 @@ import model.Level;
 import view.Levelscreen;
 import view.Titlescreen;
 
-public class Main  extends Game implements InputProcessor{
+public class Main  extends ApplicationAdapter implements InputProcessor{
 	
         int screenId;
         Controller c;
@@ -21,13 +21,17 @@ public class Main  extends Game implements InputProcessor{
 	@Override
 	public void create () {
 		c = new Controller();
+                c.create();
                 screenId = 0;
-                setScreen(new Titlescreen(this));
+                
 	}
 
 	@Override
 	public void render () {
-            screen.render(0);
+            Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);  
+            
+            c.getScreen().render(0);
 	}
 	
 	@Override

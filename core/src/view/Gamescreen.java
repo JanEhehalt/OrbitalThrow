@@ -13,8 +13,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import model.Goal;
+import model.Level;
 import model.Projectile;
 
 /**
@@ -27,24 +29,24 @@ public class Gamescreen extends AbstractScreen{
     Projectile p;
     SpriteBatch batch;
     
-    Sprite projectile;
-    Rectangle goalLeft;
-    Rectangle goalRight;
-    Rectangle goalBottom;
+    //Rectangle goalLeft;
+    //Rectangle goalRight;
+    //Rectangle goalBottom;
+    ShapeRenderer shapeRenderer;
     
     
     
     
-    public Gamescreen(Game game){
+    public Gamescreen(Game game, Level level){
         super(game);
-        g = new Goal(800,400,200,150);
-        p = new Projectile(250, 250, 0);
-        projectile = new Sprite(new Texture("projectile.png"));
-        projectile.setPosition(p.getxPos(), p.getyPos());
-        goalLeft = new Rectangle(g.getxPos(), g.getyPos(), 0.1f * g.getSizeX(), g.getSizeY());
-        goalBottom = new Rectangle(g.getxPos() + goalLeft.getWidth(), g.getyPos(), 0.8f * g.getSizeX(),0.2f * g.getSizeY());
-        goalRight = new Rectangle(g.getxPos() + goalLeft.getWidth() + goalBottom.getWidth(), g.getyPos(), 0.1f * g.getSizeX(),g.getSizeY());
+        g = level.getGoal();
+        p = level.getProjectile();
+        // Goal rectangles
+        //goalLeft = new Rectangle(g.getxPos(), g.getyPos(), 0.1f * g.getSizeX(), g.getSizeY());
+        //goalBottom = new Rectangle(g.getxPos() + 0.1f * g.getSizeX(), g.getyPos(), 0.8f * g.getSizeX(),0.2f * g.getSizeY());
+        //goalRight = new Rectangle(g.getxPos() + 0.1f * g.getSizeX() + 0.8f * g.getSizeX(), g.getyPos(), 0.1f * g.getSizeX(),g.getSizeY());
         batch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
         
     }
     
@@ -54,10 +56,15 @@ public class Gamescreen extends AbstractScreen{
 
     @Override
     public void render(float f) {
-        Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
         batch.begin();
-        projectile.draw(batch);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.rect(g.getxPos(), g.getyPos(), 0.2f * g.getSizeX(), g.getSizeY());
+        shapeRenderer.rect(g.getxPos() + 0.2f * g.getSizeX(), g.getyPos(), 0.6f * g.getSizeX(),0.2f * g.getSizeY());
+        shapeRenderer.rect(g.getxPos() + 0.2f * g.getSizeX() + 0.6f * g.getSizeX(), g.getyPos(), 0.2f * g.getSizeX(),g.getSizeY());
+        shapeRenderer.circle(p.getxPos(), p.getyPos(), p.getRadius());
+        shapeRenderer.end();
         batch.end();
         
         if(Gdx.input.justTouched()){
@@ -83,5 +90,9 @@ public class Gamescreen extends AbstractScreen{
 
     @Override
     public void dispose() {
+    }
+    
+    public void update(){
+    
     }
 }
