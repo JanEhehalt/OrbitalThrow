@@ -15,7 +15,7 @@ import com.throwgame.main.ThrowMath;
  */
 public class Level {
     private final double G = 9.81;
-    private final int RADIUS = 50;
+    private final int RADIUS = 100;
 
     private Goal goal;
     private Projectile projectile;
@@ -56,7 +56,7 @@ public class Level {
     }
 
     private void stepPivot(){
-        angleSpeed += 0.1;
+        angleSpeed += 0.001;
         angle += angleSpeed;
 
         Vector2 newPosVector = math.pivotGetNewPos(this.angle, this.xPosPivot, this.yPosPivot, RADIUS);

@@ -41,17 +41,17 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
 
-        level = new Level(new Goal(500,500,200,150), new Projectile(100,100,0),400,400);
+        level = new Level(new Goal(1000,500,200,150), new Projectile(100,100,0),400,400);
 
         stepTimer = new Timer();
         stepTimer.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
-                if(ls != null) {
+                if(gs != null) {
                     level.step();
                 }
             }
-        }, 0, 0.1f);
+        }, 0, 0.01f);
     }
     
     @Override
