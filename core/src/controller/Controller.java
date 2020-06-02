@@ -6,11 +6,8 @@
 package controller;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import model.Goal;
@@ -18,6 +15,7 @@ import model.Level;
 import model.Projectile;
 import view.Gamescreen;
 import view.Levelscreen;
+import com.badlogic.gdx.utils.Timer;
 import view.Titlescreen;
 
 /**
@@ -31,6 +29,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     Gamescreen gs;
     int levelAmount;
     SpriteBatch batch;
+    Timer stepTimer;
     
     @Override
     public void create(){
@@ -40,6 +39,14 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         levelAmount = 10;
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
+
+        stepTimer = new Timer();
+        stepTimer.scheduleTask(new Timer.Task() {
+            @Override
+            public void run() {
+
+            }
+        }, 0, 0.1f);
     }
     
     @Override
