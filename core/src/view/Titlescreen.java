@@ -20,18 +20,15 @@ import com.badlogic.gdx.utils.Timer;
  *
  * @author Jan
  */
-public class Titlescreen extends AbstractScreen{
+public class Titlescreen{
     
     BitmapFont font;
-    SpriteBatch batch;
     Timer t;
     Sprite clicktostart;
     boolean movement;
     
-    public Titlescreen(Game game){
-        super(game);
+    public Titlescreen(){
         movement = true;
-        batch = new SpriteBatch();
         clicktostart = new Sprite(new Texture(Gdx.files.internal("clicktostart.png")));
         clicktostart.setX(Gdx.graphics.getWidth() / 2 - clicktostart.getWidth() / 2);
         clicktostart.setY(Gdx.graphics.getHeight() / 2 - clicktostart.getHeight() / 2);
@@ -54,41 +51,9 @@ public class Titlescreen extends AbstractScreen{
         
     }
     
-    @Override
-    public void show() {
-    }
-
-    @Override
-    public void render(float f) {
-        
-        
-        batch.begin();
+    public void render(SpriteBatch batch) {
         clicktostart.draw(batch);
-        batch.end();
-        
-        if(Gdx.input.justTouched()){
-            dispose();
-            game.setScreen(new Levelscreen(game));
-        }
     }
-
-    @Override
-    public void resize(int i, int i1) {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
-    }
-
-    @Override
     public void dispose() {
         t.clear();
     }

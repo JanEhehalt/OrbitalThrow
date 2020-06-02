@@ -74,4 +74,11 @@ public class Level {
     public Projectile getProjectile() {
         return projectile;
     }
+    
+    public int getPivotX(){
+        return xPosPivot;
+    }
+    public int getPivotY(){
+        return yPosPivot;
+    }
 }

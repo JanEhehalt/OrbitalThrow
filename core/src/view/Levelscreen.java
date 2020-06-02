@@ -23,7 +23,7 @@ import model.Projectile;
  *
  * @author Jan
  */
-public class Levelscreen extends AbstractScreen{
+public class Levelscreen{
     
     Sprite[] levelPreview;
     Sprite buttonRight;
@@ -32,10 +32,10 @@ public class Levelscreen extends AbstractScreen{
     BitmapFont font;
     Timer t;
     boolean movement;
+    int levelAmount;
     
-    public Levelscreen(Game game){
-        super(game);
-        levelPreview = new Sprite[5];
+    public Levelscreen(int levelAmount){
+        levelPreview = new Sprite[levelAmount];
         buttonRight = new Sprite(new Texture("buttonRight.png"));
         buttonRight.setY(Gdx.graphics.getHeight() / 2 - buttonRight.getHeight() / 2);
         buttonRight.setX(Gdx.graphics.getWidth() - 10 - buttonRight.getWidth());
@@ -43,6 +43,7 @@ public class Levelscreen extends AbstractScreen{
         buttonLeft.setY(Gdx.graphics.getHeight() / 2 - buttonLeft.getHeight() / 2);
         buttonLeft.setX(10);
         selectedLevel = 0;
+        this.levelAmount = levelAmount;
         
         font = new BitmapFont();
         font.setColor(Color.BLACK);
@@ -70,63 +71,28 @@ public class Levelscreen extends AbstractScreen{
         },0 , 0.045f);
     }
     
-    
-    @Override
-    public void show() {
-    }
-
-    @Override
-    public void render(float f) {
+    public void render(SpriteBatch batch) {
         
-        
-        SpriteBatch batch = new SpriteBatch();
-        
-        
-        batch.begin();
         if(selectedLevel > 0){
             buttonLeft.draw(batch);
         }
-        if(selectedLevel < levelPreview.length){
+        if(selectedLevel < levelAmount){
             buttonRight.draw(batch);
         }
         font.draw(batch, "" + selectedLevel, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-        batch.end();
         
-        if(Gdx.input.justTouched()){
-            if(Gdx.input.getX() < Gdx.graphics.getWidth() * 0.15){
-                if(selectedLevel > 0)
-                selectedLevel --;
-            }
-            else if(Gdx.input.getX() > Gdx.graphics.getWidth() * 0.85){
-                if(selectedLevel < levelPreview.length)
-                selectedLevel ++;
-            }
-            else{
-                dispose();
-                game.setScreen(new Gamescreen(game, new Level(new Goal(400,400,200,100), new Projectile(160,160,0))));
-            }
-        }
+       
     }
-
-    @Override
-    public void resize(int i, int i1) {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
-    }
-
-    @Override
-    public void dispose() {
+    
+    public void dispose(){
         t.clear();
     }
     
+    public void setSelectedLevel(int i){
+        selectedLevel = i;
+    }
+    public int getSelectedLevel(){
+        return selectedLevel;
+    }
+
 }

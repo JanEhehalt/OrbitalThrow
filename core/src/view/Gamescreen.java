@@ -23,76 +23,56 @@ import model.Projectile;
  *
  * @author Jan
  */
-public class Gamescreen extends AbstractScreen{
+public class Gamescreen{
     
     Goal g;
     Projectile p;
-    SpriteBatch batch;
     
     //Rectangle goalLeft;
     //Rectangle goalRight;
     //Rectangle goalBottom;
     ShapeRenderer shapeRenderer;
+    int pivotX;
+    int pivotY;
     
     
     
     
-    public Gamescreen(Game game, Level level){
-        super(game);
+    public Gamescreen(Level level){
+        pivotX = level.getPivotX();
+        pivotY = level.getPivotY();
         g = level.getGoal();
         p = level.getProjectile();
         // Goal rectangles
         //goalLeft = new Rectangle(g.getxPos(), g.getyPos(), 0.1f * g.getSizeX(), g.getSizeY());
         //goalBottom = new Rectangle(g.getxPos() + 0.1f * g.getSizeX(), g.getyPos(), 0.8f * g.getSizeX(),0.2f * g.getSizeY());
         //goalRight = new Rectangle(g.getxPos() + 0.1f * g.getSizeX() + 0.8f * g.getSizeX(), g.getyPos(), 0.1f * g.getSizeX(),g.getSizeY());
-        batch = new SpriteBatch();
+       
         shapeRenderer = new ShapeRenderer();
         
     }
     
-    @Override
-    public void show() {
-    }
 
-    @Override
-    public void render(float f) {
+    public void render(SpriteBatch batch, Level level) {
         
-        batch.begin();
+        pivotX = level.getPivotX();
+        pivotY = level.getPivotY();
+        g = level.getGoal();
+        p = level.getProjectile();
+        
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
         shapeRenderer.rect(g.getxPos(), g.getyPos(), 0.2f * g.getSizeX(), g.getSizeY());
         shapeRenderer.rect(g.getxPos() + 0.2f * g.getSizeX(), g.getyPos(), 0.6f * g.getSizeX(),0.2f * g.getSizeY());
         shapeRenderer.rect(g.getxPos() + 0.2f * g.getSizeX() + 0.6f * g.getSizeX(), g.getyPos(), 0.2f * g.getSizeX(),g.getSizeY());
         shapeRenderer.circle(p.getxPos(), p.getyPos(), p.getRadius());
+        shapeRenderer.setColor(Color.GRAY);
+        shapeRenderer.circle(pivotX, pivotY, 5);
         shapeRenderer.end();
-        batch.end();
         
-        if(Gdx.input.justTouched()){
-            game.setScreen(new Levelscreen(game));
-        }
     }
     
-    @Override
-    public void resize(int i, int i1) {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
-    }
-
-    @Override
     public void dispose() {
     }
     
-    public void update(){
-    
-    }
 }
