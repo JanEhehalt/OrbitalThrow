@@ -56,12 +56,12 @@ public class Level {
     }
 
     private void stepPivot(){
-        angleSpeed += 0.001;
+        angleSpeed += 0.0001;
         angle += angleSpeed;
 
         Vector2 newPosVector = math.pivotGetNewPos(this.angle, this.xPosPivot, this.yPosPivot, RADIUS);
-        this.projectile.setxPos((int) newPosVector.x);
-        this.projectile.setyPos((int) newPosVector.y);
+        this.projectile.setxPos(xPosPivot + (int) newPosVector.x);
+        this.projectile.setyPos(yPosPivot + (int) newPosVector.y);
     }
 
     private void stepAir(){
@@ -82,5 +82,8 @@ public class Level {
     }
     public int getPivotY(){
         return yPosPivot;
+    }
+    public boolean released(){
+        return isReleased;
     }
 }

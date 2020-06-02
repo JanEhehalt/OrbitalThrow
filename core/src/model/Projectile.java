@@ -20,7 +20,7 @@ public class Projectile {
         switch(type){
             case 0:
                 mass = 5;
-                radius = 5;
+                radius = 10;
                 break;
         }
     }

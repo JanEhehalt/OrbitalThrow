@@ -41,7 +41,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
 
-        level = new Level(new Goal(1000,500,200,150), new Projectile(100,100,0),400,400);
+        level = new Level(new Goal(1000,500,200,150), new Projectile(0,0,0),400,400);
 
         stepTimer = new Timer();
         stepTimer.scheduleTask(new Timer.Task() {
@@ -108,6 +108,13 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             }
         }
         else if(gs != null){
+            if(!level.released()){
+                level.projectileReleased();
+            }
+            System.out.println(level.getProjectile().getxPos());
+            System.out.println(level.getProjectile().getyPos());
+            //gs = null;
+            //ls = new Levelscreen(levelAmount);
         }
         return true;
     }
