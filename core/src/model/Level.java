@@ -14,7 +14,7 @@ import com.throwgame.main.ThrowMath;
  * @author Jan
  */
 public class Level {
-    private final double G = 9.81;
+    private final double G = 0.01;
     private final int RADIUS = 100;
 
     private Goal goal;
@@ -43,7 +43,10 @@ public class Level {
     public void projectileReleased(){
         this.isReleased = true;
         double v0 = angleSpeed * RADIUS;
-        this.math.initThrow(angle, G, v0, projectile.getyPos());
+        this.math.initThrow(Math.PI / 2 + angle, G, v0, projectile.getyPos(), projectile.getxPos());
+        //double tempAngle = angle + Math.PI / 2;
+        //projectile.setvX(v0 * Math.sin(tempAngle));
+        //projectile.setvY(v0 * Math.cos(tempAngle));
     }
 
     public void step(){
@@ -59,6 +62,8 @@ public class Level {
         angleSpeed += 0.0001;
         angle += angleSpeed;
 
+        System.out.println(Math.toDegrees(angle));
+
         Vector2 newPosVector = math.pivotGetNewPos(this.angle, this.xPosPivot, this.yPosPivot, RADIUS);
         this.projectile.setxPos(xPosPivot + (int) newPosVector.x);
         this.projectile.setyPos(yPosPivot + (int) newPosVector.y);
@@ -67,6 +72,11 @@ public class Level {
     private void stepAir(){
         projectile.setxPos(projectile.getxPos() + 1);
         projectile.setyPos(math.calculateY(projectile.getxPos()));
+        /*Vector2 lol = math.test(projectile, G);
+        projectile.setxPos((int) lol.x);
+        projectile.setyPos((int) lol.y);
+        System.out.println(projectile.getxPos() + " " + projectile.getyPos());
+        */
     }
 
     public Goal getGoal() {
