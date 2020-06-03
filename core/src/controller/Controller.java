@@ -47,11 +47,10 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         stepTimer.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
-                if(gs != null) {
                     level.step();
-                }
             }
         }, 0, 0.01f);
+        stepTimer.stop();
     }
     
     @Override
@@ -105,27 +104,26 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                 ls.dispose();
                 ls = null;
                 gs = new Gamescreen(level);
+                stepTimer.start();
             }
         }
         else if(gs != null){
             if(!level.released()){
                 level.projectileReleased();
             }
-            System.out.println(level.getProjectile().getxPos());
-            System.out.println(level.getProjectile().getyPos());
-            //gs = null;
-            //ls = new Levelscreen(levelAmount);
         }
         return true;
     }
 
     @Override
     public boolean touchUp(int i, int i1, int i2, int i3) {
-        return false;
+        if(gs != null){
+        }
+        return true;
     }
 
     @Override
-    public boolean touchDragged(int i, int i1, int i2) {
+    public boolean touchDragged(int i, int i1, int i2){
         return false;
     }
 

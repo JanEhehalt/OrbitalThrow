@@ -37,7 +37,6 @@ public class Gamescreen{
     
     
     
-    
     public Gamescreen(Level level){
         pivotX = level.getPivotX();
         pivotY = level.getPivotY();
@@ -58,7 +57,6 @@ public class Gamescreen{
         pivotX = level.getPivotX();
         pivotY = level.getPivotY();
         g = level.getGoal();
-        p = level.getProjectile();
         
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
@@ -69,6 +67,7 @@ public class Gamescreen{
         shapeRenderer.setColor(Color.GRAY);
         shapeRenderer.circle(pivotX, pivotY, 5);
         shapeRenderer.end();
+        
         
     }
     
