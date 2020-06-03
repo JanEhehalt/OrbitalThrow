@@ -14,7 +14,7 @@ import com.throwgame.main.ThrowMath;
  */
 public class Level {
     private final double G = 0.05;
-    private final int RADIUS = 100;
+    private final int RADIUS = 150;
 
     private Goal goal;
     private Projectile projectile;
@@ -78,6 +78,14 @@ public class Level {
         projectile.setyPos((int) lol.y);
         System.out.println(projectile.getxPos() + " " + projectile.getyPos());
         */
+    }
+    
+    public void reset(){
+        isReleased = false;
+        projectile.setxPos(xPosPivot + RADIUS);
+        projectile.setyPos(yPosPivot);
+        angle = 0;
+        angleSpeed = 0;
     }
 
     public Goal getGoal() {

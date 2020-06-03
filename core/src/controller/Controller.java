@@ -9,7 +9,10 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import model.Goal;
 import model.Level;
 import model.Projectile;
@@ -41,13 +44,18 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
 
-        level = new Level(new Goal(1000,500,200,150), new Projectile(0,0,0),400,400);
+        level = new Level(new Goal(1300,700,200,80), new Projectile(0,0,0),400,400);
 
         stepTimer = new Timer();
         stepTimer.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
-                    level.step();
+                    if(level.getProjectile().getxPos() > Gdx.graphics.getWidth() || level.getProjectile().getxPos() < 0 || level.getProjectile().getyPos() < 0){
+                        level.reset();
+                    }
+                    else{
+                        level.step();
+                    }
             }
         }, 0, 0.01f);
         stepTimer.stop();
