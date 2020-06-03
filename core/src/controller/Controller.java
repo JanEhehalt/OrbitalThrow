@@ -129,10 +129,10 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             }
         }
         else if(ws != null){
-            if(x < Gdx.graphics.getWidth() * 0.25){
+            if(x < Gdx.graphics.getWidth() * 0.33){
                 ls = new Levelscreen(levelAmount);
             }
-            else if(x < Gdx.graphics.getWidth() * 0.75){
+            else if(x < Gdx.graphics.getWidth() * 0.66){
                 gs = new Gamescreen(level);
             }
             else{
