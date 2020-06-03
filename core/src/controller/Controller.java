@@ -20,6 +20,7 @@ import view.Gamescreen;
 import view.Levelscreen;
 import com.badlogic.gdx.utils.Timer;
 import view.Titlescreen;
+import view.Winscreen;
 
 /**
  *
@@ -30,6 +31,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     Titlescreen ts;
     Levelscreen ls;
     Gamescreen gs;
+    Winscreen ws;
     int levelAmount;
     SpriteBatch batch;
     Timer stepTimer;
@@ -40,6 +42,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         ts = new Titlescreen();
         ls = null;
         gs = null;
+        ws = null;
         levelAmount = 10;
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
@@ -50,12 +53,16 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         stepTimer.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
+                if(gs != null){
                     if(level.getProjectile().getxPos() > Gdx.graphics.getWidth() || level.getProjectile().getxPos() < 0 || level.getProjectile().getyPos() < 0){
                         level.reset();
+                        gs = null;
+                        ws = new Winscreen();
                     }
                     else{
                         level.step();
                     }
+                }
             }
         }, 0, 0.01f);
         stepTimer.stop();
@@ -69,6 +76,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         if(ts != null) ts.render(batch);
         else if(ls != null) ls.render(batch);
         else if(gs != null) gs.render(batch, level);
+        else if(ws != null) ws.render(batch);
         batch.end();
     }
     
@@ -119,6 +127,18 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             if(!level.released()){
                 level.projectileReleased();
             }
+        }
+        else if(ws != null){
+            if(x < Gdx.graphics.getWidth() * 0.25){
+                ls = new Levelscreen(levelAmount);
+            }
+            else if(x < Gdx.graphics.getWidth() * 0.75){
+                gs = new Gamescreen(level);
+            }
+            else{
+                gs = new Gamescreen(level);
+            }
+            ws = null;
         }
         return true;
     }
