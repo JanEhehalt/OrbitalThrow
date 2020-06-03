@@ -28,6 +28,7 @@ public class Level {
     private boolean isReleased;
 
     private int traceIndex;
+    public boolean[] isTraceInitialised;
     public Vector2[] traces;
 
     public Level(Goal goal, Projectile projectile, int xPosPivot, int yPosPivot){
@@ -44,7 +45,8 @@ public class Level {
         this.angleSpeed = 0;
 
         traceIndex = 0;
-        traces = new Vector2[50];
+        isTraceInitialised = new boolean[50];
+        traces = new Vector2[isTraceInitialised.length];
         for(int i = 0; i < traces.length; i++){
             traces[i] = new Vector2(-10, -10);
         }
@@ -99,6 +101,10 @@ public class Level {
         }
         traces[traceIndex] = newPos;
 
+        if(!isTraceInitialised[traceIndex]){
+            isTraceInitialised[traceIndex] = true;
+        }
+
         traceIndex++;
     }
     
@@ -108,6 +114,7 @@ public class Level {
         projectile.setyPos(yPosPivot);
         angle = 0;
         angleSpeed = 0;
+        isTraceInitialised = new boolean[traces.length];
     }
 
     public Goal getGoal() {

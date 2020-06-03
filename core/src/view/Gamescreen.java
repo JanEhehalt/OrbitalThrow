@@ -57,8 +57,11 @@ public class Gamescreen{
         shapeRenderer.setColor(Color.BLACK);
 
         if(level.released()) {
-            for (Vector2 trace : level.traces) {
-                shapeRenderer.rect(trace.x, trace.y, 3, 3);
+            for (int i = 0; i < level.traces.length; i++) {
+                if(level.isTraceInitialised[i]){
+                    Vector2 trace = level.traces[i];
+                    shapeRenderer.rect(trace.x, trace.y, 3, 3);
+                }
             }
         }
         else{
