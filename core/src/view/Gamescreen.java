@@ -5,16 +5,10 @@
  */
 package view;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
+
 import model.Goal;
 import model.Level;
 import model.Projectile;
@@ -63,7 +57,7 @@ public class Gamescreen{
         shapeRenderer.rect(g.getxPos(), g.getyPos(), 0.2f * g.getSizeX(), g.getSizeY());
         shapeRenderer.rect(g.getxPos() + 0.2f * g.getSizeX(), g.getyPos(), 0.6f * g.getSizeX(),0.2f * g.getSizeY());
         shapeRenderer.rect(g.getxPos() + 0.2f * g.getSizeX() + 0.6f * g.getSizeX(), g.getyPos(), 0.2f * g.getSizeX(),g.getSizeY());
-        shapeRenderer.circle(p.getxPos(), p.getyPos(), p.getRadius());
+        shapeRenderer.circle((float) p.getxPos(), (float) p.getyPos(), p.getRadius());
         shapeRenderer.setColor(Color.GRAY);
         shapeRenderer.circle(pivotX, pivotY, 5);
         shapeRenderer.end();

@@ -5,7 +5,6 @@
  */
 package model;
 
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.throwgame.main.ThrowMath;
 
@@ -14,7 +13,7 @@ import com.throwgame.main.ThrowMath;
  * @author Jan
  */
 public class Level {
-    private final double G = 0.01;
+    private final double G = 0.05;
     private final int RADIUS = 100;
 
     private Goal goal;
@@ -43,8 +42,9 @@ public class Level {
     public void projectileReleased(){
         this.isReleased = true;
         double v0 = angleSpeed * RADIUS;
-        this.math.initThrow(Math.PI / 2 + angle, G, v0, projectile.getyPos(), projectile.getxPos());
-        //double tempAngle = angle + Math.PI / 2;
+        double tempAngle = angle - Math.PI / 2;
+        double vX = v0 * Math.sin(tempAngle);
+        this.math.initThrow(Math.PI / 2 + angle, G, v0, projectile.getyPos(), projectile.getxPos(), vX);
         //projectile.setvX(v0 * Math.sin(tempAngle));
         //projectile.setvY(v0 * Math.cos(tempAngle));
     }
@@ -60,7 +60,7 @@ public class Level {
 
     private void stepPivot(){
         angleSpeed += 0.0001;
-        angle += angleSpeed;
+        angle -= angleSpeed;
 
         System.out.println(Math.toDegrees(angle));
 
@@ -70,8 +70,9 @@ public class Level {
     }
 
     private void stepAir(){
-        projectile.setxPos(projectile.getxPos() + 1);
-        projectile.setyPos(math.calculateY(projectile.getxPos()));
+        Vector2 newPos = math.calculateY(projectile.getxPos());
+        projectile.setxPos(newPos.x);
+        projectile.setyPos(newPos.y);
         /*Vector2 lol = math.test(projectile, G);
         projectile.setxPos((int) lol.x);
         projectile.setyPos((int) lol.y);

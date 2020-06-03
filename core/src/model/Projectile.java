@@ -2,8 +2,8 @@ package model;
 
 public class Projectile {
 
-    private int xPos;
-    private int yPos;
+    private double xPos;
+    private double yPos;
     private int mass;
     private int radius;
     private double vX;
@@ -25,19 +25,19 @@ public class Projectile {
         }
     }
 
-    public int getxPos() {
+    public double getxPos() {
         return xPos;
     }
 
-    public void setxPos(int xPos) {
+    public void setxPos(double xPos) {
         this.xPos = xPos;
     }
 
-    public int getyPos() {
+    public double getyPos() {
         return yPos;
     }
 
-    public void setyPos(int yPos) {
+    public void setyPos(double yPos) {
         this.yPos = yPos;
     }
 
