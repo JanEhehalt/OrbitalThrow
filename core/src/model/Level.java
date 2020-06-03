@@ -8,6 +8,8 @@ package model;
 import com.badlogic.gdx.math.Vector2;
 import com.throwgame.main.ThrowMath;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Jan
@@ -25,6 +27,9 @@ public class Level {
     private double angleSpeed;
     private boolean isReleased;
 
+    private int traceIndex;
+    public Vector2[] traces;
+
     public Level(Goal goal, Projectile projectile, int xPosPivot, int yPosPivot){
         this.goal = goal;
         this.projectile = projectile;
@@ -37,6 +42,12 @@ public class Level {
         this.yPosPivot = yPosPivot;
         this.angle = 0;
         this.angleSpeed = 0;
+
+        traceIndex = 0;
+        traces = new Vector2[50];
+        for(int i = 0; i < traces.length; i++){
+            traces[i] = new Vector2(-10, -10);
+        }
     }
 
     public void projectileReleased(){
@@ -44,9 +55,9 @@ public class Level {
         double v0 = angleSpeed * RADIUS;
         double tempAngle = angle - Math.PI / 2;
         double vX = v0 * Math.sin(tempAngle);
-        this.math.initThrow(Math.PI / 2 + angle, G, v0, projectile.getyPos(), projectile.getxPos(), vX);
-        //projectile.setvX(v0 * Math.sin(tempAngle));
-        //projectile.setvY(v0 * Math.cos(tempAngle));
+        //this.math.initThrow(/*Math.PI / 2 + angle*/tempAngle, G, v0, projectile.getyPos(), projectile.getxPos(), vX);
+        projectile.setvX(v0 * Math.sin(tempAngle));
+        projectile.setvY(v0 * Math.cos(tempAngle));
     }
 
     public void step(){
@@ -70,14 +81,25 @@ public class Level {
     }
 
     private void stepAir(){
-        Vector2 newPos = math.calculateY(projectile.getxPos());
+        /*Vector2 newPos = math.calculateY(projectile.getxPos());
         projectile.setxPos(newPos.x);
         projectile.setyPos(newPos.y);
-        /*Vector2 lol = math.test(projectile, G);
-        projectile.setxPos((int) lol.x);
-        projectile.setyPos((int) lol.y);
-        System.out.println(projectile.getxPos() + " " + projectile.getyPos());
         */
+
+        Vector2 lol = math.test(projectile, G);
+        projectile.setxPos(lol.x);
+        projectile.setyPos(lol.y);
+
+        changeTracePos(lol);
+    }
+
+    public void changeTracePos(Vector2 newPos){
+        if(traceIndex >= traces.length){
+            traceIndex = 0;
+        }
+        traces[traceIndex] = newPos;
+
+        traceIndex++;
     }
     
     public void reset(){

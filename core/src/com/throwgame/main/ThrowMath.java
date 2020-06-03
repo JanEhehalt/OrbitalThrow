@@ -60,9 +60,9 @@ public class ThrowMath {
     public Vector2 test(Projectile projectile, double g){
         Vector2 lol = new Vector2();
 
-        lol.x = (int) (projectile.getxPos() + projectile.getvX());
+        lol.x = (float) (projectile.getxPos() + projectile.getvX());
         projectile.setvY(projectile.getvY() - g);
-        lol.y = (int) (projectile.getyPos() + projectile.getvY());
+        lol.y = (float) (projectile.getyPos() + projectile.getvY());
 
         return lol;
     }
