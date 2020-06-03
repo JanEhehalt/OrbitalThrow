@@ -114,6 +114,7 @@ public class Level {
         projectile.setyPos(yPosPivot);
         angle = 0;
         angleSpeed = 0;
+        isTraceInitialised = new boolean[traces.length];
     }
 
     public Goal getGoal() {
