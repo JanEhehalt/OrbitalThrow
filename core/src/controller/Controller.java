@@ -21,6 +21,7 @@ import view.Gamescreen;
 import view.Levelscreen;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.sun.prism.image.ViewPort;
 import view.Titlescreen;
 import view.Winscreen;
 
@@ -54,9 +55,8 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         Gdx.input.setInputProcessor(this);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,1600,900);
-        fitViewport = new FitViewport(1600, 900, camera);
-        level = new Level(new Goal(700,400,200,80), new Projectile(0,0,0),200,200);
+        fitViewport = new FitViewport(1600,900, camera);
+        fitViewport.setScreenBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         stepTimer = new Timer();
         stepTimer.scheduleTask(new Timer.Task() {
@@ -79,10 +79,10 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     
     @Override
     public void render(){
-        camera.update();
+        //camera.update();
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.setProjectionMatrix(camera.combined);
+        //batch.setProjectionMatrix(camera.combined);
         batch.begin();
         if(ts != null) ts.render(batch);
         else if(ls != null) ls.render(batch);
