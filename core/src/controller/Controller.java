@@ -53,9 +53,9 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
 
-        camera = new OrthographicCamera(1280, 720);
-        fitViewport = new FitViewport(1280, 720, camera);
-        
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false,1600,900);
+        fitViewport = new FitViewport(1600, 900, camera);
         level = new Level(new Goal(700,400,200,80), new Projectile(0,0,0),200,200);
 
         stepTimer = new Timer();
@@ -79,9 +79,10 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     
     @Override
     public void render(){
+        camera.update();
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        fitViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
         if(ts != null) ts.render(batch);
         else if(ls != null) ls.render(batch);
@@ -175,4 +176,8 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         return false;
     }
 
+    @Override
+    public void resize(int width, int height) {
+        fitViewport.update(width,height,true); 
+    }
 }
