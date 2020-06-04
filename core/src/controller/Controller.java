@@ -58,6 +58,8 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         fitViewport = new FitViewport(1600,900, camera);
         fitViewport.setScreenBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        level = new Level(new Goal(1300,700,200,80), new Projectile(0,0,0),400,400);
+
         stepTimer = new Timer();
         stepTimer.scheduleTask(new Timer.Task() {
             @Override
