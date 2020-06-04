@@ -9,6 +9,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,6 +20,7 @@ import model.Projectile;
 import view.Gamescreen;
 import view.Levelscreen;
 import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import view.Titlescreen;
 import view.Winscreen;
 
@@ -37,6 +39,9 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     Timer stepTimer;
     Level level;
     
+    OrthographicCamera camera;
+    FitViewport fitViewport;
+    
     @Override
     public void create(){
         
@@ -48,6 +53,9 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
 
+        camera = new OrthographicCamera(1280, 720);
+        fitViewport = new FitViewport(1280, 720, camera);
+        
         level = new Level(new Goal(700,400,200,80), new Projectile(0,0,0),200,200);
 
         stepTimer = new Timer();
@@ -73,6 +81,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     public void render(){
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        fitViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
         batch.begin();
         if(ts != null) ts.render(batch);
         else if(ls != null) ls.render(batch);
