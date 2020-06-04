@@ -21,7 +21,6 @@ import view.Gamescreen;
 import view.Levelscreen;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.sun.prism.image.ViewPort;
 import view.Titlescreen;
 import view.Winscreen;
 
@@ -40,8 +39,6 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     Timer stepTimer;
     Level level;
     
-    OrthographicCamera camera;
-    FitViewport fitViewport;
     
     @Override
     public void create(){
@@ -54,11 +51,8 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
 
-        camera = new OrthographicCamera();
-        fitViewport = new FitViewport(1600,900, camera);
-        fitViewport.setScreenBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        level = new Level(new Goal(1300,700,200,80), new Projectile(0,0,0),400,400);
+        level = new Level(new Goal(800,500,200,80), new Projectile(0,0,0),200,200);
 
         stepTimer = new Timer();
         stepTimer.scheduleTask(new Timer.Task() {
@@ -67,6 +61,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                 if(gs != null){
                     if(level.getProjectile().getxPos() > Gdx.graphics.getWidth() || level.getProjectile().getxPos() < 0 || level.getProjectile().getyPos() < 0){
                         level.reset();
+                        gs.dispose();
                         gs = null;
                         ws = new Winscreen();
                     }
@@ -81,10 +76,8 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     
     @Override
     public void render(){
-        //camera.update();
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //batch.setProjectionMatrix(camera.combined);
         batch.begin();
         if(ts != null) ts.render(batch);
         else if(ls != null) ls.render(batch);
@@ -176,10 +169,5 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     @Override
     public boolean scrolled(int i) {
         return false;
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        fitViewport.update(width,height,true); 
     }
 }
