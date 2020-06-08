@@ -20,7 +20,10 @@ import model.Projectile;
 import view.Gamescreen;
 import view.Levelscreen;
 import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import view.Titlescreen;
 import view.Winscreen;
 
@@ -30,6 +33,10 @@ import view.Winscreen;
  */
 public class Controller extends ApplicationAdapter implements InputProcessor{
     
+    final float GAME_WORLD_WIDTH = 1600;
+    final float GAME_WORLD_HEIGHT = 900;
+    
+    
     Titlescreen ts;
     Levelscreen ls;
     Gamescreen gs;
@@ -38,6 +45,10 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     SpriteBatch batch;
     Timer stepTimer;
     Level level;
+    
+    OrthographicCamera camera;
+    Viewport viewport;
+    
     
     
     @Override
@@ -50,7 +61,14 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         levelAmount = 10;
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
-
+        
+        
+        float aspectRatio = (float)Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth();
+        
+        camera = new OrthographicCamera();
+        viewport = new ExtendViewport(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT * aspectRatio, camera);
+        viewport.apply();
+        camera.position.set(GAME_WORLD_WIDTH/2, GAME_WORLD_HEIGHT/2, 0);
 
         level = new Level(new Goal(800,500,200,80), new Projectile(0,0,0),200,200);
 
@@ -75,10 +93,18 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     }
     
     @Override
+    public void resize(int width, int height){
+        viewport.update(width, height);
+        camera.position.set(GAME_WORLD_WIDTH/2, GAME_WORLD_HEIGHT/2, 0);
+    }
+    
+    @Override
     public void render(){
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        camera.update();
         batch.begin();
+        batch.setProjectionMatrix(camera.combined);
         if(ts != null) ts.render(batch);
         else if(ls != null) ls.render(batch);
         else if(gs != null) gs.render(batch, level);
@@ -94,6 +120,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     
     @Override
     public boolean keyDown(int keycode) {
+        camera.translate(5f, 5f);
         return false;
     }
 
