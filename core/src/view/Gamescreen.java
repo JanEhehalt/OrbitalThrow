@@ -35,7 +35,7 @@ public class Gamescreen{
     float GAME_WORLD_WIDTH;
     float GAME_WORLD_HEIGHT;
     
-    public Gamescreen(Level level, float width, float height){
+    public Gamescreen(Level level, float width, float height, OrthographicCamera camera){
         GAME_WORLD_WIDTH = width;
         GAME_WORLD_HEIGHT = height;
         pivotX = level.getPivotX();
@@ -48,7 +48,7 @@ public class Gamescreen{
         //goalRight = new Rectangle(g.getxPos() + 0.1f * g.getSizeX() + 0.8f * g.getSizeX(), g.getyPos(), 0.1f * g.getSizeX(),g.getSizeY());
        
         shapeRenderer = new ShapeRenderer();
-        
+        shapeRenderer.setProjectionMatrix(camera.combined);
         
     }
     
