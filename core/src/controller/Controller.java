@@ -70,7 +70,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         viewport.apply();
         camera.position.set(GAME_WORLD_WIDTH/2, GAME_WORLD_HEIGHT/2, 0);
 
-        level = new Level(new Goal(800,500,200,80), new Projectile(0,0,0),200,200);
+        level = new Level(new Goal(500,200,150,50, 0.2f), new Projectile(0,0,0),200,200);
 
         stepTimer = new Timer();
         stepTimer.scheduleTask(new Timer.Task() {
@@ -81,7 +81,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                         level.reset();
                         gs.dispose();
                         gs = null;
-                        ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
+                        ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, false);
                     }
                     else{
                         level.step();
@@ -107,7 +107,14 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         batch.setProjectionMatrix(camera.combined);
         if(ts != null) ts.render(batch);
         else if(ls != null) ls.render(batch);
-        else if(gs != null) gs.render(batch, level);
+        else if(gs != null){ 
+            gs.render(batch, level);
+            if(gs.getWin()){
+                gs.dispose();
+                gs = null;
+                ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, true);
+            }
+        }
         else if(ws != null) ws.render(batch);
         batch.end();
     }

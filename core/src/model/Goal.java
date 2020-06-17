@@ -6,12 +6,14 @@ public class Goal {
     private int yPos;
     private int sizeX;
     private int sizeY;
+    private float thickness;
 
-    public Goal(int xPos, int yPos, int sizeX, int sizeY){
+    public Goal(int xPos, int yPos, int sizeX, int sizeY, float thickness){
         this.xPos = xPos;
         this.yPos = yPos;
         this.sizeX = sizeX;
         this.sizeY = sizeY;
+        this.thickness = thickness;
     }
 
     public int getxPos() {
@@ -44,5 +46,12 @@ public class Goal {
 
     public void setSizeY(int sizeY) {
         this.sizeY = sizeY;
+    }
+    public float getThickness() {
+        return thickness;
+    }
+
+    public void setThickness(float thickness) {
+        this.thickness = thickness;
     }
 }

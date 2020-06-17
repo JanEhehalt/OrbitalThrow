@@ -27,6 +27,12 @@ public class Gamescreen{
     Goal g;
     Projectile p;
     
+    int x;
+    int y;
+    float w;
+    float h;
+    float th;
+
     //Rectangle goalLeft;
     //Rectangle goalRight;
     //Rectangle goalBottom;
@@ -39,27 +45,34 @@ public class Gamescreen{
     float GAME_WORLD_WIDTH;
     float GAME_WORLD_HEIGHT;
     
+    boolean win;
+    
     public Gamescreen(Level level, float width, float height, Matrix4 matrix){
         GAME_WORLD_WIDTH = width;
         GAME_WORLD_HEIGHT = height;
         pivotX = level.getPivotX();
         pivotY = level.getPivotY();
         g = level.getGoal();
+        x = g.getxPos();
+        y = g.getyPos();
+        w = g.getSizeX();
+        h = g.getSizeY();
+        th = g.getThickness();
         p = level.getProjectile();
-        // Goal rectangles
-        //goalLeft = new Rectangle(g.getxPos(), g.getyPos(), 0.1f * g.getSizeX(), g.getSizeY());
-        //goalBottom = new Rectangle(g.getxPos() + 0.1f * g.getSizeX(), g.getyPos(), 0.8f * g.getSizeX(),0.2f * g.getSizeY());
-        //goalRight = new Rectangle(g.getxPos() + 0.1f * g.getSizeX() + 0.8f * g.getSizeX(), g.getyPos(), 0.1f * g.getSizeX(),g.getSizeY());
+        
+        win = false;
+        
         
         goalRects = new Rectangle[8];
-        goalRects[0] = new Rectangle(g.getxPos(),g.getyPos(),1,g.getSizeY());
-        goalRects[1] = new Rectangle(g.getxPos(), g.getyPos() + g.getSizeY() - 1, g.getSizeX() * 0.2f, 1);
-        goalRects[2] = new Rectangle(g.getxPos() + 0.2f * g.getSizeX()-1f,g.getyPos() + g.getSizeY() * 0.2f, 1, g.getSizeY() * 0.8f );
-        goalRects[3] = new Rectangle(g.getxPos() + 0.2f * g.getSizeX(), g.getyPos() + g.getSizeY() * 0.2f - 1, g.getSizeX() * 0.6f, 1);
-        goalRects[4] = new Rectangle(g.getxPos() + 0.8f * g.getSizeX(),g.getyPos() + g.getSizeY() * 0.2f,1, g.getSizeY() * 0.8f);
-        goalRects[5] = new Rectangle(g.getxPos() + 0.8f * g.getSizeX(), g.getyPos() + g.getSizeY() - 1f, g.getSizeX() * 0.2f, 1);
-        goalRects[6] = new Rectangle(g.getxPos() + g.getSizeX()-1, g.getyPos(), 1, g.getSizeY());
-        goalRects[7] = new Rectangle(g.getxPos(), g.getyPos(), g.getSizeX(), 1);
+        
+        goalRects[0] = new Rectangle(x              ,y              ,1          ,h         );
+        goalRects[1] = new Rectangle(x              ,y + h - 1      ,w * th     ,1         );
+        goalRects[2] = new Rectangle(x + th * w-1f  ,y + h * th     ,1          ,h * th*4  );
+        goalRects[3] = new Rectangle(x + th * w     ,y + h * th - 1 ,w *th*3    ,1         );
+        goalRects[4] = new Rectangle(x + th*4 * w   ,y + h * th     ,1          ,h * th*4  );
+        goalRects[5] = new Rectangle(x + th*4 * w   ,y + h - 1f     ,w *th      ,1         );
+        goalRects[6] = new Rectangle(x + w-1        ,y              ,1          ,h         );
+        goalRects[7] = new Rectangle(x              ,y              ,w          ,1         );
        
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(matrix);
@@ -89,9 +102,9 @@ public class Gamescreen{
         }
         
         shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rect(g.getxPos(), g.getyPos(), 0.2f * g.getSizeX(), g.getSizeY());
-        shapeRenderer.rect(g.getxPos() + 0.2f * g.getSizeX(), g.getyPos(), 0.6f * g.getSizeX(),0.2f * g.getSizeY());
-        shapeRenderer.rect(g.getxPos() + 0.2f * g.getSizeX() + 0.6f * g.getSizeX(), g.getyPos(), 0.2f * g.getSizeX(),g.getSizeY());
+        shapeRenderer.rect(x, y,th * w, h);
+        shapeRenderer.rect(x + th * w,y, th*3 * w,th * h);
+        shapeRenderer.rect(x + th *w + th*3 * w, y, th * w,h);
         shapeRenderer.circle((float) p.getxPos(), (float) p.getyPos(), p.getRadius());
         shapeRenderer.setColor(Color.RED);
         for(int i = 0; i < goalRects.length; i++){
@@ -103,10 +116,17 @@ public class Gamescreen{
         shapeRenderer.circle(pivotX, pivotY, 5);
         shapeRenderer.end();
         
+        if(p.getxPos() > x + w*th && p.getxPos() < x+w*4*th && p.getyPos() > y + h * th && p.getyPos() < y + h ){
+            win = true;
+        }
         
     }
     
     public void dispose() {
+    }
+    
+    public boolean getWin(){
+        return win;
     }
     
 }

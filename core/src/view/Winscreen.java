@@ -25,22 +25,26 @@ public class Winscreen{
     Sprite level;
     Sprite next;
     
-    Sprite win;
+    Sprite winSprite;
     boolean movement;
 
     float GAME_WORLD_WIDTH;
     float GAME_WORLD_HEIGHT;
     
-    public Winscreen(float width, float height){
+    boolean win;
+    
+    public Winscreen(float width, float height, boolean win){
         t = new Timer();
         GAME_WORLD_WIDTH = width;
         GAME_WORLD_HEIGHT = height;
-        /*
-        movement = true;
-        win = new Sprite(new Texture(Gdx.files.internal("win.png")));
-        win.setX(GAME_WORLD_WIDTH / 2 - win.getWidth() / 2);
-        win.setY(GAME_WORLD_HEIGHT * 0.7f - win.getHeight() / 2);
-        */
+        this.win = win;
+        
+        if(win){
+            movement = true;
+            winSprite = new Sprite(new Texture(Gdx.files.internal("win.png")));
+            winSprite.setX(GAME_WORLD_WIDTH / 2 - winSprite.getWidth() / 2);
+            winSprite.setY(GAME_WORLD_HEIGHT * 0.7f - winSprite.getHeight() / 2);
+        }
         float w = GAME_WORLD_WIDTH;
         float h = GAME_WORLD_HEIGHT;
         
@@ -52,21 +56,23 @@ public class Winscreen{
         
         reset = new Sprite(new Texture("reseticon.png"));
         reset.setPosition(w/2 - reset.getWidth()/2, h*0.35f - reset.getHeight()/2);
-        
-        t.scheduleTask(new Timer.Task() {
-            @Override
-            public void run() {
-                /*if(win.getY() < GAME_WORLD_HEIGHT*0.8)
-                    movement = true;
-                else if(win.getY() > GAME_WORLD_HEIGHT * 0.7)
-                    movement = false;
-                if(movement)
-                    win.setY(win.getY() + 3);
-                else
-                    win.setY(win.getY() - 3);*/
-            }
-        },0 , 0.035f);
-        
+        if(win){
+            t.scheduleTask(new Timer.Task() {
+                @Override
+                public void run() {
+                    if(winSprite.getY() < GAME_WORLD_HEIGHT*0.7){
+                        movement = true;}
+                    if(winSprite.getY() > GAME_WORLD_HEIGHT * 0.8){
+                        movement = false;}
+                    if(movement){
+                        winSprite.setY(winSprite.getY() + 3);
+                    }
+                    else{
+                        winSprite.setY(winSprite.getY() - 3);
+                    }
+                }
+            },0 , 0.035f);
+        }
         
     }
     
@@ -74,7 +80,8 @@ public class Winscreen{
         next.draw(batch);
         level.draw(batch);
         reset.draw(batch);
-        //win.draw(batch);
+        if(win)winSprite.draw(batch);
+        
     }
     public void dispose() {
         t.clear();
