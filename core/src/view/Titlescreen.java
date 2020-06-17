@@ -26,20 +26,24 @@ public class Titlescreen{
     Timer t;
     Sprite clicktostart;
     boolean movement;
+    float GAME_WORLD_WIDTH;
+    float GAME_WORLD_HEIGHT;
     
-    public Titlescreen(){
+    public Titlescreen(float width, float height){
+        this.GAME_WORLD_WIDTH = width;
+        this.GAME_WORLD_HEIGHT = height;
         movement = true;
         clicktostart = new Sprite(new Texture(Gdx.files.internal("clicktostart.png")));
-        clicktostart.setX(Gdx.graphics.getWidth() / 2 - clicktostart.getWidth() / 2);
-        clicktostart.setY(Gdx.graphics.getHeight() / 2 - clicktostart.getHeight() / 2);
+        clicktostart.setX(GAME_WORLD_WIDTH / 2 - clicktostart.getWidth() / 2);
+        clicktostart.setY(GAME_WORLD_HEIGHT / 2 - clicktostart.getHeight() / 2);
         t = new Timer();
         
         t.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
-                if(clicktostart.getY() < Gdx.graphics.getHeight() * 0.4)
+                if(clicktostart.getY() < GAME_WORLD_HEIGHT * 0.4)
                     movement = true;
-                else if(clicktostart.getY() > Gdx.graphics.getHeight() * 0.5)
+                else if(clicktostart.getY() > GAME_WORLD_HEIGHT * 0.5)
                     movement = false;
                 if(movement)
                     clicktostart.setY(clicktostart.getY() + 3);

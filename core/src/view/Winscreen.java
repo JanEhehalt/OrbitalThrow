@@ -27,17 +27,22 @@ public class Winscreen{
     
     Sprite win;
     boolean movement;
+
+    float GAME_WORLD_WIDTH;
+    float GAME_WORLD_HEIGHT;
     
-    public Winscreen(){
+    public Winscreen(float width, float height){
         t = new Timer();
+        GAME_WORLD_WIDTH = width;
+        GAME_WORLD_HEIGHT = height;
         /*
         movement = true;
         win = new Sprite(new Texture(Gdx.files.internal("win.png")));
-        win.setX(Gdx.graphics.getWidth() / 2 - win.getWidth() / 2);
-        win.setY(Gdx.graphics.getHeight() * 0.7f - win.getHeight() / 2);
+        win.setX(GAME_WORLD_WIDTH / 2 - win.getWidth() / 2);
+        win.setY(GAME_WORLD_HEIGHT * 0.7f - win.getHeight() / 2);
         */
-        int w = Gdx.graphics.getWidth();
-        int h = Gdx.graphics.getHeight();
+        float w = GAME_WORLD_WIDTH;
+        float h = GAME_WORLD_HEIGHT;
         
         next = new Sprite(new Texture("skipicon.png"));
         next.setPosition(w * 0.75f - next.getWidth()/2, h*0.35f - next.getHeight()/2);
@@ -51,9 +56,9 @@ public class Winscreen{
         t.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
-                /*if(win.getY() < Gdx.graphics.getHeight()*0.8)
+                /*if(win.getY() < GAME_WORLD_HEIGHT*0.8)
                     movement = true;
-                else if(win.getY() > Gdx.graphics.getHeight() * 0.7)
+                else if(win.getY() > GAME_WORLD_HEIGHT * 0.7)
                     movement = false;
                 if(movement)
                     win.setY(win.getY() + 3);

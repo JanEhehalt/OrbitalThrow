@@ -54,7 +54,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     @Override
     public void create(){
         
-        ts = new Titlescreen();
+        ts = new Titlescreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
         ls = null;
         gs = null;
         ws = null;
@@ -81,7 +81,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                         level.reset();
                         gs.dispose();
                         gs = null;
-                        ws = new Winscreen();
+                        ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
                     }
                     else{
                         level.step();
@@ -139,7 +139,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         if(ts != null){
             ts.dispose();
             ts = null;
-            ls = new Levelscreen(levelAmount);
+            ls = new Levelscreen(levelAmount, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
         }
         else if(ls != null){
             if(x < Gdx.graphics.getWidth() * 0.15){
@@ -152,7 +152,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             else{
                 ls.dispose();
                 ls = null;
-                gs = new Gamescreen(level);
+                gs = new Gamescreen(level, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
                 stepTimer.start();
             }
         }
@@ -163,13 +163,13 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         }
         else if(ws != null){
             if(x < Gdx.graphics.getWidth() * 0.33){
-                ls = new Levelscreen(levelAmount);
+                ls = new Levelscreen(levelAmount, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
             }
             else if(x < Gdx.graphics.getWidth() * 0.66){
-                gs = new Gamescreen(level);
+                gs = new Gamescreen(level, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
             }
             else{
-                gs = new Gamescreen(level);
+                gs = new Gamescreen(level, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
             }
             ws = null;
         }

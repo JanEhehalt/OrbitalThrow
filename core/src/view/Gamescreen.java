@@ -32,9 +32,12 @@ public class Gamescreen{
     int pivotX;
     int pivotY;
     
+    float GAME_WORLD_WIDTH;
+    float GAME_WORLD_HEIGHT;
     
-    
-    public Gamescreen(Level level){
+    public Gamescreen(Level level, float width, float height){
+        GAME_WORLD_WIDTH = width;
+        GAME_WORLD_HEIGHT = height;
         pivotX = level.getPivotX();
         pivotY = level.getPivotY();
         g = level.getGoal();
@@ -77,6 +80,7 @@ public class Gamescreen{
         shapeRenderer.circle((float) p.getxPos(), (float) p.getyPos(), p.getRadius());
         shapeRenderer.setColor(Color.GRAY);
         shapeRenderer.circle(pivotX, pivotY, 5);
+        shapeRenderer.circle(0,0,5);
         shapeRenderer.end();
         
         

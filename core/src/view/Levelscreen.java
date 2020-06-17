@@ -33,14 +33,18 @@ public class Levelscreen{
     Timer t;
     boolean movement;
     int levelAmount;
+    float GAME_WORLD_WIDTH;
+    float GAME_WORLD_HEIGHT;
     
-    public Levelscreen(int levelAmount){
+    public Levelscreen(int levelAmount, float width, float height){
+        GAME_WORLD_WIDTH = width;
+        GAME_WORLD_HEIGHT = height;
         levelPreview = new Sprite[levelAmount];
         buttonRight = new Sprite(new Texture("buttonRight.png"));
-        buttonRight.setY(Gdx.graphics.getHeight() / 2 - buttonRight.getHeight() / 2);
-        buttonRight.setX(Gdx.graphics.getWidth() - 10 - buttonRight.getWidth());
+        buttonRight.setY(GAME_WORLD_HEIGHT/ 2 - buttonRight.getHeight() / 2);
+        buttonRight.setX(GAME_WORLD_WIDTH - 10 - buttonRight.getWidth());
         buttonLeft = new Sprite(new Texture("buttonLeft.png"));
-        buttonLeft.setY(Gdx.graphics.getHeight() / 2 - buttonLeft.getHeight() / 2);
+        buttonLeft.setY(GAME_WORLD_HEIGHT / 2 - buttonLeft.getHeight() / 2);
         buttonLeft.setX(10);
         selectedLevel = 0;
         this.levelAmount = levelAmount;
@@ -56,7 +60,7 @@ public class Levelscreen{
                 if(buttonLeft.getX() <= 0){
                     movement = true;
                 }
-                if(buttonLeft.getX() + buttonLeft.getWidth() > Gdx.graphics.getWidth() * 0.12){
+                if(buttonLeft.getX() + buttonLeft.getWidth() > GAME_WORLD_WIDTH * 0.12){
                     movement = false;
                 }
                 if(movement){
@@ -79,7 +83,7 @@ public class Levelscreen{
         if(selectedLevel < levelAmount){
             buttonRight.draw(batch);
         }
-        font.draw(batch, "" + selectedLevel, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        font.draw(batch, "" + selectedLevel, GAME_WORLD_WIDTH / 2, GAME_WORLD_HEIGHT / 2);
         
        
     }
