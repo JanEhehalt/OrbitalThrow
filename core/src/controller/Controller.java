@@ -152,7 +152,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             else{
                 ls.dispose();
                 ls = null;
-                gs = new Gamescreen(level, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera);
+                gs = new Gamescreen(level, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 stepTimer.start();
             }
         }
@@ -166,10 +166,10 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                 ls = new Levelscreen(levelAmount, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
             }
             else if(x < Gdx.graphics.getWidth() * 0.66){
-                gs = new Gamescreen(level, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera);
+                gs = new Gamescreen(level, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
             }
             else{
-                gs = new Gamescreen(level, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera);
+                gs = new Gamescreen(level, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
             }
             ws = null;
         }
