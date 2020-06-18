@@ -78,12 +78,16 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             public void run() {
                 if(gs != null){
                     if(level.getProjectile().getxPos() > Gdx.graphics.getWidth() || level.getProjectile().getxPos() < 0 || level.getProjectile().getyPos() < 0){
+                        gs.step(level);
                         level.reset();
                         gs.dispose();
+                        stepTimer.stop();
                         gs = null;
                         ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, false);
                     }
+
                     else{
+                        gs.step(level);
                         level.step();
                     }
                 }
@@ -111,6 +115,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             gs.render(batch, level);
             if(gs.getWin()){
                 gs.dispose();
+                stepTimer.stop();
                 gs = null;
                 ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, true);
             }
@@ -159,6 +164,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             else{
                 ls.dispose();
                 ls = null;
+                level = new Level(new Goal(500,200,150,50, 0.2f), new Projectile(0,0,0),200,200);
                 gs = new Gamescreen(level, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 stepTimer.start();
             }
@@ -173,10 +179,14 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                 ls = new Levelscreen(levelAmount, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
             }
             else if(x < Gdx.graphics.getWidth() * 0.66){
+                level = new Level(new Goal(500,200,150,50, 0.2f), new Projectile(0,0,0),200,200);
                 gs = new Gamescreen(level, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+                stepTimer.start();
             }
             else{
+                level = new Level(new Goal(500,200,150,50, 0.2f), new Projectile(0,0,0),200,200);
                 gs = new Gamescreen(level, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+                stepTimer.start();
             }
             ws = null;
         }
