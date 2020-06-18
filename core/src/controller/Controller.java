@@ -89,6 +89,8 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                     else{
                         gs.step(level);
                         level.step();
+
+                        for(
                     }
                 }
             }
@@ -128,7 +130,6 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     public void dispose () {
 
     }
-    
     
     @Override
     public boolean keyDown(int keycode) {

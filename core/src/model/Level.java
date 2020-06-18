@@ -62,6 +62,14 @@ public class Level {
         projectile.setvY(v0 * Math.cos(tempAngle));
     }
 
+    public void horizontalCollision(){
+        this.projectile.setvY(-this.projectile.getvY);
+    }
+
+    public void verticalCollision(){
+        this.projectile.setvX(-this.projectile.getvX);
+    }
+
     public void step(){
         if(this.isReleased){
             stepAir();
