@@ -10,13 +10,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import model.Goal;
+
 import model.Level;
-import model.Projectile;
 import view.Gamescreen;
 import view.Levelscreen;
 
@@ -24,8 +20,6 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import view.Titlescreen;
 import view.Winscreen;
@@ -48,6 +42,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     SpriteBatch batch;
     Timer stepTimer;
     Level level;
+    int currentLevel;
 
     OrthographicCamera camera;
     Viewport viewport;
@@ -62,6 +57,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         gs = null;
         ws = null;
         levelAmount = 10;
+        currentLevel = -1;
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
 
@@ -72,8 +68,6 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         viewport = new ExtendViewport(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT * aspectRatio, camera);
         viewport.apply();
         camera.position.set(GAME_WORLD_WIDTH/2, GAME_WORLD_HEIGHT/2, 0);
-
-        level = new Level(new Goal(500,200,150,50, 0.2f), new Projectile(0,0,0),200,200);
 
         stepTimer = new Timer();
         stepTimer.scheduleTask(new Timer.Task() {
@@ -124,7 +118,10 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         if(ts != null) ts.render(batch);
-        else if(ls != null) ls.render(batch);
+        else if(ls != null){
+            ls.render(batch);
+            currentLevel = ls.getSelectedLevel();
+        }
         else if(gs != null){
             gs.render(batch, level);
             if(gs.getWin()){
@@ -177,8 +174,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             else{
                 ls.dispose();
                 ls = null;
-                level = new Level(new Goal(500,200,150,50, 0.2f), new Projectile(0,0,0),200,200);
-                gs = new Gamescreen(level, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+                gs = new Gamescreen(level[currentLevel], GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 stepTimer.start();
             }
         }
@@ -192,13 +188,12 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                 ls = new Levelscreen(levelAmount, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
             }
             else if(x < Gdx.graphics.getWidth() * 0.66){
-                level = new Level(new Goal(500,200,150,50, 0.2f), new Projectile(0,0,0),200,200);
-                gs = new Gamescreen(level, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+                gs = new Gamescreen(level[currentLevel], GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 stepTimer.start();
             }
             else{
-                level = new Level(new Goal(500,200,150,50, 0.2f), new Projectile(0,0,0),200,200);
-                gs = new Gamescreen(level, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+                currentLevel++;
+                gs = new Gamescreen(level[currentLevel], GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 stepTimer.start();
             }
             ws = null;
