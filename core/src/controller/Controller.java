@@ -162,7 +162,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         batch.setProjectionMatrix(camera.combined);
         if(ts != null) ts.render(batch);
         else if(ls != null){
-            ls.render(batch);
+            ls.render(batch, level[currentLevel]);
             currentLevel = ls.getSelectedLevel();
         }
         else if(gs != null){
@@ -171,7 +171,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                 gs.dispose();
                 stepTimer.stop();
                 level[currentLevel].reset();
-                beatenLevel++;
+                if(currentLevel == beatenLevel)beatenLevel++;
                 gs = null;
                 ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, true, currentLevel);
             }
@@ -206,7 +206,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         if(ts != null){
             ts.dispose();
             ts = null;
-            ls = new Levelscreen(beatenLevel, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
+            ls = new Levelscreen(beatenLevel, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
         }
         else if(ls != null){
             if(x < Gdx.graphics.getWidth() * 0.15){
@@ -230,7 +230,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         }
         else if(ws != null){
             if(x < Gdx.graphics.getWidth() * 0.33){
-                ls = new Levelscreen(beatenLevel, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
+                ls = new Levelscreen(beatenLevel, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 ws = null;
             }
             else if(x < Gdx.graphics.getWidth() * 0.66){

@@ -17,6 +17,8 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Timer;
 import model.Goal;
 import model.Level;
@@ -38,8 +40,14 @@ public class Levelscreen{
     int levelAmount;
     float GAME_WORLD_WIDTH;
     float GAME_WORLD_HEIGHT;
+    ShapeRenderer shapeRenderer;
+    Sprite clicktostart;
+    boolean movementStart;
+    float clicktostartX;
+    float clicktostartY;
     
-    public Levelscreen(int levelAmount, float width, float height){
+    
+    public Levelscreen(int levelAmount, float width, float height, Matrix4 matrix){
         GAME_WORLD_WIDTH = width;
         GAME_WORLD_HEIGHT = height;
         levelPreview = new Sprite[levelAmount];
@@ -51,6 +59,9 @@ public class Levelscreen{
         buttonLeft.setX(10);
         selectedLevel = 0;
         this.levelAmount = levelAmount;
+        shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setProjectionMatrix(matrix);
+        
         
         
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
@@ -60,6 +71,10 @@ public class Levelscreen{
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
         
         font.setColor(Color.BLACK);
+        
+        movementStart = true;
+        clicktostartX = GAME_WORLD_WIDTH / 2 - getTextWidth("click to start ...") / 2;
+        clicktostartY = GAME_WORLD_HEIGHT / 2;
         
         t = new Timer();
         
@@ -80,11 +95,19 @@ public class Levelscreen{
                     buttonRight.setX(buttonRight.getX() + 2);
                     buttonLeft.setX(buttonLeft.getX() - 2);
                 }
+                if(clicktostartY < GAME_WORLD_HEIGHT * 0.4)
+                    movementStart = true;
+                else if(clicktostartY > GAME_WORLD_HEIGHT * 0.5)
+                    movementStart = false;
+                if(movementStart)
+                    clicktostartY = clicktostartY + 3;
+                else
+                    clicktostartY = clicktostartY - 3;
             }
-        },0 , 0.045f);
+        },0 , 0.035f);
     }
     
-    public void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch, Level level) {
         
         if(selectedLevel > 0){
             buttonLeft.draw(batch);
@@ -93,11 +116,13 @@ public class Levelscreen{
             buttonRight.draw(batch);
         }
         
-        font.getData().setScale(1);
-        font.draw(batch, "" + selectedLevel, GAME_WORLD_WIDTH / 2, GAME_WORLD_HEIGHT / 2);
-        font.getData().setScale(6);
-        font.draw(batch,"LEVEL: "+ selectedLevel, GAME_WORLD_WIDTH / 2 - getTextWidth("LEVEL: "+ selectedLevel) / 2, GAME_WORLD_HEIGHT * 0.95f);
         
+        font.getData().setScale(6);
+        font.draw(batch,"LEVEL: "+ (selectedLevel + 1), GAME_WORLD_WIDTH / 2 - getTextWidth("LEVEL: "+ selectedLevel) / 2, GAME_WORLD_HEIGHT * 0.95f);
+        
+        font.getData().setScale(2);
+        clicktostartX = GAME_WORLD_WIDTH / 2 - getTextWidth("click to start ...") / 2;
+        font.draw(batch, "click to start ...", clicktostartX,  clicktostartY);
        
     }
     
