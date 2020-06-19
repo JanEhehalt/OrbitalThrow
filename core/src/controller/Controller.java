@@ -46,7 +46,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     boolean isColliding;
     Level[] level;
     int currentLevel;
-    int beatenLevel;
+    int beatenLevel = 9;
     
 
     OrthographicCamera camera;
@@ -85,6 +85,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         level[7] = new Level(new Goal(1000,600,450,100, 0.2f), new Projectile(0,0,0),200,200);
         level[8] = new Level(new Goal(760,460,450,100, 0.2f), new Projectile(0,0,0),200,200);
         level[9] = new Level(new Goal(1000,580,350,100, 0.2f), new Projectile(0,0,0),200,200);
+        level[9].addRectangle(400, 400, 50,200);
 
         stepTimer = new Timer();
         stepTimer.scheduleTask(new Timer.Task() {
@@ -119,18 +120,20 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                                 }
                             }
                         }
-                        for(Rectangle rect : gs.getObjectRects()){
-                            if(Intersector.overlaps(gs.getProjectileCirc(), rect)) {
+                        if(gs.getObjectRects() != null) {
+                            for (Rectangle rect : gs.getObjectRects()) {
+                                if (Intersector.overlaps(gs.getProjectileCirc(), rect)) {
 
-                                collision = true;
-                                if (!isColliding) {
-                                    if (rect.getHeight() == 1) {
-                                        level[currentLevel].horizontalCollision();
-                                    } else if (rect.getWidth() == 1) {
-                                        level[currentLevel].verticalCollision();
+                                    collision = true;
+                                    if (!isColliding) {
+                                        if (rect.getHeight() == 1) {
+                                            level[currentLevel].horizontalCollision();
+                                        } else if (rect.getWidth() == 1) {
+                                            level[currentLevel].verticalCollision();
+                                        }
+                                        isColliding = true;
+                                        break;
                                     }
-                                    isColliding = true;
-                                    break;
                                 }
                             }
                         }
