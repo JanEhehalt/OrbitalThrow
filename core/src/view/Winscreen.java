@@ -28,7 +28,6 @@ public class Winscreen{
     Sprite level;
     Sprite next;
     
-    Sprite winSprite;
     boolean movement;
 
     float GAME_WORLD_WIDTH;
@@ -50,22 +49,23 @@ public class Winscreen{
         this.lvl = lvl;
         
         if(win){
-            
             FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
             FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
             parameter.size = 21;
             font = generator.generateFont(parameter); // font size 12 pixels
             generator.dispose(); // don't forget to dispose to avoid memory leaks!
         
-        font.setColor(Color.BLACK);
+            font.setColor(Color.BLACK);
             
             movementWin = true;
-            winSprite = new Sprite(new Texture(Gdx.files.internal("win.png")));
-            winSprite.setX(GAME_WORLD_WIDTH / 2 - winSprite.getWidth() / 2);
-            winSprite.setY(GAME_WORLD_HEIGHT * 0.7f - winSprite.getHeight() / 2);
+            winX = GAME_WORLD_WIDTH /2 - getTextWidth("Level win") / 2;
+            winY = GAME_WORLD_HEIGHT * 0.85f;
         }
+        
         float w = GAME_WORLD_WIDTH;
         float h = GAME_WORLD_HEIGHT;
+        
+        
         
         next = new Sprite(new Texture("skipicon.png"));
         next.setPosition(w * 0.75f - next.getWidth()/2, h*0.35f - next.getHeight()/2);
@@ -79,9 +79,9 @@ public class Winscreen{
             t.scheduleTask(new Timer.Task() {
                 @Override
                 public void run() {
-                    if(winY < GAME_WORLD_HEIGHT * 0.7)
+                    if(winY < GAME_WORLD_HEIGHT * 0.8)
                     movementWin = true;
-                else if(winY > GAME_WORLD_HEIGHT * 0.8)
+                else if(winY > GAME_WORLD_HEIGHT * 0.9)
                     movementWin = false;
                 if(movementWin)
                     winY = winY + 3;
@@ -98,9 +98,9 @@ public class Winscreen{
         level.draw(batch);
         reset.draw(batch);
         if(win){
-            font.getData().setScale(2);
-            winX = GAME_WORLD_WIDTH / 2 - getTextWidth("click to start ...") / 2;
-            font.draw(batch, "click to start ...", winX,  winY);
+            font.getData().setScale(8);
+            winX = GAME_WORLD_WIDTH /2 - getTextWidth("Level win") / 2;
+            font.draw(batch, "Level win", winX,  winY);
        
         }
         

@@ -46,7 +46,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     boolean isColliding;
     Level[] level;
     int currentLevel;
-    int beatenLevel = 9;
+    int beatenLevel = 0;
     
 
     OrthographicCamera camera;
