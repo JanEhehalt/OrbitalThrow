@@ -14,7 +14,9 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import java.awt.Point;
 
 import model.Goal;
 import model.Level;
@@ -48,6 +50,7 @@ public class Gamescreen{
     // 0: Left, 1: LeftTop, 2: CenterLeft, 3: CenterBottom, 4: CenterRight, 5: RightTop, 6: Right, 7: Bottom
     float GAME_WORLD_WIDTH;
     float GAME_WORLD_HEIGHT;
+    Polygon[] objects;
     
     boolean win;
     
@@ -57,6 +60,7 @@ public class Gamescreen{
         pivotX = level.getPivotX();
         pivotY = level.getPivotY();
         g = level.getGoal();
+        objects = level.getPolygons();
         x = g.getxPos();
         y = g.getyPos();
         w = g.getSizeX();
@@ -77,7 +81,7 @@ public class Gamescreen{
         goalRects[5] = new Rectangle(x + th*4 * w   ,y + h - 1f     ,w *th      ,1         );
         goalRects[6] = new Rectangle(x + w-1        ,y              ,1          ,h         );
         goalRects[7] = new Rectangle(x              ,y              ,w          ,1         );
-
+        
         goalRect = new Rectangle(x + w*th, y + h*th, w * th * 3, h * 0.1f);
         projectileCirc = new Circle((float)level.getProjectile().getxPos(), (float)level.getProjectile().getyPos(), level.getProjectile().getRadius());
 
@@ -109,6 +113,8 @@ public class Gamescreen{
             shapeRenderer.rectLine((float) level.getPivotX(), (float) level.getPivotY(), (float) level.getProjectile().getxPos(), (float) level.getProjectile().getyPos(), 3);
         }
         
+        
+        
         shapeRenderer.setColor(Color.BLACK);
         shapeRenderer.rect(x, y,th * w, h);
         shapeRenderer.rect(x + th * w,y, th*3 * w,th * h);
@@ -132,6 +138,16 @@ public class Gamescreen{
 
         shapeRenderer.setColor(Color.GRAY);
         shapeRenderer.circle(pivotX, pivotY, 5);
+        
+        
+        
+        shapeRenderer.end();
+        
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.BLACK);
+        for(Polygon object : objects){
+            shapeRenderer.polygon(objects[0].getVertices());
+        }
         shapeRenderer.end();
 
 
