@@ -12,7 +12,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import model.Goal;
 import model.Level;
+import model.Projectile;
 import view.Gamescreen;
 import view.Levelscreen;
 
@@ -71,7 +73,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
 
         level = new Level[10];
         currentLevel = 0;
-        level[0] = new Level(new Goal(500,200,150,50, 0.2f), new Projectile(0,0,0),200,200);
+        level[0] = new Level(new Goal(500,200,450,100, 0.2f), new Projectile(0,0,0),200,200);
 
         stepTimer = new Timer();
         stepTimer.scheduleTask(new Timer.Task() {
