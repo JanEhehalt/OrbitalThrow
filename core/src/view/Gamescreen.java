@@ -17,6 +17,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import java.awt.Point;
+import java.util.ArrayList;
 
 import model.Goal;
 import model.Level;
@@ -50,7 +51,8 @@ public class Gamescreen{
     // 0: Left, 1: LeftTop, 2: CenterLeft, 3: CenterBottom, 4: CenterRight, 5: RightTop, 6: Right, 7: Bottom
     float GAME_WORLD_WIDTH;
     float GAME_WORLD_HEIGHT;
-    Polygon[] objects;
+    Rectangle[] objects;
+    ArrayList<Rectangle> objectRects;
     
     boolean win;
     
@@ -60,7 +62,7 @@ public class Gamescreen{
         pivotX = level.getPivotX();
         pivotY = level.getPivotY();
         g = level.getGoal();
-        objects = level.getPolygons();
+        objects = level.getObjects();
         x = g.getxPos();
         y = g.getyPos();
         w = g.getSizeX();
@@ -69,6 +71,8 @@ public class Gamescreen{
         p = level.getProjectile();
         
         win = false;
+        
+        objectRects = new ArrayList<Rectangle>();
         
         
         goalRects = new Rectangle[8];
@@ -81,6 +85,13 @@ public class Gamescreen{
         goalRects[5] = new Rectangle(x + th*4 * w   ,y + h - 1f     ,w *th      ,1         );
         goalRects[6] = new Rectangle(x + w-1        ,y              ,1          ,h         );
         goalRects[7] = new Rectangle(x              ,y              ,w          ,1         );
+        
+        for(Rectangle object : objects){
+            objectRects.add(new Rectangle(object.getX(), object.getY(), 1, object.getHeight()));
+            objectRects.add(new Rectangle(object.getX(), object.getY() + object.getHeight() - 1, object.getWidth(), 1));
+            objectRects.add(new Rectangle(object.getX() + object.getWidth()-1, object.getY(), 1, object.getHeight()));
+            objectRects.add(new Rectangle(object.getX(), object.getY(),object.getWidth(), 1));
+        }
         
         goalRect = new Rectangle(x + w*th, y + h*th, w * th * 3, h * 0.1f);
         projectileCirc = new Circle((float)level.getProjectile().getxPos(), (float)level.getProjectile().getyPos(), level.getProjectile().getRadius());
@@ -120,21 +131,33 @@ public class Gamescreen{
         shapeRenderer.rect(x + th * w,y, th*3 * w,th * h);
         shapeRenderer.rect(x + th *w + th*3 * w, y, th * w,h);
         shapeRenderer.circle((float) p.getxPos(), (float) p.getyPos(), p.getRadius());
+        
+        for(Rectangle object : objects){
+            shapeRenderer.rect(object.getX(), object.getY(), object.getWidth(), object.getHeight());
+        }
+        
         shapeRenderer.setColor(Color.RED);
-
 /*
         //goal hitboxes
         for(int i = 0; i < goalRects.length; i++){
             shapeRenderer.rect(goalRects[i].getX(), goalRects[i].getY(), goalRects[i].getWidth(), goalRects[i].getHeight());
         }
+        
         // projectile hitbox
         shapeRenderer.circle(projectileCirc.x, projectileCirc.y, projectileCirc.radius);
+        
         // goal hitbox
         shapeRenderer.setColor(Color.GREEN);
-        shapeRenderer.rect(goalRect.getX(), goalRect.getY(), goalRect.getWidth(), goalRect.getHeight());/*
+        shapeRenderer.rect(goalRect.getX(), goalRect.getY(), goalRect.getWidth(), goalRect.getHeight());
+        
         // full goal size hitbox;
         shapeRenderer.rect(g.getxPos(), g.getyPos(), g.getSizeX(), g.getSizeY());
         */
+        // object hitboxes
+        for(Rectangle object: objectRects){
+            shapeRenderer.rect(object.getX(), object.getY(), object.getWidth(), object.getHeight());
+        }
+        
 
         shapeRenderer.setColor(Color.GRAY);
         shapeRenderer.circle(pivotX, pivotY, 5);
@@ -143,12 +166,7 @@ public class Gamescreen{
         
         shapeRenderer.end();
         
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.BLACK);
-        for(Polygon object : objects){
-            shapeRenderer.polygon(objects[0].getVertices());
-        }
-        shapeRenderer.end();
+        
 
 
     }
@@ -172,6 +190,9 @@ public class Gamescreen{
     }
     public Circle getProjectileCirc(){
         return projectileCirc;
+    }
+    public ArrayList<Rectangle> getObjectRects(){
+        return objectRects;
     }
 
     

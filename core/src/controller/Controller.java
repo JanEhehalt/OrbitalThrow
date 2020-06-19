@@ -120,6 +120,21 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                                 }
                             }
                         }
+                        for(Rectangle rect : gs.getObjectRects()){
+                            if(Intersector.overlaps(gs.getProjectileCirc(), rect)) {
+
+                                collision = true;
+                                if (!isColliding) {
+                                    if (rect.getHeight() == 1) {
+                                        level[currentLevel].horizontalCollision();
+                                    } else if (rect.getWidth() == 1) {
+                                        level[currentLevel].verticalCollision();
+                                    }
+                                    isColliding = true;
+                                    break;
+                                }
+                            }
+                        }
 
                         if(!collision){
                             isColliding = false;

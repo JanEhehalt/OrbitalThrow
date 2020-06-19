@@ -6,6 +6,7 @@
 package model;
 
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.throwgame.main.ThrowMath;
 
@@ -31,7 +32,7 @@ public class Level {
     private int traceIndex;
     public boolean[] isTraceInitialised;
     public Vector2[] traces;
-    Polygon[] polygons;
+    Rectangle[] objects;
 
     public Level(Goal goal, Projectile projectile, int xPosPivot, int yPosPivot){
         this.goal = goal;
@@ -46,8 +47,9 @@ public class Level {
         this.angle = 0;
         this.angleSpeed = 0;
         
-        polygons = new Polygon[1];
-        polygons[0] = new Polygon(new float[]{500,500,502,500,602,600,600,600});
+        objects = new Rectangle[2];
+        objects[0] = new Rectangle(500,500,200,50);
+        objects[1] = new Rectangle(800,500,50,200);
 
         traceIndex = 0;
         isTraceInitialised = new boolean[50];
@@ -149,7 +151,7 @@ public class Level {
     public boolean released(){
         return isReleased;
     }
-    public Polygon[] getPolygons(){
-        return polygons;
+    public Rectangle[] getObjects(){
+        return objects;
     }
 }
