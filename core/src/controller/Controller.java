@@ -41,7 +41,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     int levelAmount;
     SpriteBatch batch;
     Timer stepTimer;
-    Level level;
+    Level[] level;
     int currentLevel;
 
     OrthographicCamera camera;
@@ -69,29 +69,33 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         viewport.apply();
         camera.position.set(GAME_WORLD_WIDTH/2, GAME_WORLD_HEIGHT/2, 0);
 
+        level = new Level[10];
+        currentLevel = 0;
+        level[0] = new Level(new Goal(500,200,150,50, 0.2f), new Projectile(0,0,0),200,200);
+
         stepTimer = new Timer();
         stepTimer.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
                 if(gs != null){
-                    if(level.getProjectile().getxPos() > Gdx.graphics.getWidth() || level.getProjectile().getxPos() < 0 || level.getProjectile().getyPos() < 0){
-                        gs.step(level);
-                        level.reset();
+                    if(level[currentLevel].getProjectile().getxPos() > Gdx.graphics.getWidth() || level[currentLevel].getProjectile().getxPos() < 0 || level[currentLevel].getProjectile().getyPos() < 0){
+                        gs.step(level[currentLevel]);
+                        level[currentLevel].reset();
                         gs.dispose();
                         stepTimer.stop();
                         gs = null;
                         ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, false);
                     }
                     else{
-                        level.step();
-                        gs.step(level);
+                        level[currentLevel].step();
+                        gs.step(level[currentLevel]);
                         for(Rectangle rect : gs.getGoalRects()){
                             if(Intersector.overlaps(gs.getProjectileCirc(), rect)){
                                 if(rect.getHeight() == 1){
-                                    level.horizontalCollision();
+                                    level[currentLevel].horizontalCollision();
                                 }
                                 else if(rect.getWidth() == 1){
-                                    level.verticalCollision();
+                                    level[currentLevel].verticalCollision();
                                 }
                                 break;
                             }
@@ -123,7 +127,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             currentLevel = ls.getSelectedLevel();
         }
         else if(gs != null){
-            gs.render(batch, level);
+            gs.render(batch, level[currentLevel]);
             if(gs.getWin()){
                 gs.dispose();
                 stepTimer.stop();
@@ -179,8 +183,8 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             }
         }
         else if(gs != null){
-            if(!level.released()){
-                level.projectileReleased();
+            if(!level[currentLevel].released()){
+                level[currentLevel].projectileReleased();
             }
         }
         else if(ws != null){
