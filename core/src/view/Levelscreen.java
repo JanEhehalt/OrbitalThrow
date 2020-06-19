@@ -8,12 +8,15 @@ package view;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.Timer;
 import model.Goal;
 import model.Level;
@@ -49,7 +52,13 @@ public class Levelscreen{
         selectedLevel = 0;
         this.levelAmount = levelAmount;
         
-        font = new BitmapFont();
+        
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 21;
+        font = generator.generateFont(parameter); // font size 12 pixels
+        generator.dispose(); // don't forget to dispose to avoid memory leaks!
+        
         font.setColor(Color.BLACK);
         
         t = new Timer();
@@ -83,7 +92,11 @@ public class Levelscreen{
         if(selectedLevel < levelAmount){
             buttonRight.draw(batch);
         }
+        
+        font.getData().setScale(1);
         font.draw(batch, "" + selectedLevel, GAME_WORLD_WIDTH / 2, GAME_WORLD_HEIGHT / 2);
+        font.getData().setScale(6);
+        font.draw(batch,"LEVEL: "+ selectedLevel, GAME_WORLD_WIDTH / 2 - getTextWidth("LEVEL: "+ selectedLevel) / 2, GAME_WORLD_HEIGHT * 0.95f);
         
        
     }
@@ -97,6 +110,12 @@ public class Levelscreen{
     }
     public int getSelectedLevel(){
         return selectedLevel;
+    }
+    public float getTextWidth(String text){
+        GlyphLayout glyphLayout = new GlyphLayout();
+        String item = text;
+        glyphLayout.setText(font,item);
+        return glyphLayout.width;
     }
 
 }
