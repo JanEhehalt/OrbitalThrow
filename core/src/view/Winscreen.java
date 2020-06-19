@@ -6,10 +6,13 @@
 package view;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.Timer;
 
 /**
@@ -32,6 +35,10 @@ public class Winscreen{
     float GAME_WORLD_HEIGHT;
     
     boolean win;
+    
+    float winX;
+    float winY;
+    boolean movementWin;
 
     int lvl;
     
@@ -43,7 +50,16 @@ public class Winscreen{
         this.lvl = lvl;
         
         if(win){
-            movement = true;
+            
+            FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
+            FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+            parameter.size = 21;
+            font = generator.generateFont(parameter); // font size 12 pixels
+            generator.dispose(); // don't forget to dispose to avoid memory leaks!
+        
+        font.setColor(Color.BLACK);
+            
+            movementWin = true;
             winSprite = new Sprite(new Texture(Gdx.files.internal("win.png")));
             winSprite.setX(GAME_WORLD_WIDTH / 2 - winSprite.getWidth() / 2);
             winSprite.setY(GAME_WORLD_HEIGHT * 0.7f - winSprite.getHeight() / 2);
@@ -63,16 +79,14 @@ public class Winscreen{
             t.scheduleTask(new Timer.Task() {
                 @Override
                 public void run() {
-                    if(winSprite.getY() < GAME_WORLD_HEIGHT*0.7){
-                        movement = true;}
-                    if(winSprite.getY() > GAME_WORLD_HEIGHT * 0.8){
-                        movement = false;}
-                    if(movement){
-                        winSprite.setY(winSprite.getY() + 3);
-                    }
-                    else{
-                        winSprite.setY(winSprite.getY() - 3);
-                    }
+                    if(winY < GAME_WORLD_HEIGHT * 0.7)
+                    movementWin = true;
+                else if(winY > GAME_WORLD_HEIGHT * 0.8)
+                    movementWin = false;
+                if(movementWin)
+                    winY = winY + 3;
+                else
+                    winY = winY - 3;
                 }
             },0 , 0.035f);
         }
@@ -83,7 +97,12 @@ public class Winscreen{
         if(lvl < 9 && win)next.draw(batch);
         level.draw(batch);
         reset.draw(batch);
-        if(win)winSprite.draw(batch);
+        if(win){
+            font.getData().setScale(2);
+            winX = GAME_WORLD_WIDTH / 2 - getTextWidth("click to start ...") / 2;
+            font.draw(batch, "click to start ...", winX,  winY);
+       
+        }
         
     }
     public void dispose() {
@@ -91,5 +110,11 @@ public class Winscreen{
     }
     public boolean getWin(){
         return win;
+    }
+    public float getTextWidth(String text){
+        GlyphLayout glyphLayout = new GlyphLayout();
+        String item = text;
+        glyphLayout.setText(font,item);
+        return glyphLayout.width;
     }
 }

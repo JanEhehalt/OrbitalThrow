@@ -62,7 +62,6 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         gs = null;
         ws = null;
         levelAmount = 9;
-        currentLevel = -1;
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
 
