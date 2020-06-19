@@ -80,7 +80,7 @@ public class Winscreen{
     }
     
     public void render(SpriteBatch batch) {
-        if(lvl < 9)next.draw(batch);
+        if(lvl < 9 && win)next.draw(batch);
         level.draw(batch);
         reset.draw(batch);
         if(win)winSprite.draw(batch);
@@ -88,5 +88,8 @@ public class Winscreen{
     }
     public void dispose() {
         t.clear();
+    }
+    public boolean getWin(){
+        return win;
     }
 }
