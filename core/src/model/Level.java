@@ -46,6 +46,8 @@ public class Level {
         this.yPosPivot = yPosPivot;
         this.angle = 0;
         this.angleSpeed = 0;
+
+        objects = new ArrayList<>();
         
         traceIndex = 0;
         isTraceInitialised = new boolean[50];
