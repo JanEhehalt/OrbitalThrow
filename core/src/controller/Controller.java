@@ -59,7 +59,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         ls = null;
         gs = null;
         ws = null;
-        levelAmount = 10;
+        levelAmount = 9;
         currentLevel = -1;
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
@@ -96,7 +96,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                         gs.dispose();
                         stepTimer.stop();
                         gs = null;
-                        ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, false);
+                        ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, false, currentLevel);
                     }
                     else{
                         level[currentLevel].step();
@@ -153,8 +153,9 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             if(gs.getWin()){
                 gs.dispose();
                 stepTimer.stop();
+                level[currentLevel].reset();
                 gs = null;
-                ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, true);
+                ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, true, currentLevel);
             }
         }
         else if(ws != null) ws.render(batch);
@@ -212,17 +213,20 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         else if(ws != null){
             if(x < Gdx.graphics.getWidth() * 0.33){
                 ls = new Levelscreen(levelAmount, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
+                ws = null;
             }
             else if(x < Gdx.graphics.getWidth() * 0.66){
                 gs = new Gamescreen(level[currentLevel], GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 stepTimer.start();
+                ws = null;
             }
-            else{
+            else if(currentLevel < levelAmount){
                 currentLevel++;
                 gs = new Gamescreen(level[currentLevel], GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 stepTimer.start();
+                ws = null;
             }
-            ws = null;
+
         }
         return true;
     }

@@ -32,12 +32,15 @@ public class Winscreen{
     float GAME_WORLD_HEIGHT;
     
     boolean win;
+
+    int lvl;
     
-    public Winscreen(float width, float height, boolean win){
+    public Winscreen(float width, float height, boolean win, int lvl){
         t = new Timer();
         GAME_WORLD_WIDTH = width;
         GAME_WORLD_HEIGHT = height;
         this.win = win;
+        this.lvl = lvl;
         
         if(win){
             movement = true;
@@ -77,7 +80,7 @@ public class Winscreen{
     }
     
     public void render(SpriteBatch batch) {
-        next.draw(batch);
+        if(lvl < 9)next.draw(batch);
         level.draw(batch);
         reset.draw(batch);
         if(win)winSprite.draw(batch);

@@ -116,7 +116,7 @@ public class Gamescreen{
         shapeRenderer.circle((float) p.getxPos(), (float) p.getyPos(), p.getRadius());
         shapeRenderer.setColor(Color.RED);
 
-
+/*
         //goal hitboxes
         for(int i = 0; i < goalRects.length; i++){
             shapeRenderer.rect(goalRects[i].getX(), goalRects[i].getY(), goalRects[i].getWidth(), goalRects[i].getHeight());
