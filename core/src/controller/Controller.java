@@ -81,7 +81,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             @Override
             public void run() {
                 if(gs != null){
-                    if(level[currentLevel].getProjectile().getxPos() > Gdx.graphics.getWidth() || level[currentLevel].getProjectile().getxPos() < 0 || level[currentLevel].getProjectile().getyPos() < 0){
+                    if(level[currentLevel].getProjectile().getxPos() > GAME_WORLD_WIDTH || level[currentLevel].getProjectile().getxPos() < 0 || level[currentLevel].getProjectile().getyPos() < 0){
                         gs.step(level[currentLevel]);
                         level[currentLevel].reset();
                         gs.dispose();
