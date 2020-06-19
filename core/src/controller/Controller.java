@@ -75,6 +75,15 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         level = new Level[10];
         currentLevel = 0;
         level[0] = new Level(new Goal(500,200,450,100, 0.2f), new Projectile(0,0,0),200,200);
+        level[1] = new Level(new Goal(700,200,450,100, 0.2f), new Projectile(0,0,0),200,200);
+        level[2] = new Level(new Goal(560,400,450,100, 0.2f), new Projectile(0,0,0),200,200);
+        level[3] = new Level(new Goal(900,150,450,100, 0.2f), new Projectile(0,0,0),200,200);
+        level[4] = new Level(new Goal(500,600,450,100, 0.2f), new Projectile(0,0,0),200,200);
+        level[5] = new Level(new Goal(400,220,300,100, 0.2f), new Projectile(0,0,0),200,200);
+        level[6] = new Level(new Goal(600,700,450,100, 0.2f), new Projectile(0,0,0),200,200);
+        level[7] = new Level(new Goal(1000,600,450,100, 0.2f), new Projectile(0,0,0),200,200);
+        level[8] = new Level(new Goal(760,460,450,100, 0.2f), new Projectile(0,0,0),200,200);
+        level[9] = new Level(new Goal(1000,580,350,100, 0.2f), new Projectile(0,0,0),200,200);
 
         stepTimer = new Timer();
         stepTimer.scheduleTask(new Timer.Task() {
