@@ -5,6 +5,7 @@
  */
 package model;
 
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.throwgame.main.ThrowMath;
 
@@ -70,6 +71,11 @@ public class Level {
     public void verticalCollision(){
         this.projectile.setvX(-this.projectile.getvX() * 0.6);
         this.projectile.setvY(this.projectile.getvY() * 0.9);
+    }
+
+    public void angledCollision(double angle){
+        double rad = Math.toRadians(angle);
+
     }
 
     public void step(){
