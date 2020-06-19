@@ -32,7 +32,7 @@ public class Level {
     private int traceIndex;
     public boolean[] isTraceInitialised;
     public Vector2[] traces;
-    Rectangle[] objects;
+    ArrayList<Rectangle> objects;
 
     public Level(Goal goal, Projectile projectile, int xPosPivot, int yPosPivot){
         this.goal = goal;
@@ -47,10 +47,6 @@ public class Level {
         this.angle = 0;
         this.angleSpeed = 0;
         
-        objects = new Rectangle[2];
-        objects[0] = new Rectangle(500,500,200,50);
-        objects[1] = new Rectangle(800,500,50,200);
-
         traceIndex = 0;
         isTraceInitialised = new boolean[50];
         traces = new Vector2[isTraceInitialised.length];
@@ -151,7 +147,10 @@ public class Level {
     public boolean released(){
         return isReleased;
     }
-    public Rectangle[] getObjects(){
+    public ArrayList<Rectangle> getObjects(){
         return objects;
+    }
+    public void addRectangle(int x, int y, int width, int height){
+        objects.add(new Rectangle(x,y,width,height));
     }
 }

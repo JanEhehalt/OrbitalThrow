@@ -51,7 +51,7 @@ public class Gamescreen{
     // 0: Left, 1: LeftTop, 2: CenterLeft, 3: CenterBottom, 4: CenterRight, 5: RightTop, 6: Right, 7: Bottom
     float GAME_WORLD_WIDTH;
     float GAME_WORLD_HEIGHT;
-    Rectangle[] objects;
+    ArrayList<Rectangle> objects;
     ArrayList<Rectangle> objectRects;
     
     boolean win;
@@ -71,8 +71,6 @@ public class Gamescreen{
         p = level.getProjectile();
         
         win = false;
-        
-        objectRects = new ArrayList<Rectangle>();
         
         
         goalRects = new Rectangle[8];
