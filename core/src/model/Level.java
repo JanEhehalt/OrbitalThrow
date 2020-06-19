@@ -63,11 +63,11 @@ public class Level {
     }
 
     public void horizontalCollision(){
-        this.projectile.setvY(-this.projectile.getvY);
+        this.projectile.setvY(-this.projectile.getvY());
     }
 
     public void verticalCollision(){
-        this.projectile.setvX(-this.projectile.getvX);
+        this.projectile.setvX(-this.projectile.getvX());
     }
 
     public void step(){

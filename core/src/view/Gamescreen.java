@@ -151,5 +151,12 @@ public class Gamescreen{
         return win;
     }
 
+    public Rectangle[] getGoalRects(){
+        return goalRects;
+    }
+    public Circle getProjectileCirc(){
+        return projectileCirc;
+    }
+
     
 }

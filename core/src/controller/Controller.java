@@ -19,6 +19,9 @@ import model.Level;
 import model.Projectile;
 import view.Gamescreen;
 import view.Levelscreen;
+
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -32,11 +35,11 @@ import view.Winscreen;
  * @author Jan
  */
 public class Controller extends ApplicationAdapter implements InputProcessor{
-    
+
     final float GAME_WORLD_WIDTH = 1600;
     final float GAME_WORLD_HEIGHT = 900;
-    
-    
+
+
     Titlescreen ts;
     Levelscreen ls;
     Gamescreen gs;
@@ -45,15 +48,15 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     SpriteBatch batch;
     Timer stepTimer;
     Level level;
-    
+
     OrthographicCamera camera;
     Viewport viewport;
-    
-    
-    
+
+
+
     @Override
     public void create(){
-        
+
         ts = new Titlescreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
         ls = null;
         gs = null;
@@ -61,10 +64,10 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         levelAmount = 10;
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
-        
-        
+
+
         float aspectRatio = (float)Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth();
-        
+
         camera = new OrthographicCamera();
         viewport = new ExtendViewport(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT * aspectRatio, camera);
         viewport.apply();
@@ -85,25 +88,34 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                         gs = null;
                         ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, false);
                     }
-
                     else{
-                        gs.step(level);
                         level.step();
+                        gs.step(level);
+                        for(Rectangle rect : gs.getGoalRects()){
+                            if(Intersector.overlaps(gs.getProjectileCirc(), rect)){
+                                if(rect.getHeight() == 1){
+                                    level.horizontalCollision();
+                                }
+                                else if(rect.getWidth() == 1){
+                                    level.verticalCollision();
+                                }
+                                break;
+                            }
+                        }
 
-                        for(
                     }
                 }
             }
         }, 0, 0.01f);
         stepTimer.stop();
     }
-    
+
     @Override
     public void resize(int width, int height){
         viewport.update(width, height);
         camera.position.set(GAME_WORLD_WIDTH/2, GAME_WORLD_HEIGHT/2, 0);
     }
-    
+
     @Override
     public void render(){
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
@@ -113,7 +125,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         batch.setProjectionMatrix(camera.combined);
         if(ts != null) ts.render(batch);
         else if(ls != null) ls.render(batch);
-        else if(gs != null){ 
+        else if(gs != null){
             gs.render(batch, level);
             if(gs.getWin()){
                 gs.dispose();
@@ -125,12 +137,12 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         else if(ws != null) ws.render(batch);
         batch.end();
     }
-    
+
     @Override
     public void dispose () {
 
     }
-    
+
     @Override
     public boolean keyDown(int keycode) {
         camera.translate(5f, 5f);
