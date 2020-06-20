@@ -8,6 +8,7 @@ package controller;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -46,7 +47,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     boolean isColliding;
     Level[] level;
     int currentLevel;
-    int beatenLevel = 0;
+    int beatenLevel = 9;
     
 
     OrthographicCamera camera;
@@ -56,6 +57,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
 
     @Override
     public void create(){
+        
 
         ts = new Titlescreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
         ls = null;
@@ -164,8 +166,8 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         batch.setProjectionMatrix(camera.combined);
         if(ts != null) ts.render(batch);
         else if(ls != null){
-            ls.render(batch, level[currentLevel]);
             currentLevel = ls.getSelectedLevel();
+            ls.render(batch, level[currentLevel]);
         }
         else if(gs != null){
             gs.render(batch, level[currentLevel]);
@@ -173,7 +175,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                 gs.dispose();
                 stepTimer.stop();
                 level[currentLevel].reset();
-                if(currentLevel == beatenLevel)beatenLevel++;
+                if(currentLevel == beatenLevel && currentLevel < levelAmount)beatenLevel++;
                 gs = null;
                 ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, true, currentLevel);
             }
@@ -215,7 +217,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                 if(ls.getSelectedLevel() > 0)ls.setSelectedLevel(ls.getSelectedLevel()-1);
             }
             else if(x > Gdx.graphics.getWidth() * 0.85){
-                if(ls.getSelectedLevel() < beatenLevel)
+                if(ls.getSelectedLevel() < beatenLevel && beatenLevel <= levelAmount)
                 ls.setSelectedLevel(ls.getSelectedLevel()+1);
             }
             else{

@@ -58,7 +58,7 @@ public class Winscreen{
             font.setColor(Color.BLACK);
             
             movementWin = true;
-            winX = GAME_WORLD_WIDTH /2 - getTextWidth("Level win") / 2;
+            winX = GAME_WORLD_WIDTH /2 - getTextWidth("Level won") / 2;
             winY = GAME_WORLD_HEIGHT * 0.85f;
         }
         
@@ -99,8 +99,8 @@ public class Winscreen{
         reset.draw(batch);
         if(win){
             font.getData().setScale(8);
-            winX = GAME_WORLD_WIDTH /2 - getTextWidth("Level win") / 2;
-            font.draw(batch, "Level win", winX,  winY);
+            winX = GAME_WORLD_WIDTH /2 - getTextWidth("Level won") / 2;
+            font.draw(batch, "Level won", winX,  winY);
        
         }
         
