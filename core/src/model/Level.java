@@ -56,6 +56,8 @@ public class Level {
             traces[i] = new Vector2(-10, -10);
         }
     }
+    public Level(){
+    }
 
     public void projectileReleased(){
         this.isReleased = true;

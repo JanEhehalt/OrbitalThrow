@@ -164,11 +164,13 @@ public class Gamescreen{
         shapeRenderer.rect(g.getxPos(), g.getyPos(), g.getSizeX(), g.getSizeY());
         */
         // object hitboxes
+        /*
         if(objects != null) {
             for (Rectangle object : objectRects) {
                 shapeRenderer.rect(object.getX(), object.getY(), object.getWidth(), object.getHeight());
             }
         }
+        */
         
 
         shapeRenderer.setColor(Color.GRAY);

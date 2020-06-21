@@ -8,24 +8,23 @@ package controller;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
-import model.Goal;
-import model.Level;
-import model.Projectile;
-import view.Gamescreen;
-import view.Levelscreen;
-
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import java.io.File;
+import java.util.ArrayList;
+
+import model.Level;
+import view.Gamescreen;
+import view.Levelscreen;
 import view.Leveleditor;
 import view.Titlescreen;
 import view.Winscreen;
@@ -39,6 +38,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     final float GAME_WORLD_WIDTH = 1600;
     final float GAME_WORLD_HEIGHT = 900;
 
+    File filesDir;
 
     Titlescreen ts;
     Levelscreen ls;
@@ -49,7 +49,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     SpriteBatch batch;
     Timer stepTimer;
     boolean isColliding;
-    Level[] level;
+    ArrayList<Level> level;
     int currentLevel;
     int beatenLevel = 9;
     
@@ -80,9 +80,16 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         camera.position.set(GAME_WORLD_WIDTH/2, GAME_WORLD_HEIGHT/2, 0);
 
         isColliding = false;
-        level = new Level[10];
+        level = new ArrayList<>();
         currentLevel = 0;
-        level[0] = new Level(new Goal(500,200,450,100, 0.2f), new Projectile(0,0,0),200,200);
+        Json json = new Json();
+
+        /*
+        Level lol = new Level(new Goal(1000,580,350,100, 0.2f), new Projectile(0,0,0),200,200);
+        lol.addRectangle(400, 400, 50,200);
+        FileHandle file = Gdx.files.local("levels/level9.json");
+        file.writeString(json.toJson(lol), false);
+        /*
         level[1] = new Level(new Goal(700,200,450,100, 0.2f), new Projectile(0,0,0),200,200);
         level[2] = new Level(new Goal(560,400,450,100, 0.2f), new Projectile(0,0,0),200,200);
         level[3] = new Level(new Goal(900,150,450,100, 0.2f), new Projectile(0,0,0),200,200);
@@ -93,23 +100,38 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         level[8] = new Level(new Goal(760,460,450,100, 0.2f), new Projectile(0,0,0),200,200);
         level[9] = new Level(new Goal(1000,580,350,100, 0.2f), new Projectile(0,0,0),200,200);
         level[9].addRectangle(400, 400, 50,200);
+         */
+
+
+        FileHandle levelJson;
+        for(int i = 0; i < 10; i++){
+            levelJson = Gdx.files.local("levels/level" + i + ".json");
+            //levelJson = Gdx.files.local("levels/level0.json");
+            if(!levelJson.exists()){
+                break;
+            }
+            else{
+                Level tempLevel = json.fromJson(Level.class, levelJson.readString());
+                level.add(tempLevel);
+            }
+        }
 
         stepTimer = new Timer();
         stepTimer.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
                 if(gs != null){
-                    if(level[currentLevel].getProjectile().getxPos() > GAME_WORLD_WIDTH || level[currentLevel].getProjectile().getxPos() < 0 || level[currentLevel].getProjectile().getyPos() < 0){
-                        gs.step(level[currentLevel]);
-                        level[currentLevel].reset();
+                    if(level.get(currentLevel).getProjectile().getxPos() > GAME_WORLD_WIDTH || level.get(currentLevel).getProjectile().getxPos() < 0 || level.get(currentLevel).getProjectile().getyPos() < 0){
+                        gs.step(level.get(currentLevel));
+                        level.get(currentLevel).reset();
                         gs.dispose();
                         stepTimer.stop();
                         gs = null;
                         ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, false, currentLevel);
                     }
                     else{
-                        level[currentLevel].step();
-                        gs.step(level[currentLevel]);
+                        level.get(currentLevel).step();
+                        gs.step(level.get(currentLevel));
 
                         boolean collision = false;
                         for(Rectangle rect : gs.getGoalRects()){
@@ -118,9 +140,9 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                                 collision = true;
                                 if (!isColliding) {
                                     if (rect.getHeight() == 1) {
-                                        level[currentLevel].horizontalCollision();
+                                        level.get(currentLevel).horizontalCollision();
                                     } else if (rect.getWidth() == 1) {
-                                        level[currentLevel].verticalCollision();
+                                        level.get(currentLevel).verticalCollision();
                                     }
                                     isColliding = true;
                                     break;
@@ -134,9 +156,9 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                                     collision = true;
                                     if (!isColliding) {
                                         if (rect.getHeight() == 1) {
-                                            level[currentLevel].horizontalCollision();
+                                            level.get(currentLevel).horizontalCollision();
                                         } else if (rect.getWidth() == 1) {
-                                            level[currentLevel].verticalCollision();
+                                            level.get(currentLevel).verticalCollision();
                                         }
                                         isColliding = true;
                                         break;
@@ -172,14 +194,14 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         if(ts != null) ts.render(batch);
         else if(ls != null){
             currentLevel = ls.getSelectedLevel();
-            ls.render(batch, level[currentLevel]);
+            ls.render(batch, level.get(currentLevel));
         }
         else if(gs != null){
-            gs.render(batch, level[currentLevel]);
+            gs.render(batch, level.get(currentLevel));
             if(gs.getWin()){
                 gs.dispose();
                 stepTimer.stop();
-                level[currentLevel].reset();
+                level.get(currentLevel).reset();
                 if(currentLevel == beatenLevel && currentLevel < levelAmount)beatenLevel++;
                 gs = null;
                 ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, true, currentLevel);
@@ -195,6 +217,10 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     @Override
     public void dispose () {
 
+    }
+
+    public void initContext(File context){
+        this.filesDir = context;
     }
 
     @Override
@@ -238,13 +264,13 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             else{
                 ls.dispose();
                 ls = null;
-                gs = new Gamescreen(level[currentLevel], GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+                gs = new Gamescreen(level.get(currentLevel), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 stepTimer.start();
             }
         }
         else if(gs != null){
-            if(!level[currentLevel].released()){
-                level[currentLevel].projectileReleased();
+            if(!level.get(currentLevel).released()){
+                level.get(currentLevel).projectileReleased();
             }
         }
         else if(ws != null){
@@ -253,13 +279,13 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                 ws = null;
             }
             else if(x < Gdx.graphics.getWidth() * 0.66){
-                gs = new Gamescreen(level[currentLevel], GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+                gs = new Gamescreen(level.get(currentLevel), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 stepTimer.start();
                 ws = null;
             }
             else if(currentLevel < levelAmount && ws.getWin()){
                 currentLevel++;
-                gs = new Gamescreen(level[currentLevel], GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+                gs = new Gamescreen(level.get(currentLevel), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 stepTimer.start();
                 ws = null;
             }
