@@ -7,6 +7,7 @@ package view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -20,6 +21,8 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Json;
+
 import java.awt.Point;
 import java.util.ArrayList;
 import model.Button;
@@ -177,7 +180,9 @@ public class Leveleditor{
                 state = -1;
                 break;
             case 4:
-                
+                Json json = new Json();
+                FileHandle file = Gdx.files.local("levels/level2.json");
+                file.writeString(json.toJson(level), false);
                 break;
         }
     }
