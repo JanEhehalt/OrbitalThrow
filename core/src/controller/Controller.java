@@ -8,6 +8,7 @@ package controller;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -23,7 +24,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import model.Goal;
 import model.Level;
+import model.Projectile;
 import view.Gamescreen;
 import view.Levelscreen;
 import view.Titlescreen;
@@ -80,8 +83,14 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         isColliding = false;
         level = new ArrayList<>();
         currentLevel = 0;
+        Json json = new Json();
+
         /*
-        level[0] = new Level(new Goal(500,200,450,100, 0.2f), new Projectile(0,0,0),200,200);
+        Level lol = new Level(new Goal(1000,200,450,100, 0.2f), new Projectile(0,0,0),200,200);
+        FileHandle file = Gdx.files.local("levels/level0.json");
+        file.writeString(json.toJson(lol), false);
+        */
+        /*
         level[1] = new Level(new Goal(700,200,450,100, 0.2f), new Projectile(0,0,0),200,200);
         level[2] = new Level(new Goal(560,400,450,100, 0.2f), new Projectile(0,0,0),200,200);
         level[3] = new Level(new Goal(900,150,450,100, 0.2f), new Projectile(0,0,0),200,200);
@@ -92,24 +101,19 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         level[8] = new Level(new Goal(760,460,450,100, 0.2f), new Projectile(0,0,0),200,200);
         level[9] = new Level(new Goal(1000,580,350,100, 0.2f), new Projectile(0,0,0),200,200);
         level[9].addRectangle(400, 400, 50,200);
-        */
+         */
 
-        Json json = new Json();
-        File levelJson;
-        for(int i = 0; i < 1000; i++){
-            try{
-                levelJson = new File(filesDir, "level" + i + ".json");
-                if(levelJson == null){
-                    break;
-                }
-                else{
-                    Level tempLevel = json.fromJson(Level.class, new FileInputStream(levelJson));
-                    level.add(tempLevel);
-                }
-            }
-            catch(FileNotFoundException e){
-                e.printStackTrace();
+
+        FileHandle levelJson;
+        for(int i = 0; i < 10; i++){
+            //levelJson = Gdx.files.local("levels/level" + i + ".json");
+            levelJson = Gdx.files.local("levels/level0.json");
+            if(!levelJson.exists()){
                 break;
+            }
+            else{
+                Level tempLevel = json.fromJson(Level.class, levelJson.readString());
+                level.add(tempLevel);
             }
         }
 
@@ -191,7 +195,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         if(ts != null) ts.render(batch);
         else if(ls != null){
             currentLevel = ls.getSelectedLevel();
-            ls.render(batch, level.get(currentLevel);
+            ls.render(batch, level.get(currentLevel));
         }
         else if(gs != null){
             gs.render(batch, level.get(currentLevel));

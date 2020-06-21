@@ -15,6 +15,9 @@ public class Goal {
         this.sizeY = sizeY;
         this.thickness = thickness;
     }
+    public Goal(){
+
+    }
 
     public int getxPos() {
         return xPos;

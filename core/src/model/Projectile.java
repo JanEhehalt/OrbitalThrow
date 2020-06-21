@@ -25,6 +25,10 @@ public class Projectile {
         }
     }
 
+    public Projectile(){
+        type = 0;
+    }
+
     public double getxPos() {
         return xPos;
     }
