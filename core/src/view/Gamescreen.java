@@ -137,6 +137,7 @@ public class Gamescreen{
 
         if(objects != null) {
             for (Rectangle object : objects) {
+
                 shapeRenderer.rect(object.getX(), object.getY(), object.getWidth(), object.getHeight());
             }
         }

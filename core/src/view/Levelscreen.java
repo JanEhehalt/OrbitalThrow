@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Timer;
 import model.Goal;
 import model.Level;
@@ -133,6 +134,10 @@ public class Levelscreen{
         shapeRenderer.rect(previewX + x * 0.7f, previewY + y * 0.7f, (th * w) * 0.7f  ,h * 0.7f);
         shapeRenderer.rect(previewX + (x + th * w) * 0.7f, previewY + y * 0.7f, (th*3 * w) * 0.7f,(th * h)*0.7f);
         shapeRenderer.rect(previewX + (x + th *w + th*3 * w) * 0.7f, previewY + y * 0.7f, (th * w) * 0.7f  ,h * 0.7f);
+
+        for(Rectangle rect : level.getObjects()){
+            shapeRenderer.rect(previewX + rect.getX() * 0.7f, previewY + rect.getY() * 0.7f, rect.getWidth() * 0.7f, rect.getHeight() * 0.7f);
+        }
         
         shapeRenderer.end();
         batch.begin();
