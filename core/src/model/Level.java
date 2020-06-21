@@ -90,7 +90,7 @@ public class Level {
         angleSpeed += 0.0001;
         angle -= angleSpeed;
 
-        System.out.println(Math.toDegrees(angle));
+        //System.out.println(Math.toDegrees(angle));
 
         Vector2 newPosVector = math.pivotGetNewPos(this.angle, this.xPosPivot, this.yPosPivot, RADIUS);
         this.projectile.setxPos(xPosPivot + (int) newPosVector.x);
@@ -155,4 +155,16 @@ public class Level {
     public void addRectangle(int x, int y, int width, int height){
         objects.add(new Rectangle(x,y,width,height));
     }
+    
+    public void setPivot(int x, int y){
+        xPosPivot = x;
+        yPosPivot = y;
+    }
+    public void setGoal(int x, int y){
+        goal.setxPos(x);
+        goal.setyPos(y);
+        goal.setSizeX(300);
+        goal.setSizeY(200);
+    }
+            
 }

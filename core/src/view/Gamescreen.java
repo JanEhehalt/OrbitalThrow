@@ -6,6 +6,7 @@
 package view;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -55,6 +56,9 @@ public class Gamescreen{
     ArrayList<Rectangle> objectRects;
     
     boolean win;
+    
+    float mouseX;
+    float mouseY;
     
     public Gamescreen(Level level, float width, float height, Matrix4 matrix){
         GAME_WORLD_WIDTH = width;
@@ -115,6 +119,8 @@ public class Gamescreen{
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
 
+        shapeRenderer.circle(mouseX, mouseY, 5);
+        
         if(level.released()) {
             for (int i = 0; i < level.traces.length; i++) {
                 if(level.isTraceInitialised[i]){
@@ -126,8 +132,6 @@ public class Gamescreen{
         else{
             shapeRenderer.rectLine((float) level.getPivotX(), (float) level.getPivotY(), (float) level.getProjectile().getxPos(), (float) level.getProjectile().getyPos(), 3);
         }
-        
-        
         
         shapeRenderer.setColor(Color.BLACK);
         shapeRenderer.rect(x, y,th * w, h);
@@ -200,6 +204,11 @@ public class Gamescreen{
     }
     public ArrayList<Rectangle> getObjectRects(){
         return objectRects;
+    }
+    
+    public void setMousePos(float x, float y){
+        mouseX = x;
+        mouseY = y;
     }
 
     

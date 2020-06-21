@@ -9,9 +9,11 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import model.Goal;
 import model.Level;
@@ -24,6 +26,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import view.Leveleditor;
 import view.Titlescreen;
 import view.Winscreen;
 
@@ -41,6 +44,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     Levelscreen ls;
     Gamescreen gs;
     Winscreen ws;
+    Leveleditor le;
     int levelAmount;
     SpriteBatch batch;
     Timer stepTimer;
@@ -63,6 +67,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         ls = null;
         gs = null;
         ws = null;
+        le = null;
         levelAmount = 9;
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
@@ -181,6 +186,9 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             }
         }
         else if(ws != null) ws.render(batch);
+        else if(le != null){ 
+            le.render(batch);
+        }
         batch.end();
     }
 
@@ -208,9 +216,16 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     @Override
     public boolean touchDown(int x, int y, int i2, int i3) {
         if(ts != null){
-            ts.dispose();
-            ts = null;
-            ls = new Levelscreen(beatenLevel, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+            if(x > 0.05 * Gdx.graphics.getWidth()){
+                ts.dispose();
+                ts = null;
+                ls = new Levelscreen(beatenLevel, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+            }
+            else{
+                ts.dispose();
+                ts = null;
+                le = new Leveleditor(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+            }
         }
         else if(ls != null){
             if(x < Gdx.graphics.getWidth() * 0.15){
@@ -250,13 +265,14 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             }
 
         }
+        else if(le != null){
+            le.touchDown(x,y);
+        }
         return true;
     }
 
     @Override
     public boolean touchUp(int i, int i1, int i2, int i3) {
-        if(gs != null){
-        }
         return true;
     }
 
@@ -267,6 +283,15 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
 
     @Override
     public boolean mouseMoved(int i, int i1) {
+            float x = ((float)i / (float)Gdx.graphics.getWidth()) *(float) GAME_WORLD_WIDTH;
+            float y = GAME_WORLD_HEIGHT - ((float)i1 / (float)Gdx.graphics.getHeight()) * (float)GAME_WORLD_HEIGHT;
+            //System.out.println("x:" + x + "   y:" + y);
+        if(gs != null){
+            gs.setMousePos(x, y);
+        }
+        if(le != null){
+            le.setMousePos(x, y);
+        }
         return false;
     }
 
