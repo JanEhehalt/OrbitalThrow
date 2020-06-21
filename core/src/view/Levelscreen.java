@@ -41,10 +41,6 @@ public class Levelscreen{
     float GAME_WORLD_WIDTH;
     float GAME_WORLD_HEIGHT;
     ShapeRenderer shapeRenderer;
-    Sprite clicktostart;
-    boolean movementStart;
-    float clicktostartX;
-    float clicktostartY;
     
     
     public Levelscreen(int levelAmount, float width, float height, Matrix4 matrix){
@@ -69,12 +65,7 @@ public class Levelscreen{
         parameter.size = 21;
         font = generator.generateFont(parameter);
         generator.dispose();
-        
         font.setColor(Color.BLACK);
-        
-        movementStart = true;
-        clicktostartX = GAME_WORLD_WIDTH / 2 - getTextWidth("click to start ...") / 2;
-        clicktostartY = GAME_WORLD_HEIGHT / 2;
         
         t = new Timer();
         
@@ -95,14 +86,6 @@ public class Levelscreen{
                     buttonRight.setX(buttonRight.getX() + 2);
                     buttonLeft.setX(buttonLeft.getX() - 2);
                 }
-                if(clicktostartY < GAME_WORLD_HEIGHT * 0.4)
-                    movementStart = true;
-                else if(clicktostartY > GAME_WORLD_HEIGHT * 0.5)
-                    movementStart = false;
-                if(movementStart)
-                    clicktostartY = clicktostartY + 3;
-                else
-                    clicktostartY = clicktostartY - 3;
             }
         },0 , 0.035f);
     }
@@ -115,14 +98,46 @@ public class Levelscreen{
         if(selectedLevel < levelAmount){
             buttonRight.draw(batch);
         }
-        
-        
         font.getData().setScale(6);
         font.draw(batch,"LEVEL: "+ (selectedLevel + 1), GAME_WORLD_WIDTH / 2 - getTextWidth("LEVEL: "+ selectedLevel) / 2, GAME_WORLD_HEIGHT * 0.95f);
         
         font.getData().setScale(2);
-        clicktostartX = GAME_WORLD_WIDTH / 2 - getTextWidth("click to start ...") / 2;
-        font.draw(batch, "click to start ...", clicktostartX,  clicktostartY);
+        font.draw(batch, "click to start ...", GAME_WORLD_WIDTH / 2 - getTextWidth("click to start ...") / 2, GAME_WORLD_HEIGHT * 0.1f);
+        
+        batch.end();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.rectLine(0.15f * GAME_WORLD_WIDTH, 0.15f * GAME_WORLD_HEIGHT, 0.85f * GAME_WORLD_WIDTH, 0.15f * GAME_WORLD_HEIGHT, 3);
+        shapeRenderer.rectLine(0.15f * GAME_WORLD_WIDTH, 0.15f * GAME_WORLD_HEIGHT, 0.15f * GAME_WORLD_WIDTH, 0.85f * GAME_WORLD_HEIGHT, 3);
+        shapeRenderer.rectLine(0.85f * GAME_WORLD_WIDTH, 0.15f * GAME_WORLD_HEIGHT, 0.85f * GAME_WORLD_WIDTH, 0.85f * GAME_WORLD_HEIGHT, 3);
+        shapeRenderer.rectLine(0.15f * GAME_WORLD_WIDTH, 0.85f * GAME_WORLD_HEIGHT, 0.85f * GAME_WORLD_WIDTH, 0.85f * GAME_WORLD_HEIGHT, 3);
+        
+        float previewX = 0.15f * GAME_WORLD_WIDTH;
+        float previewY = 0.15f * GAME_WORLD_HEIGHT;
+        float previewWidth = 0.7f * GAME_WORLD_WIDTH;
+        float previewHeight = 0.7f * GAME_WORLD_HEIGHT;
+        
+        
+        shapeRenderer.rectLine(previewX + level.getPivotX() * 0.7f, previewY + level.getPivotY() * 0.7f, previewX + (float)level.getProjectile().getxPos() * 0.7f, previewY + (float)level.getProjectile().getyPos()* 0.7f, 3);
+        shapeRenderer.setColor(Color.GRAY);
+        shapeRenderer.circle(previewX + level.getPivotX() * 0.7f, previewY + level.getPivotY() * 0.7f, 5);
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.circle(previewX + (float)level.getProjectile().getxPos() * 0.7f, previewY + (float)level.getProjectile().getyPos()* 0.7f, 8);
+        
+        float x = level.getGoal().getxPos();
+        float y = level.getGoal().getyPos();
+        float th = level.getGoal().getThickness();
+        float w = level.getGoal().getSizeX();
+        float h = level.getGoal().getSizeY();
+       
+        shapeRenderer.rect(previewX + x * 0.7f, previewY + y * 0.7f, (th * w) * 0.7f  ,h * 0.7f);
+        shapeRenderer.rect(previewX + (x + th * w) * 0.7f, previewY + y * 0.7f, (th*3 * w) * 0.7f,(th * h)*0.7f);
+        shapeRenderer.rect(previewX + (x + th *w + th*3 * w) * 0.7f, previewY + y * 0.7f, (th * w) * 0.7f  ,h * 0.7f);
+        
+        shapeRenderer.end();
+        batch.begin();
+        
+        
        
     }
     
@@ -138,9 +153,9 @@ public class Levelscreen{
     }
     public float getTextWidth(String text){
         GlyphLayout glyphLayout = new GlyphLayout();
-        String item = text;
-        glyphLayout.setText(font,item);
+        glyphLayout.setText(font,text);
         return glyphLayout.width;
     }
+    
 
 }
