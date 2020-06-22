@@ -323,15 +323,40 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             if(cs.touchDown(x,y) == -1){
 
             }
+            else if (cs.touchDown(x,y) == 0){
+                currentChapter = 0;
+                cs = null;
+                ls = new Levelscreen(level.get(currentChapter).size(), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+            }
+            else if (cs.touchDown(x,y) == 1){
+                currentChapter = 1;
+                cs = null;
+                ls = new Levelscreen(level.get(currentChapter).size(), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+            }
+            else if (cs.touchDown(x,y) == 2){
+                currentChapter = 2;
+                cs = null;
+                ls = new Levelscreen(level.get(currentChapter).size(), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+            }
+            else if (cs.touchDown(x,y) == 3){
+                currentChapter = 3;
+                cs = null;
+                ls = new Levelscreen(level.get(currentChapter).size(), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+            }
+            else if (cs.touchDown(x,y) == 4){
+                currentChapter = 4;
+                cs = null;
+                ls = new Levelscreen(level.get(currentChapter).size(), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+            }
+            else if (cs.touchDown(x,y) == 5){
+                currentChapter = 5;
+                cs = null;
+                ls = new Levelscreen(level.get(currentChapter).size(), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+            }
             else if(cs.touchDown(x,y) == 6){
                 cs.dispose();
                 cs = null;
                 ts = new Titlescreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
-            }
-            else if(cs.touchDown(x,y) == 5){
-                cs.dispose();
-                cs = null;
-                le = new Leveleditor(GAME_WORLD_WIDTH,GAME_WORLD_HEIGHT,camera.combined);
             }
             else{
                 cs.dispose();
