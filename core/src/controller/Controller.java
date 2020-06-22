@@ -95,6 +95,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         currentChapter = 1;
         Json json = new Json();
 
+        /*
         Level lol = new Level(new Goal(1000,580,350,100, 0.2f), new Projectile(0,0,0),200,200);
         FileHandle fileblub = Gdx.files.local("levellol.json");
         fileblub.writeString(json.toJson(lol), false);
@@ -117,7 +118,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         FileHandle[] files;
         for(int chapter = 0; chapter < level.size(); chapter++) {
 
-            directory = Gdx.files.local("levels/chapter" + (chapter + 1));
+            directory = Gdx.files.internal("levels/chapter" + (chapter + 1));
             files = directory.list();
 
             for(FileHandle file : files){
@@ -128,7 +129,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             }
         }
 
-        directory = Gdx.files.local("levels/own");
+        directory = Gdx.files.internal("levels/own");
         files = directory.list();
         for(FileHandle file : files){
             if(file.exists()){
