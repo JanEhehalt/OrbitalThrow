@@ -26,7 +26,6 @@ public class Titlescreen{
     
     BitmapFont font;
     Timer t;
-    Sprite clicktostart;
     boolean movement;
     float GAME_WORLD_WIDTH;
     float GAME_WORLD_HEIGHT;
@@ -37,7 +36,6 @@ public class Titlescreen{
         this.GAME_WORLD_WIDTH = width;
         this.GAME_WORLD_HEIGHT = height;
         movement = true;
-        clicktostart = new Sprite(new Texture(Gdx.files.internal("clicktostart.png")));
         
         
         t = new Timer();
@@ -48,9 +46,9 @@ public class Titlescreen{
         parameter.size = 21;
         font = generator.generateFont(parameter); // font size 12 pixels
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
-        
+
         clicktostartX = GAME_WORLD_WIDTH / 2 - getTextWidth("click to start ...") / 2;
-        clicktostartY = GAME_WORLD_HEIGHT / 2 - clicktostart.getHeight() / 2;
+        clicktostartY = GAME_WORLD_HEIGHT / 2;
         
         font.setColor(Color.BLACK);
         

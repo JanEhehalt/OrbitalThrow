@@ -22,7 +22,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.io.File;
 import java.util.ArrayList;
 
+import model.Goal;
 import model.Level;
+import model.Projectile;
 import view.Chapterscreen;
 import view.Gamescreen;
 import view.Levelscreen;
@@ -93,11 +95,10 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         currentChapter = 1;
         Json json = new Json();
 
-        /*
         Level lol = new Level(new Goal(1000,580,350,100, 0.2f), new Projectile(0,0,0),200,200);
-        lol.addRectangle(400, 400, 50,200);
-        FileHandle file = Gdx.files.local("levels/level9.json");
-        file.writeString(json.toJson(lol), false);
+        FileHandle fileblub = Gdx.files.local("levellol.json");
+        fileblub.writeString(json.toJson(lol), false);
+
         /*
         level[1] = new Level(new Goal(700,200,450,100, 0.2f), new Projectile(0,0,0),200,200);
         level[2] = new Level(new Goal(560,400,450,100, 0.2f), new Projectile(0,0,0),200,200);
