@@ -38,8 +38,6 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     final float GAME_WORLD_WIDTH = 1600;
     final float GAME_WORLD_HEIGHT = 900;
 
-    File filesDir;
-
     Titlescreen ts;
     Levelscreen ls;
     Gamescreen gs;
@@ -50,6 +48,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     Timer stepTimer;
     boolean isColliding;
     ArrayList<ArrayList<Level>> level;
+    ArrayList<Level> ownLevels;
     int currentLevel;
     int currentChapter;
     int beatenLevel = 9;
@@ -85,6 +84,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         for(int i = 0; i < 5; i++){
             level.add(new ArrayList<Level>());
         }
+        ownLevels = new ArrayList<>();
 
         currentLevel = 0;
         currentChapter = 1;
@@ -109,17 +109,27 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
          */
 
 
-        FileHandle levelJson;
+        FileHandle directory;
+        FileHandle[] files;
         for(int chapter = 0; chapter < level.size(); chapter++) {
-            for (int i = 0; i < 10; i++) {
-                levelJson = Gdx.files.local("levels/chapter" + chapter + "/level" + i + ".json");
-                //levelJson = Gdx.files.local("levels/level0.json");
-                if (!levelJson.exists()) {
-                    break;
-                } else {
-                    Level tempLevel = json.fromJson(Level.class, levelJson.readString());
+
+            directory = Gdx.files.local("levels/chapter" + (chapter + 1));
+            files = directory.list();
+
+            for(FileHandle file : files){
+                if(file.exists()){
+                    Level tempLevel = json.fromJson(Level.class, file.readString());
                     level.get(chapter).add(tempLevel);
                 }
+            }
+        }
+
+        directory = Gdx.files.local("levels/own");
+        files = directory.list();
+        for(FileHandle file : files){
+            if(file.exists()){
+                Level tempLevel = json.fromJson(Level.class, file.readString());
+                ownLevels.add(tempLevel);
             }
         }
 
@@ -224,10 +234,6 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     @Override
     public void dispose () {
 
-    }
-
-    public void initContext(File context){
-        this.filesDir = context;
     }
 
     @Override
