@@ -17,8 +17,6 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		Controller controller = new Controller();
-		File filesDir = getContext().getFilesDir();
-		controller.initContext(filesDir);
 		initialize(controller, config);
 	}
 }
