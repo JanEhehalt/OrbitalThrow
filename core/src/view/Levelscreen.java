@@ -30,8 +30,8 @@ import model.Projectile;
  * @author Jan
  */
 public class Levelscreen{
-    
-    Sprite[] levelPreview;
+
+
     Sprite buttonRight;
     Sprite buttonLeft;
     int selectedLevel;
@@ -47,7 +47,6 @@ public class Levelscreen{
     public Levelscreen(int levelAmount, float width, float height, Matrix4 matrix){
         GAME_WORLD_WIDTH = width;
         GAME_WORLD_HEIGHT = height;
-        levelPreview = new Sprite[levelAmount];
         buttonRight = new Sprite(new Texture("buttonRight.png"));
         buttonRight.setY(GAME_WORLD_HEIGHT/ 2 - buttonRight.getHeight() / 2);
         buttonRight.setX(GAME_WORLD_WIDTH - 10 - buttonRight.getWidth());

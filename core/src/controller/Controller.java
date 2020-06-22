@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import model.Level;
+import view.Chapterscreen;
 import view.Gamescreen;
 import view.Levelscreen;
 import view.Leveleditor;
@@ -45,6 +46,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     Gamescreen gs;
     Winscreen ws;
     Leveleditor le;
+    Chapterscreen cs;
     int levelAmount;
     SpriteBatch batch;
     Timer stepTimer;
@@ -69,6 +71,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         gs = null;
         ws = null;
         le = null;
+        cs = null;
         levelAmount = 9;
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
@@ -223,6 +226,9 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                 ts = new Titlescreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
             }
         }
+        else if(cs != null){
+            cs.render(batch);
+        }
         batch.end();
     }
 
@@ -257,7 +263,8 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             if(x > 0.05 * Gdx.graphics.getWidth()){
                 ts.dispose();
                 ts = null;
-                ls = new Levelscreen(beatenLevel, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+                //ls = new Levelscreen(beatenLevel, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+                cs = new Chapterscreen(5, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
             }
             else{
                 ts.dispose();
@@ -305,6 +312,26 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         }
         else if(le != null){
             le.touchDown(x,y);
+        }
+        else if(cs != null){
+            if(cs.touchDown(x,y) == -1){
+
+            }
+            else if(cs.touchDown(x,y) == 6){
+                cs.dispose();
+                cs = null;
+                ts = new Titlescreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
+            }
+            else if(cs.touchDown(x,y) == 5){
+                cs.dispose();
+                cs = null;
+                le = new Leveleditor(GAME_WORLD_WIDTH,GAME_WORLD_HEIGHT,camera.combined);
+            }
+            else{
+                cs.dispose();
+                cs = null;
+                ls = new Levelscreen(9,GAME_WORLD_WIDTH,GAME_WORLD_HEIGHT,camera.combined);
+            }
         }
         return true;
     }
