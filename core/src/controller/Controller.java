@@ -210,6 +210,11 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         else if(ws != null) ws.render(batch);
         else if(le != null){ 
             le.render(batch);
+            if(le.getToSave()){
+                le.dispose();
+                le = null;
+                ts = new Titlescreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
+            }
         }
         batch.end();
     }

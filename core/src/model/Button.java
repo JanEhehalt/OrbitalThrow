@@ -19,17 +19,15 @@ public class Button {
     private int width;
     private int height;
     private int id;
-    private int listId;
     private Rectangle rect;
 
-    public Button(String text, int xPos, int yPos, int width, int height, int id, int listId){
+    public Button(String text, int xPos, int yPos, int width, int height, int id){
         this.text = text;
         this.xPos = xPos;
         this.yPos = yPos;
         this.width = width;
         this.height = height;
-        this.id = id;   //0: pivot, 1: goal, 2: rect, 3: addRect
-        this.listId = listId;
+        this.id = id;   //0: pivot, 1: goal, 2: rect, 3: addRect, 4: save
         rect = new Rectangle(xPos, yPos, width, height);
     }
     
@@ -116,9 +114,6 @@ public class Button {
     }
     public int getId(){
         return id;
-    }
-    public int getListId(){
-        return listId;
     }
 
 }
