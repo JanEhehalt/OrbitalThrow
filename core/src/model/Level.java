@@ -34,6 +34,8 @@ public class Level {
     public Vector2[] traces;
     ArrayList<Rectangle> objects;
 
+    private boolean isWon;
+
     public Level(Goal goal, Projectile projectile, int xPosPivot, int yPosPivot){
         this.goal = goal;
         this.projectile = projectile;
@@ -46,6 +48,7 @@ public class Level {
         this.yPosPivot = yPosPivot;
         this.angle = 0;
         this.angleSpeed = 0;
+        isWon = false;
 
         objects = new ArrayList<>();
         
@@ -170,6 +173,13 @@ public class Level {
     }
     public void removeObstacle(Rectangle rect){
         objects.remove(rect);
+    }
+
+    public void levelWon(){
+        isWon = true;
+    }
+    public boolean isWon(){
+        return this.isWon;
     }
             
 }
