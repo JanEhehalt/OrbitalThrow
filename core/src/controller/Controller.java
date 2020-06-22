@@ -49,8 +49,9 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     SpriteBatch batch;
     Timer stepTimer;
     boolean isColliding;
-    ArrayList<Level> level;
+    ArrayList<ArrayList<Level>> level;
     int currentLevel;
+    int currentChapter;
     int beatenLevel = 9;
     
 
@@ -81,7 +82,12 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
 
         isColliding = false;
         level = new ArrayList<>();
+        for(int i = 0; i < 5; i++){
+            level.add(new ArrayList<Level>());
+        }
+
         currentLevel = 0;
+        currentChapter = 1;
         Json json = new Json();
 
         /*
@@ -104,15 +110,16 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
 
 
         FileHandle levelJson;
-        for(int i = 0; i < 10; i++){
-            levelJson = Gdx.files.local("levels/level" + i + ".json");
-            //levelJson = Gdx.files.local("levels/level0.json");
-            if(!levelJson.exists()){
-                break;
-            }
-            else{
-                Level tempLevel = json.fromJson(Level.class, levelJson.readString());
-                level.add(tempLevel);
+        for(int chapter = 0; chapter < level.size(); chapter++) {
+            for (int i = 0; i < 10; i++) {
+                levelJson = Gdx.files.local("levels/chapter" + chapter + "/level" + i + ".json");
+                //levelJson = Gdx.files.local("levels/level0.json");
+                if (!levelJson.exists()) {
+                    break;
+                } else {
+                    Level tempLevel = json.fromJson(Level.class, levelJson.readString());
+                    level.get(chapter).add(tempLevel);
+                }
             }
         }
 
@@ -121,17 +128,17 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             @Override
             public void run() {
                 if(gs != null){
-                    if(level.get(currentLevel).getProjectile().getxPos() > GAME_WORLD_WIDTH || level.get(currentLevel).getProjectile().getxPos() < 0 || level.get(currentLevel).getProjectile().getyPos() < 0){
-                        gs.step(level.get(currentLevel));
-                        level.get(currentLevel).reset();
+                    if(level.get(currentChapter).get(currentLevel).getProjectile().getxPos() > GAME_WORLD_WIDTH || level.get(currentChapter).get(currentLevel).getProjectile().getxPos() < 0 || level.get(currentChapter).get(currentLevel).getProjectile().getyPos() < 0){
+                        gs.step(level.get(currentChapter).get(currentLevel));
+                        level.get(currentChapter).get(currentLevel).reset();
                         gs.dispose();
                         stepTimer.stop();
                         gs = null;
                         ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, false, currentLevel);
                     }
                     else{
-                        level.get(currentLevel).step();
-                        gs.step(level.get(currentLevel));
+                        level.get(currentChapter).get(currentLevel).step();
+                        gs.step(level.get(currentChapter).get(currentLevel));
 
                         boolean collision = false;
                         for(Rectangle rect : gs.getGoalRects()){
@@ -140,9 +147,9 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                                 collision = true;
                                 if (!isColliding) {
                                     if (rect.getHeight() == 1) {
-                                        level.get(currentLevel).horizontalCollision();
+                                        level.get(currentChapter).get(currentLevel).horizontalCollision();
                                     } else if (rect.getWidth() == 1) {
-                                        level.get(currentLevel).verticalCollision();
+                                        level.get(currentChapter).get(currentLevel).verticalCollision();
                                     }
                                     isColliding = true;
                                     break;
@@ -156,9 +163,9 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                                     collision = true;
                                     if (!isColliding) {
                                         if (rect.getHeight() == 1) {
-                                            level.get(currentLevel).horizontalCollision();
+                                            level.get(currentChapter).get(currentLevel).horizontalCollision();
                                         } else if (rect.getWidth() == 1) {
-                                            level.get(currentLevel).verticalCollision();
+                                            level.get(currentChapter).get(currentLevel).verticalCollision();
                                         }
                                         isColliding = true;
                                         break;
@@ -194,14 +201,14 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         if(ts != null) ts.render(batch);
         else if(ls != null){
             currentLevel = ls.getSelectedLevel();
-            ls.render(batch, level.get(currentLevel));
+            ls.render(batch, level.get(currentChapter).get(currentLevel));
         }
         else if(gs != null){
-            gs.render(batch, level.get(currentLevel));
+            gs.render(batch, level.get(currentChapter).get(currentLevel));
             if(gs.getWin()){
                 gs.dispose();
                 stepTimer.stop();
-                level.get(currentLevel).reset();
+                level.get(currentChapter).get(currentLevel).reset();
                 if(currentLevel == beatenLevel && currentLevel < levelAmount)beatenLevel++;
                 gs = null;
                 ws = new Winscreen(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, true, currentLevel);
@@ -269,13 +276,13 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             else{
                 ls.dispose();
                 ls = null;
-                gs = new Gamescreen(level.get(currentLevel), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+                gs = new Gamescreen(level.get(currentChapter).get(currentLevel), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 stepTimer.start();
             }
         }
         else if(gs != null){
-            if(!level.get(currentLevel).released()){
-                level.get(currentLevel).projectileReleased();
+            if(!level.get(currentChapter).get(currentLevel).released()){
+                level.get(currentChapter).get(currentLevel).projectileReleased();
             }
         }
         else if(ws != null){
@@ -284,13 +291,13 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                 ws = null;
             }
             else if(x < Gdx.graphics.getWidth() * 0.66){
-                gs = new Gamescreen(level.get(currentLevel), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+                gs = new Gamescreen(level.get(currentChapter).get(currentLevel), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 stepTimer.start();
                 ws = null;
             }
             else if(currentLevel < levelAmount && ws.getWin()){
                 currentLevel++;
-                gs = new Gamescreen(level.get(currentLevel), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+                gs = new Gamescreen(level.get(currentChapter).get(currentLevel), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 stepTimer.start();
                 ws = null;
             }
@@ -317,13 +324,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             float x = ((float)i / (float)Gdx.graphics.getWidth()) *(float) GAME_WORLD_WIDTH;
             float y = GAME_WORLD_HEIGHT - ((float)i1 / (float)Gdx.graphics.getHeight()) * (float)GAME_WORLD_HEIGHT;
             //System.out.println("x:" + x + "   y:" + y);
-        if(gs != null){
-            gs.setMousePos(x, y);
-        }
-        if(le != null){
-            le.setMousePos(x, y);
-        }
-        return false;
+        return true;
     }
 
     @Override

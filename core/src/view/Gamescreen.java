@@ -57,9 +57,6 @@ public class Gamescreen{
     
     boolean win;
     
-    float mouseX;
-    float mouseY;
-    
     public Gamescreen(Level level, float width, float height, Matrix4 matrix){
         GAME_WORLD_WIDTH = width;
         GAME_WORLD_HEIGHT = height;
@@ -118,8 +115,6 @@ public class Gamescreen{
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
-
-        shapeRenderer.circle(mouseX, mouseY, 5);
         
         if(level.released()) {
             for (int i = 0; i < level.traces.length; i++) {
@@ -208,11 +203,4 @@ public class Gamescreen{
     public ArrayList<Rectangle> getObjectRects(){
         return objectRects;
     }
-    
-    public void setMousePos(float x, float y){
-        mouseX = x;
-        mouseY = y;
-    }
-
-    
 }
