@@ -91,11 +91,12 @@ public class Leveleditor{
         batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
-        
+        shapeRenderer.rectLine((float) level.getPivotX(), (float) level.getPivotY(), (float) level.getProjectile().getxPos(), (float) level.getProjectile().getyPos(), 3);
         shapeRenderer.setColor(Color.GRAY);
         shapeRenderer.circle(level.getPivotX(), level.getPivotY(), 5);
         shapeRenderer.setColor(Color.BLACK);
         shapeRenderer.circle(level.getPivotX(), level.getPivotY() + 150, level.getProjectile().getRadius());
+
         if(state == -1){
             for(Button button : buttons){
                 shapeRenderer.rectLine(button.getxPos(), button.getyPos(), button.getxPos() + button.getWidth(), button.getyPos(), 4);
@@ -156,9 +157,17 @@ public class Leveleditor{
                         break;
                     }
                 }
+                for(Rectangle rect : level.getObjects()){
+                    if(Intersector.overlaps(mouse, rect)){
+                        level.removeObstacle(rect);
+                        break;
+                    }
+                }
                 break;
             case 0:
                 level.setPivot(x, (int)GAME_WORLD_HEIGHT - y);
+                level.getProjectile().setxPos(x);
+                level.getProjectile().setyPos((int) GAME_WORLD_HEIGHT - y + 150);
                 state = -1;
                 break;
             case 1:
@@ -166,17 +175,10 @@ public class Leveleditor{
                 state = -1;
                 break;
             case 2:
-                buttons.remove(buttons.size()-1);
-                buttons.add(new Button("Rectangle", (int)(GAME_WORLD_WIDTH * 0.02), (int)(GAME_WORLD_HEIGHT - (buttons.size()+1) * 0.07 * GAME_WORLD_HEIGHT), 200, 50, 3, listNumber));
-                listNumber++;
-                buttons.add(new Button("add Rect...", (int)(GAME_WORLD_WIDTH * 0.02), (int)(GAME_WORLD_HEIGHT - (buttons.size()+1) * 0.07 * GAME_WORLD_HEIGHT), 200, 50, 2, listNumber));
-                listNumber++;
+                level.addRectangle(x,(int)GAME_WORLD_HEIGHT-y,200,100);
                 state = -1;
                 break;
             case 3:
-                if(buttons.get(selectedRect - 1) != null){
-                    level.addRectangle(x,(int)GAME_WORLD_HEIGHT - y, 100, 100);
-                }
                 state = -1;
                 break;
             case 4:

@@ -168,5 +168,8 @@ public class Level {
         goal.setSizeX(300);
         goal.setSizeY(200);
     }
+    public void removeObstacle(Rectangle rect){
+        objects.remove(rect);
+    }
             
 }
