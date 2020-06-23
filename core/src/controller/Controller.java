@@ -158,19 +158,19 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                         gs.step(level.get(currentChapter).get(currentLevel));
 
                         boolean collision = false;
+                        double tempX = level.get(currentChapter).get(currentLevel).getProjectile().getxPos();
+                        double tempY = level.get(currentChapter).get(currentLevel).getProjectile().getyPos();
+
                         for(Rectangle rect : gs.getGoalRects()){
                             if(Intersector.overlaps(gs.getProjectileCirc(), rect)) {
 
                                 collision = true;
-                                if (!isColliding) {
-                                    if (rect.getHeight() == 1) {
-                                        level.get(currentChapter).get(currentLevel).horizontalCollision();
-                                    } else if (rect.getWidth() == 1) {
-                                        level.get(currentChapter).get(currentLevel).verticalCollision();
-                                    }
-                                    isColliding = true;
-                                    break;
+                                if (rect.getHeight() == 1) {
+                                    level.get(currentChapter).get(currentLevel).horizontalCollision();
+                                } else if (rect.getWidth() == 1) {
+                                    level.get(currentChapter).get(currentLevel).verticalCollision();
                                 }
+                                break;
                             }
                         }
                         if(gs.getObjectRects() != null) {
@@ -178,21 +178,20 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                                 if (Intersector.overlaps(gs.getProjectileCirc(), rect)) {
 
                                     collision = true;
-                                    if (!isColliding) {
-                                        if (rect.getHeight() == 1) {
-                                            level.get(currentChapter).get(currentLevel).horizontalCollision();
-                                        } else if (rect.getWidth() == 1) {
-                                            level.get(currentChapter).get(currentLevel).verticalCollision();
-                                        }
-                                        isColliding = true;
-                                        break;
+                                    if (rect.getHeight() == 1) {
+                                        level.get(currentChapter).get(currentLevel).horizontalCollision();
+                                    } else if (rect.getWidth() == 1) {
+                                        level.get(currentChapter).get(currentLevel).verticalCollision();
                                     }
+                                    break;
+
                                 }
                             }
                         }
 
-                        if(!collision){
-                            isColliding = false;
+                        if(collision){
+                            level.get(currentChapter).get(currentLevel).getProjectile().setxPos(tempX);
+                            level.get(currentChapter).get(currentLevel).getProjectile().setyPos(tempY);
                         }
 
                     }
