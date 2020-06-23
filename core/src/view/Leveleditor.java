@@ -75,10 +75,10 @@ public class Leveleditor{
 
         // CREATE DEFAULT BUTTONS
         buttons = new ArrayList();
-        buttons.add(new Button("Pivot", (int)(GAME_WORLD_WIDTH * 0.02),(int) (GAME_WORLD_HEIGHT - (buttons.size()+1) * 0.07 * GAME_WORLD_HEIGHT), 200, 50, 0));
-        buttons.add(new Button("Goal", (int)(GAME_WORLD_WIDTH * 0.02), (int)(GAME_WORLD_HEIGHT - (buttons.size()+1) * 0.07 * GAME_WORLD_HEIGHT), 200, 50, 1));
-        buttons.add(new Button("new Obstacle", (int)(GAME_WORLD_WIDTH * 0.02), (int)(GAME_WORLD_HEIGHT - (buttons.size()+1) * 0.07 * GAME_WORLD_HEIGHT), 200, 50, 2));
-        buttons.add(new Button("SAVE", (int)(GAME_WORLD_WIDTH * 0.8), (int)(GAME_WORLD_HEIGHT - (buttons.size()+1) * 0.07 * GAME_WORLD_HEIGHT), 200, 50, 4));
+        buttons.add(new Button("Pivot", (int)(GAME_WORLD_WIDTH * 0.02),(int) (GAME_WORLD_HEIGHT - (buttons.size()+1) * 0.1 * GAME_WORLD_HEIGHT), 250, 80, 0));
+        buttons.add(new Button("Goal", (int)(GAME_WORLD_WIDTH * 0.02), (int)(GAME_WORLD_HEIGHT - (buttons.size()+1) * 0.1 * GAME_WORLD_HEIGHT), 250, 80, 1));
+        buttons.add(new Button("new Obstacle", (int)(GAME_WORLD_WIDTH * 0.02), (int)(GAME_WORLD_HEIGHT - (buttons.size()+1) * 0.1 * GAME_WORLD_HEIGHT), 250, 80, 2));
+        buttons.add(new Button("SAVE", (int)(GAME_WORLD_WIDTH * 0.8), (int)(GAME_WORLD_HEIGHT - (buttons.size()+1) * 0.1 * GAME_WORLD_HEIGHT), 250, 80, 4));
 
         // CREATE BITMAP FONT
         font = new BitmapFont();
@@ -100,6 +100,9 @@ public class Leveleditor{
         shapeRenderer.setColor(Color.BLACK);
         // DRAW PIVOT
         if(pivotSet) {
+            shapeRenderer.setColor(Color.LIGHT_GRAY);
+            shapeRenderer.circle(level.getPivotX(), level.getPivotY(), 150);
+            shapeRenderer.setColor(Color.BLACK);
             shapeRenderer.rectLine((float) level.getPivotX(), (float) level.getPivotY(), (float) level.getProjectile().getxPos(), (float) level.getProjectile().getyPos(), 3);
             shapeRenderer.setColor(Color.GRAY);
             shapeRenderer.circle(level.getPivotX(), level.getPivotY(), 5);
@@ -120,8 +123,9 @@ public class Leveleditor{
                     shapeRenderer.rectLine(button.getxPos() + button.getWidth(), button.getyPos(),button.getxPos() + button.getWidth(), button.getyPos() + button.getHeight(), 4);
                     shapeRenderer.end();
                     batch.begin();
-                    font.getData().setScale(1.5f);
+                    font.getData().setScale(1.6f);
                     font.draw(batch, button.getText(),button.getxPos() + button.getWidth()/2 - getTextWidth(button.getText())/2, button.getyPos() + button.getHeight()/2 + getTextHeight(button.getText())/2);
+
                     batch.end();
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                 }
@@ -158,7 +162,7 @@ public class Leveleditor{
     public void touchDown(int x, int y){
         switch(state){
             case -1:    // NO BUTTON SELECTED
-                Rectangle mouse = new Rectangle(x, (int)GAME_WORLD_HEIGHT -y, 1, 1);
+                Rectangle mouse = new Rectangle(x, y, 1, 1);
                 for(Button button : buttons){
                     if(Intersector.overlaps(mouse, button.getRectangle())){
                         if(button.getId() == 4 && (!goalSet || !pivotSet)){     // DONT SAVE WHEN GOAL OR PIVOT NOT SET
@@ -180,19 +184,19 @@ public class Leveleditor{
                 }
                 break;
             case 0: // SET PIVOT
-                level.setPivot(x, (int)GAME_WORLD_HEIGHT - y);
+                level.setPivot(x, y);
                 level.getProjectile().setxPos(x);
-                level.getProjectile().setyPos((int) GAME_WORLD_HEIGHT - y + 150);
+                level.getProjectile().setyPos(y + 150);
                 pivotSet = true;
                 state = -1;
                 break;
             case 1: // SET GOAL
-                level.setGoal(x, (int)GAME_WORLD_HEIGHT-y);
+                level.setGoal(x, y);
                 state = -1;
                 goalSet = true;
                 break;
             case 2: // NEW OBSTACLE
-                level.addRectangle(x,(int)GAME_WORLD_HEIGHT-y,200,100);
+                level.addRectangle(x - 100,y - 50,200,100);
                 state = -1;
                 break;
             default:

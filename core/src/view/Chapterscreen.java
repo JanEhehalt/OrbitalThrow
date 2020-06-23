@@ -58,7 +58,7 @@ public class Chapterscreen{
         buttons.add(new Button("Chapter 4", (int)(0.05 * GAME_WORLD_WIDTH - 0.5 * 3/80 * GAME_WORLD_WIDTH), (int)(0.3 * GAME_WORLD_HEIGHT), (int)((1f/3f) * 0.8 *GAME_WORLD_WIDTH), (int)(0.2 * GAME_WORLD_HEIGHT), 4));
         buttons.add(new Button("Chapter 5", (int)(0.1 * GAME_WORLD_WIDTH + buttons.get(0).getWidth() - 0.5 * 3/80 * GAME_WORLD_WIDTH), (int)(0.3 * GAME_WORLD_HEIGHT), (int)((1f/3f) * 0.8 *GAME_WORLD_WIDTH), (int)(0.2 * GAME_WORLD_HEIGHT), 5));
         buttons.add(new Button("User Level",(int)(0.15 * GAME_WORLD_WIDTH + buttons.get(0).getWidth()*2 - 0.5 * 3/80 * GAME_WORLD_WIDTH), (int)(0.3 * GAME_WORLD_HEIGHT), (int)((1f/3f) * 0.8 *GAME_WORLD_WIDTH), (int)(0.2 * GAME_WORLD_HEIGHT), 0));
-        buttons.add(new Button("back", (int)(0.05 * GAME_WORLD_WIDTH), (int)(0.02 * GAME_WORLD_HEIGHT), (int)(0.2 * GAME_WORLD_WIDTH), (int)(0.1 * GAME_WORLD_HEIGHT), 6));
+        buttons.add(new Button("< back", 20,10,200,80,6));
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -100,7 +100,7 @@ public class Chapterscreen{
 
 
     public int touchDown(int x, int y){
-        Rectangle mouse = new Rectangle(x, GAME_WORLD_HEIGHT - y, 1, 1);
+        Rectangle mouse = new Rectangle(x, y, 1, 1);
         for(Button button : buttons){
             if(Intersector.overlaps(mouse, button.getRectangle())){
                 return button.getId();

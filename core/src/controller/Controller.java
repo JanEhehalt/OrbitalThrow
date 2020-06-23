@@ -17,6 +17,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.io.File;
@@ -80,7 +82,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         float aspectRatio = (float)Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth();
 
         camera = new OrthographicCamera();
-        viewport = new ExtendViewport(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT * aspectRatio, camera);
+        viewport = new StretchViewport(GAME_WORLD_WIDTH/*  *aspectRatio*/, GAME_WORLD_HEIGHT, camera);
         viewport.apply();
         camera.position.set(GAME_WORLD_WIDTH/2, GAME_WORLD_HEIGHT/2, 0);
 
@@ -267,8 +269,10 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
 
     @Override
     public boolean touchDown(int x, int y, int i2, int i3) {
+        x = (int)((float)x / (float)Gdx.graphics.getWidth() * (float)GAME_WORLD_WIDTH);
+        y = (int)GAME_WORLD_HEIGHT-(int)((float)y / Gdx.graphics.getHeight() * GAME_WORLD_HEIGHT);
         if(ts != null){
-            if(x > 0.05 * Gdx.graphics.getWidth()){
+            if(x > 0.05 * GAME_WORLD_WIDTH){
                 ts.dispose();
                 ts = null;
                 //ls = new Levelscreen(beatenLevel, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
@@ -281,18 +285,26 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             }
         }
         else if(ls != null){
-            if(x < Gdx.graphics.getWidth() * 0.15){
-                if(ls.getSelectedLevel() > 0)ls.setSelectedLevel(ls.getSelectedLevel()-1);
-            }
-            else if(x > Gdx.graphics.getWidth() * 0.85){
-                if(ls.getSelectedLevel() < beatenLevel && beatenLevel <= levelAmount)
-                ls.setSelectedLevel(ls.getSelectedLevel()+1);
-            }
-            else{
-                ls.dispose();
-                ls = null;
-                gs = new Gamescreen(level.get(currentChapter).get(currentLevel), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
-                stepTimer.start();
+            int n = ls.touchDown(x,y);
+            switch(n){
+                case 0:
+                    ls.dispose();
+                    ls = null;
+                    cs = new Chapterscreen(5,GAME_WORLD_WIDTH,GAME_WORLD_HEIGHT,camera.combined);
+                    break;
+                case 1:
+                    if(ls.getSelectedLevel() > 0)ls.setSelectedLevel(ls.getSelectedLevel()-1);
+                    break;
+                case 2:
+                    if(ls.getSelectedLevel() < beatenLevel && beatenLevel <= levelAmount)
+                    ls.setSelectedLevel(ls.getSelectedLevel()+1);
+                    break;
+                case 3:
+                    ls.dispose();
+                    ls = null;
+                    gs = new Gamescreen(level.get(currentChapter).get(currentLevel), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+                    stepTimer.start();
+                    break;
             }
         }
         else if(gs != null){
@@ -301,11 +313,11 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             }
         }
         else if(ws != null){
-            if(x < Gdx.graphics.getWidth() * 0.33){
+            if(x < GAME_WORLD_WIDTH * 0.33){
                 ls = new Levelscreen(beatenLevel, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 ws = null;
             }
-            else if(x < Gdx.graphics.getWidth() * 0.66){
+            else if(x < GAME_WORLD_WIDTH * 0.66){
                 gs = new Gamescreen(level.get(currentChapter).get(currentLevel), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 stepTimer.start();
                 ws = null;
@@ -325,35 +337,10 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             if(cs.touchDown(x,y) == -1){
 
             }
-            else if (cs.touchDown(x,y) == 0){
-                currentChapter = 0;
+            else if (cs.touchDown(x,y) >= 0 && cs.touchDown(x,y) <= 5){
+                currentChapter = cs.touchDown(x,y);
                 cs = null;
-                ls = new Levelscreen(level.get(currentChapter).size(), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
-            }
-            else if (cs.touchDown(x,y) == 1){
-                currentChapter = 1;
-                cs = null;
-                ls = new Levelscreen(level.get(currentChapter).size(), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
-            }
-            else if (cs.touchDown(x,y) == 2){
-                currentChapter = 2;
-                cs = null;
-                ls = new Levelscreen(level.get(currentChapter).size(), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
-            }
-            else if (cs.touchDown(x,y) == 3){
-                currentChapter = 3;
-                cs = null;
-                ls = new Levelscreen(level.get(currentChapter).size(), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
-            }
-            else if (cs.touchDown(x,y) == 4){
-                currentChapter = 4;
-                cs = null;
-                ls = new Levelscreen(level.get(currentChapter).size(), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
-            }
-            else if (cs.touchDown(x,y) == 5){
-                currentChapter = 5;
-                cs = null;
-                ls = new Levelscreen(level.get(currentChapter).size(), GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+                ls = new Levelscreen(level.get(currentChapter).size()-1, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
             }
             else if(cs.touchDown(x,y) == 6){
                 cs.dispose();
