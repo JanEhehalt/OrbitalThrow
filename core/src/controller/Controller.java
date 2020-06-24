@@ -53,7 +53,6 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     int levelAmount;
     SpriteBatch batch;
     Timer stepTimer;
-    boolean isColliding;
     ArrayList<ArrayList<Level>> level;
     ArrayList<Level> ownLevels;
     int currentLevel;
@@ -92,18 +91,17 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         viewport.apply();
         camera.position.set(GAME_WORLD_WIDTH/2, GAME_WORLD_HEIGHT/2, 0);
 
-        isColliding = false;
         level = new ArrayList<>();
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < 6; i++){
             level.add(new ArrayList<Level>());
         }
         ownLevels = new ArrayList<>();
 
         currentLevel = 0;
-        currentChapter = 1;
+        currentChapter = 0;
         Json json = new Json();
 
-        /*
+
         Level lol = new Level(new Goal(1000,580,350,100, 0.2f), new Projectile(0,0,0),200,200);
         FileHandle fileblub = Gdx.files.local("levellol.json");
         fileblub.writeString(json.toJson(lol), false);
@@ -124,9 +122,10 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
 
         FileHandle directory;
         FileHandle[] files;
-        for(int chapter = 0; chapter < level.size(); chapter++) {
+        for(int chapter = 0; chapter < level.size() - 1; chapter++) {
 
             directory = Gdx.files.internal("levels/chapter" + (chapter + 1));
+            System.out.println("levels/chapter" + (chapter + 1));
             files = directory.list();
 
             for(FileHandle file : files){
@@ -171,12 +170,14 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                             if(Intersector.overlaps(gs.getProjectileCirc(), rect)) {
 
                                 collision = true;
+                                level.get(currentChapter).get(currentLevel).getProjectile().setxPos(tempX);
+                                level.get(currentChapter).get(currentLevel).getProjectile().setyPos(tempY);
                                 if (rect.getHeight() == 1) {
                                     level.get(currentChapter).get(currentLevel).horizontalCollision();
                                 } else if (rect.getWidth() == 1) {
                                     level.get(currentChapter).get(currentLevel).verticalCollision();
                                 }
-                                break;
+                                //break;
                             }
                         }
                         if(gs.getObjectRects() != null) {
@@ -184,20 +185,17 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                                 if (Intersector.overlaps(gs.getProjectileCirc(), rect)) {
 
                                     collision = true;
+                                    level.get(currentChapter).get(currentLevel).getProjectile().setxPos(tempX);
+                                    level.get(currentChapter).get(currentLevel).getProjectile().setyPos(tempY);
                                     if (rect.getHeight() == 1) {
                                         level.get(currentChapter).get(currentLevel).horizontalCollision();
                                     } else if (rect.getWidth() == 1) {
                                         level.get(currentChapter).get(currentLevel).verticalCollision();
                                     }
-                                    break;
+                                    //break;
 
                                 }
                             }
-                        }
-
-                        if(collision){
-                            level.get(currentChapter).get(currentLevel).getProjectile().setxPos(tempX);
-                            level.get(currentChapter).get(currentLevel).getProjectile().setyPos(tempY);
                         }
 
                     }
@@ -343,7 +341,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
 
             }
             else if (cs.touchDown(x,y) >= 0 && cs.touchDown(x,y) <= 5){
-                currentChapter = cs.touchDown(x,y);
+                currentChapter = cs.touchDown(x,y) -1 ;
                 cs = null;
                 ls = new Levelscreen(level.get(currentChapter).size()-1, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
             }
