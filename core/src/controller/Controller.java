@@ -321,17 +321,17 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         x = (int)((float)x / (float)Gdx.graphics.getWidth() * (float)GAME_WORLD_WIDTH);
         y = (int)GAME_WORLD_HEIGHT-(int)((float)y / Gdx.graphics.getHeight() * GAME_WORLD_HEIGHT);
         if(ts != null){
-            if(x > 0.05 * GAME_WORLD_WIDTH){
+            //if(x > 0.05 * GAME_WORLD_WIDTH){   // LEVELEDITOR AUSKOMMENTIERT
                 ts.dispose();
                 ts = null;
                 //ls = new Levelscreen(beatenLevel, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 cs = new Chapterscreen(5, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
-            }
-            else{
-                ts.dispose();
-                ts = null;
-                le = new Leveleditor(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
-            }
+            //}
+            //else{
+            //    ts.dispose();
+            //    ts = null;
+            //    le = new Leveleditor(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+            //}
         }
         else if(ls != null){
             int n = ls.touchDown(x,y);
@@ -357,8 +357,18 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
             }
         }
         else if(gs != null){
-            if(!level.get(currentChapter).get(currentLevel).released()){
-                level.get(currentChapter).get(currentLevel).projectileReleased();
+            if(gs.touchDown(x,y) == -1){
+                if(!level.get(currentChapter).get(currentLevel).released()){
+                    level.get(currentChapter).get(currentLevel).projectileReleased();
+                }
+            }
+            else if(gs.touchDown(x, y) == 0){
+                gs.step(level.get(currentChapter).get(currentLevel));
+                level.get(currentChapter).get(currentLevel).reset();
+                gs.dispose();
+                stepTimer.stop();
+                ls = new Levelscreen(beatenLevel, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+                gs = null;
             }
         }
         else if(ws != null){

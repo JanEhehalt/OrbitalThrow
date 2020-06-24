@@ -9,7 +9,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
@@ -19,6 +22,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import java.awt.Point;
 import java.util.ArrayList;
+import model.Button;
 
 import model.Goal;
 import model.Level;
@@ -57,6 +61,15 @@ public class Gamescreen{
     ArrayList<Rectangle> objectRectsBottom;
     ArrayList<Rectangle> objectRectsLeft;
     ArrayList<Rectangle> objectRectsRight;
+    
+    
+    // BUTTONS
+    ArrayList<Button> buttons;
+    
+    
+    
+    // BITMAP FONT
+    BitmapFont font;
 
     boolean win;
     
@@ -78,7 +91,23 @@ public class Gamescreen{
         objectRectsBottom = new ArrayList<>();
         objectRectsLeft = new ArrayList<>();
         objectRectsRight = new ArrayList<>();
+        
+        
+        // CREATE DEFAULT BUTTONS
+        buttons = new ArrayList<>();
+        buttons.add(new Button("<", (int)(GAME_WORLD_WIDTH * 0.02),(int) (GAME_WORLD_HEIGHT - (GAME_WORLD_HEIGHT * 0.02) - 80), 80, 80, 0));
 
+        
+        // CREATE BITMAP FONT
+        font = new BitmapFont();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 21;
+        font = generator.generateFont(parameter);
+        generator.dispose();
+        font.setColor(Color.BLACK);
+        
+        
         win = false;
         
         
@@ -117,7 +146,8 @@ public class Gamescreen{
         g = level.getGoal();
 
         objects = level.getObjects();
-
+        
+        batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
         
@@ -178,6 +208,21 @@ public class Gamescreen{
                 shapeRenderer.rect(object.getX(), object.getY(), object.getWidth(), object.getHeight());
             }
         }
+        
+        shapeRenderer.setColor(Color.BLACK);
+        for(Button button : buttons){
+                    shapeRenderer.rectLine(button.getxPos(), button.getyPos(), button.getxPos() + button.getWidth(), button.getyPos(), 4);
+                    shapeRenderer.rectLine(button.getxPos(), button.getyPos(), button.getxPos(), button.getyPos() + button.getHeight(), 4);
+                    shapeRenderer.rectLine(button.getxPos(), button.getyPos()+button.getHeight(), button.getxPos()+button.getWidth(), button.getyPos() + button.getHeight(), 4);
+                    shapeRenderer.rectLine(button.getxPos() + button.getWidth(), button.getyPos(),button.getxPos() + button.getWidth(), button.getyPos() + button.getHeight(), 4);
+                    shapeRenderer.end();
+                    batch.begin();
+                    font.getData().setScale(2.4f);
+                    font.draw(batch, button.getText(),button.getxPos() + (float) button.getWidth()/2 - getTextWidth(button.getText())/2, button.getyPos() + (float) button.getHeight()/2 + getTextHeight(button.getText())/2);
+
+                    batch.end();
+                    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            }
 
         
 
@@ -187,6 +232,7 @@ public class Gamescreen{
         
         
         shapeRenderer.end();
+        batch.begin();
         
         
 
@@ -225,5 +271,24 @@ public class Gamescreen{
     }
     public ArrayList<Rectangle> getObjectRectsLeft(){
         return objectRectsLeft;
+    }
+    public float getTextWidth(String text){
+        GlyphLayout glyphLayout = new GlyphLayout();
+        glyphLayout.setText(font,text);
+        return glyphLayout.width;
+    }
+    public float getTextHeight(String text){
+        GlyphLayout glyphLayout = new GlyphLayout();
+        glyphLayout.setText(font,text);
+        return glyphLayout.height;
+    }
+    public int touchDown(int x, int y){
+        Rectangle mouse = new Rectangle(x,y,1,1);
+        if(Intersector.overlaps(buttons.get(0).getRectangle(), mouse)){
+            return 0;
+        }
+        else{
+            return -1;
+        }
     }
 }

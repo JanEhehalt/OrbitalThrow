@@ -118,31 +118,11 @@ public class Levelscreen{
     
     public void render(SpriteBatch batch, Level level) {
 
-        // LEFT - RIGHT BUTTON
-        if(selectedLevel > 0){
-            buttonLeft.draw(batch);
-        }
-        if(selectedLevel < levelAmount){
-            buttonRight.draw(batch);
-        }
-
-        // LEVEL NAME
-        font.getData().setScale(6);
-        font.draw(batch,"LEVEL: "+ (selectedLevel + 1), GAME_WORLD_WIDTH / 2 - getTextWidth("LEVEL: "+ selectedLevel) / 2, GAME_WORLD_HEIGHT * 0.95f);
-        
-        font.getData().setScale(2);
-        font.draw(batch, "click to start ...", GAME_WORLD_WIDTH / 2 - getTextWidth("click to start ...") / 2, GAME_WORLD_HEIGHT * 0.1f);
-        
         batch.end();
 
         // PREVIEW
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
-            // BORDER
-        shapeRenderer.rectLine(0.15f * GAME_WORLD_WIDTH, 0.15f * GAME_WORLD_HEIGHT, 0.85f * GAME_WORLD_WIDTH, 0.15f * GAME_WORLD_HEIGHT, 3);
-        shapeRenderer.rectLine(0.15f * GAME_WORLD_WIDTH, 0.15f * GAME_WORLD_HEIGHT, 0.15f * GAME_WORLD_WIDTH, 0.85f * GAME_WORLD_HEIGHT, 3);
-        shapeRenderer.rectLine(0.85f * GAME_WORLD_WIDTH, 0.15f * GAME_WORLD_HEIGHT, 0.85f * GAME_WORLD_WIDTH, 0.85f * GAME_WORLD_HEIGHT, 3);
-        shapeRenderer.rectLine(0.15f * GAME_WORLD_WIDTH, 0.85f * GAME_WORLD_HEIGHT, 0.85f * GAME_WORLD_WIDTH, 0.85f * GAME_WORLD_HEIGHT, 3);
         
         float previewX = 0.15f * GAME_WORLD_WIDTH;
         float previewY = 0.15f * GAME_WORLD_HEIGHT;
@@ -170,6 +150,20 @@ public class Levelscreen{
         for(Rectangle rect : level.getObjects()){
             shapeRenderer.rect(previewX + rect.getX() * 0.7f, previewY + rect.getY() * 0.7f, rect.getWidth() * 0.7f, rect.getHeight() * 0.7f);
         }
+            // OVERDRAWING TOO BIG OBJECTS
+            shapeRenderer.setColor(Color.WHITE);
+            shapeRenderer.rect(0, 0, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT * 0.15f  );
+            shapeRenderer.rect(0, 0, GAME_WORLD_WIDTH * 0.15f, GAME_WORLD_HEIGHT );
+            shapeRenderer.rect(0, GAME_WORLD_HEIGHT * 0.85f, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT * 0.15f);
+            shapeRenderer.rect(GAME_WORLD_WIDTH * 0.85f, 0, GAME_WORLD_WIDTH * 0.15f, GAME_WORLD_HEIGHT);
+            
+            // BORDER
+            shapeRenderer.setColor(Color.BLACK);
+            shapeRenderer.rectLine(0.15f * GAME_WORLD_WIDTH, 0.15f * GAME_WORLD_HEIGHT, 0.85f * GAME_WORLD_WIDTH, 0.15f * GAME_WORLD_HEIGHT, 3);
+            shapeRenderer.rectLine(0.15f * GAME_WORLD_WIDTH, 0.15f * GAME_WORLD_HEIGHT, 0.15f * GAME_WORLD_WIDTH, 0.85f * GAME_WORLD_HEIGHT, 3);
+            shapeRenderer.rectLine(0.85f * GAME_WORLD_WIDTH, 0.15f * GAME_WORLD_HEIGHT, 0.85f * GAME_WORLD_WIDTH, 0.85f * GAME_WORLD_HEIGHT, 3);
+            shapeRenderer.rectLine(0.15f * GAME_WORLD_WIDTH, 0.85f * GAME_WORLD_HEIGHT, 0.85f * GAME_WORLD_WIDTH, 0.85f * GAME_WORLD_HEIGHT, 3);
+
         //
 
         // BUTTONS
@@ -187,6 +181,21 @@ public class Levelscreen{
         }
         shapeRenderer.end();
         batch.begin();
+        
+        // LEFT - RIGHT BUTTON
+        if(selectedLevel > 0){
+            buttonLeft.draw(batch);
+        }
+        if(selectedLevel < levelAmount){
+            buttonRight.draw(batch);
+        }
+
+        // LEVEL NAME
+        font.getData().setScale(6);
+        font.draw(batch,"LEVEL: "+ (selectedLevel + 1), GAME_WORLD_WIDTH / 2 - getTextWidth("LEVEL: "+ selectedLevel) / 2, GAME_WORLD_HEIGHT * 0.95f);
+        
+        font.getData().setScale(2);
+        font.draw(batch, "click to start ...", GAME_WORLD_WIDTH / 2 - getTextWidth("click to start ...") / 2, GAME_WORLD_HEIGHT * 0.1f);
         
         // END
        

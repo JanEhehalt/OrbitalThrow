@@ -57,7 +57,7 @@ public class Chapterscreen{
         buttons.add(new Button("Chapter 3", (int)(0.15 * GAME_WORLD_WIDTH + buttons.get(0).getWidth()*2 - 0.5 * 3/80 * GAME_WORLD_WIDTH), (int)(0.7 * GAME_WORLD_HEIGHT), (int)((1f/3f) * 0.8 *GAME_WORLD_WIDTH), (int)(0.2 * GAME_WORLD_HEIGHT), 3));
         buttons.add(new Button("Chapter 4", (int)(0.05 * GAME_WORLD_WIDTH - 0.5 * 3/80 * GAME_WORLD_WIDTH), (int)(0.3 * GAME_WORLD_HEIGHT), (int)((1f/3f) * 0.8 *GAME_WORLD_WIDTH), (int)(0.2 * GAME_WORLD_HEIGHT), 4));
         buttons.add(new Button("Chapter 5", (int)(0.1 * GAME_WORLD_WIDTH + buttons.get(0).getWidth() - 0.5 * 3/80 * GAME_WORLD_WIDTH), (int)(0.3 * GAME_WORLD_HEIGHT), (int)((1f/3f) * 0.8 *GAME_WORLD_WIDTH), (int)(0.2 * GAME_WORLD_HEIGHT), 5));
-        //buttons.add(new Button("User Level",(int)(0.15 * GAME_WORLD_WIDTH + buttons.get(0).getWidth()*2 - 0.5 * 3/80 * GAME_WORLD_WIDTH), (int)(0.3 * GAME_WORLD_HEIGHT), (int)((1f/3f) * 0.8 *GAME_WORLD_WIDTH), (int)(0.2 * GAME_WORLD_HEIGHT), 0));
+        buttons.add(new Button("coming soon ...",(int)(0.15 * GAME_WORLD_WIDTH + buttons.get(0).getWidth()*2 - 0.5 * 3/80 * GAME_WORLD_WIDTH), (int)(0.3 * GAME_WORLD_HEIGHT), (int)((1f/3f) * 0.8 *GAME_WORLD_WIDTH), (int)(0.2 * GAME_WORLD_HEIGHT), -1));
         buttons.add(new Button("< back", 20,10,200,80,6));
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
