@@ -72,7 +72,7 @@ public class Titlescreen{
     
     public void render(SpriteBatch batch) {
         font.getData().setScale(6);
-        font.draw(batch, "THROWGAME", GAME_WORLD_WIDTH / 2 - getTextWidth("THROWGAME") / 2,  GAME_WORLD_HEIGHT * 0.9f);
+        font.draw(batch, "ORBITAL THROW", GAME_WORLD_WIDTH / 2 - getTextWidth("ORBITAL THROW") / 2,  GAME_WORLD_HEIGHT * 0.9f);
         font.getData().setScale(2);
         clicktostartX = GAME_WORLD_WIDTH / 2 - getTextWidth("click to start ...") / 2;
         font.draw(batch, "click to start ...", clicktostartX,  clicktostartY);

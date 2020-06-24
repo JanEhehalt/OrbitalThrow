@@ -11,6 +11,7 @@ public class DesktopLauncher {
                 config.fullscreen = false;
                 config.height = 900;
                 config.width = 1600;
+                config.title = "Orbital Throw";
 		new LwjglApplication(new Controller(), config);
 	}
 }

@@ -209,7 +209,8 @@ public class Gamescreen{
                 shapeRenderer.rect(object.getX(), object.getY(), object.getWidth(), object.getHeight());
             }
         }
-        
+
+         */
         shapeRenderer.setColor(Color.BLACK);
         for(Button button : buttons){
                     shapeRenderer.rectLine(button.getxPos(), button.getyPos(), button.getxPos() + button.getWidth(), button.getyPos(), 4);
@@ -224,8 +225,6 @@ public class Gamescreen{
                     batch.end();
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             }
-
-         */
 
         
 
