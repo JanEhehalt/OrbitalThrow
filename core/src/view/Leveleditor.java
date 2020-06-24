@@ -74,7 +74,7 @@ public class Leveleditor{
         shapeRenderer.setProjectionMatrix(matrix);
 
         // CREATE DEFAULT BUTTONS
-        buttons = new ArrayList();
+        buttons = new ArrayList<>();
         buttons.add(new Button("Pivot", (int)(GAME_WORLD_WIDTH * 0.02),(int) (GAME_WORLD_HEIGHT - (buttons.size()+1) * 0.1 * GAME_WORLD_HEIGHT), 250, 80, 0));
         buttons.add(new Button("Goal", (int)(GAME_WORLD_WIDTH * 0.02), (int)(GAME_WORLD_HEIGHT - (buttons.size()+1) * 0.1 * GAME_WORLD_HEIGHT), 250, 80, 1));
         buttons.add(new Button("new Obstacle", (int)(GAME_WORLD_WIDTH * 0.02), (int)(GAME_WORLD_HEIGHT - (buttons.size()+1) * 0.1 * GAME_WORLD_HEIGHT), 250, 80, 2));
@@ -124,7 +124,7 @@ public class Leveleditor{
                     shapeRenderer.end();
                     batch.begin();
                     font.getData().setScale(1.6f);
-                    font.draw(batch, button.getText(),button.getxPos() + button.getWidth()/2 - getTextWidth(button.getText())/2, button.getyPos() + button.getHeight()/2 + getTextHeight(button.getText())/2);
+                    font.draw(batch, button.getText(),button.getxPos() + (float) button.getWidth()/2 - getTextWidth(button.getText())/2, button.getyPos() + (float) button.getHeight()/2 + getTextHeight(button.getText())/2);
 
                     batch.end();
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
