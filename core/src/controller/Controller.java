@@ -187,9 +187,9 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                                     collision = true;
                                     level.get(currentChapter).get(currentLevel).getProjectile().setxPos(tempX);
                                     level.get(currentChapter).get(currentLevel).getProjectile().setyPos(tempY);
-                                    if (rect.getHeight() == 1) {
+                                    if (rect.getHeight() == 5) {
                                         level.get(currentChapter).get(currentLevel).horizontalCollision();
-                                    } else if (rect.getWidth() == 1) {
+                                    } else if (rect.getWidth() == 5) {
                                         level.get(currentChapter).get(currentLevel).verticalCollision();
                                     }
                                     //break;
