@@ -19,6 +19,7 @@ import java.util.ArrayList;
 public class Level {
     private final double G = 0.05;
     private final int RADIUS = 150;
+    private final double ELOSS = 1;
 
     private Goal goal;
     private Projectile projectile;
@@ -73,13 +74,13 @@ public class Level {
     }
 
     public void horizontalCollision(){
-        this.projectile.setvY(-this.projectile.getvY());
-        this.projectile.setvX(this.projectile.getvX());
+        this.projectile.setvY(-this.projectile.getvY() * ELOSS);
+        this.projectile.setvX(this.projectile.getvX() * ELOSS);
     }
 
     public void verticalCollision(){
-        this.projectile.setvX(-this.projectile.getvX());
-        this.projectile.setvY(this.projectile.getvY());
+        this.projectile.setvX(-this.projectile.getvX() * ELOSS);
+        this.projectile.setvY(this.projectile.getvY() * ELOSS);
     }
 
     public void step(){

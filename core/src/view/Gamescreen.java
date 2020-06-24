@@ -164,6 +164,7 @@ public class Gamescreen{
         */
         // object hitboxes
 
+        /*
         if(objects != null) {
             for (Rectangle object : objectRectsBottom) {
                 shapeRenderer.rect(object.getX(), object.getY(), object.getWidth(), object.getHeight());
@@ -178,6 +179,8 @@ public class Gamescreen{
                 shapeRenderer.rect(object.getX(), object.getY(), object.getWidth(), object.getHeight());
             }
         }
+
+         */
 
         
 
