@@ -167,11 +167,9 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                         double tempY = level.get(currentChapter).get(currentLevel).getProjectile().getyPos();
 
                         for(Rectangle rect : gs.getGoalRects()){
-                            if(Intersector.overlaps(gs.getProjectileCirc(), rect)) {
+                            if(Intersector.overlaps(gs.getProjectileCirc(), rect) && !collision) {
 
                                 collision = true;
-                                level.get(currentChapter).get(currentLevel).getProjectile().setxPos(tempX);
-                                level.get(currentChapter).get(currentLevel).getProjectile().setyPos(tempY);
                                 if (rect.getHeight() == 1) {
                                     level.get(currentChapter).get(currentLevel).horizontalCollision();
                                 } else if (rect.getWidth() == 1) {
@@ -182,20 +180,24 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                         }
                         if(gs.getObjectRects() != null) {
                             for (Rectangle rect : gs.getObjectRects()) {
-                                if (Intersector.overlaps(gs.getProjectileCirc(), rect)) {
+                                if (Intersector.overlaps(gs.getProjectileCirc(), rect) && !collision) {
 
                                     collision = true;
-                                    level.get(currentChapter).get(currentLevel).getProjectile().setxPos(tempX);
-                                    level.get(currentChapter).get(currentLevel).getProjectile().setyPos(tempY);
-                                    if (rect.getHeight() == 5) {
+                                    
+                                    if (rect.getHeight() == 1) {
                                         level.get(currentChapter).get(currentLevel).horizontalCollision();
-                                    } else if (rect.getWidth() == 5) {
+                                    } else if (rect.getWidth() == 1) {
                                         level.get(currentChapter).get(currentLevel).verticalCollision();
                                     }
                                     //break;
 
                                 }
                             }
+                        }
+                        
+                        if(collision){
+                            level.get(currentChapter).get(currentLevel).getProjectile().setxPos(tempX);
+                            level.get(currentChapter).get(currentLevel).getProjectile().setyPos(tempY);
                         }
 
                     }

@@ -87,12 +87,12 @@ public class Gamescreen{
         goalRects[6] = new Rectangle(x + w-1        ,y              ,1          ,h         );
         goalRects[7] = new Rectangle(x              ,y              ,w          ,1         );
 
-        int hitboxWidth = 5;        // CHANGE IN STEP TIMER IN CONTROLLER TOO
+        int hitboxWidth = 1;        // CHANGE IN STEP TIMER IN CONTROLLER TOO
         for (Rectangle object : objects) {
-            objectRects.add(new Rectangle(object.getX(), object.getY(), hitboxWidth, object.getHeight()));
-            objectRects.add(new Rectangle(object.getX(), object.getY() + object.getHeight() - hitboxWidth, object.getWidth(), hitboxWidth));
-            objectRects.add(new Rectangle(object.getX() + object.getWidth() - hitboxWidth, object.getY(), hitboxWidth, object.getHeight()));
-            objectRects.add(new Rectangle(object.getX(), object.getY(), object.getWidth(), hitboxWidth));
+            objectRects.add(new Rectangle(object.getX() + 2, object.getY(), object.getWidth() - 4, hitboxWidth));      // UNTEN
+            objectRects.add(new Rectangle(object.getX() + 2, object.getY() + object.getHeight() - hitboxWidth, object.getWidth() - 4, hitboxWidth));    // OBEN
+            objectRects.add(new Rectangle(object.getX() + object.getWidth() - hitboxWidth, object.getY() + 2, hitboxWidth, object.getHeight() - 4));    // RECHTS
+            objectRects.add(new Rectangle(object.getX(), object.getY() + 2, hitboxWidth, object.getHeight() - 4));   // LINKS
         }
         
         goalRect = new Rectangle(x + w*th, y + h*th, w * th * 3, h * 0.1f);
