@@ -196,7 +196,7 @@ public class Leveleditor{
                 goalSet = true;
                 break;
             case 2: // NEW OBSTACLE
-                level.addRectangle(x - 100,y - 50,200,100);
+                level.addRectangle(x,y,200,100);
                 state = -1;
                 break;
             default:
