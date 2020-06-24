@@ -303,7 +303,6 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
 
     @Override
     public boolean keyDown(int keycode) {
-        camera.translate(5f, 5f);
         return false;
     }
 
