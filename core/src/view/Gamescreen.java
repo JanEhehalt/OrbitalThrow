@@ -53,8 +53,11 @@ public class Gamescreen{
     float GAME_WORLD_WIDTH;
     float GAME_WORLD_HEIGHT;
     ArrayList<Rectangle> objects;
-    ArrayList<Rectangle> objectRects;
-    
+    ArrayList<Rectangle> objectRectsTop;
+    ArrayList<Rectangle> objectRectsBottom;
+    ArrayList<Rectangle> objectRectsLeft;
+    ArrayList<Rectangle> objectRectsRight;
+
     boolean win;
     
     public Gamescreen(Level level, float width, float height, Matrix4 matrix){
@@ -71,8 +74,11 @@ public class Gamescreen{
         th = g.getThickness();
         p = level.getProjectile();
         objects = level.getObjects();
-        objectRects = new ArrayList<>();
-        
+        objectRectsTop = new ArrayList<>();
+        objectRectsBottom = new ArrayList<>();
+        objectRectsLeft = new ArrayList<>();
+        objectRectsRight = new ArrayList<>();
+
         win = false;
         
         
@@ -89,10 +95,10 @@ public class Gamescreen{
 
         int hitboxWidth = 1;        // CHANGE IN STEP TIMER IN CONTROLLER TOO
         for (Rectangle object : objects) {
-            objectRects.add(new Rectangle(object.getX() + 2, object.getY(), object.getWidth() - 4, hitboxWidth));      // UNTEN
-            objectRects.add(new Rectangle(object.getX() + 2, object.getY() + object.getHeight() - hitboxWidth, object.getWidth() - 4, hitboxWidth));    // OBEN
-            objectRects.add(new Rectangle(object.getX() + object.getWidth() - hitboxWidth, object.getY() + 2, hitboxWidth, object.getHeight() - 4));    // RECHTS
-            objectRects.add(new Rectangle(object.getX(), object.getY() + 2, hitboxWidth, object.getHeight() - 4));   // LINKS
+            objectRectsBottom.add(new Rectangle(object.getX() + 2, object.getY(), object.getWidth() - 4, hitboxWidth));      // UNTEN
+            objectRectsTop.add(new Rectangle(object.getX() + 2, object.getY() + object.getHeight() - hitboxWidth, object.getWidth() - 4, hitboxWidth));    // OBEN
+            objectRectsRight.add(new Rectangle(object.getX() + object.getWidth() - hitboxWidth, object.getY() + 2, hitboxWidth, object.getHeight() - 4));    // RECHTS
+            objectRectsLeft.add(new Rectangle(object.getX(), object.getY() + 2, hitboxWidth, object.getHeight() - 4));   // LINKS
         }
         
         goalRect = new Rectangle(x + w*th, y + h*th, w * th * 3, h * 0.1f);
@@ -159,7 +165,16 @@ public class Gamescreen{
         // object hitboxes
 
         if(objects != null) {
-            for (Rectangle object : objectRects) {
+            for (Rectangle object : objectRectsBottom) {
+                shapeRenderer.rect(object.getX(), object.getY(), object.getWidth(), object.getHeight());
+            }
+            for (Rectangle object : objectRectsTop) {
+                shapeRenderer.rect(object.getX(), object.getY(), object.getWidth(), object.getHeight());
+            }
+            for (Rectangle object : objectRectsRight) {
+                shapeRenderer.rect(object.getX(), object.getY(), object.getWidth(), object.getHeight());
+            }
+            for (Rectangle object : objectRectsLeft) {
                 shapeRenderer.rect(object.getX(), object.getY(), object.getWidth(), object.getHeight());
             }
         }
@@ -198,7 +213,17 @@ public class Gamescreen{
     public Circle getProjectileCirc(){
         return projectileCirc;
     }
-    public ArrayList<Rectangle> getObjectRects(){
-        return objectRects;
+
+    public ArrayList<Rectangle> getObjectRectsBottom(){
+        return objectRectsBottom;
+    }
+    public ArrayList<Rectangle> getObjectRectsTop(){
+        return objectRectsTop;
+    }
+    public ArrayList<Rectangle> getObjectRectsRight(){
+        return objectRectsRight;
+    }
+    public ArrayList<Rectangle> getObjectRectsLeft(){
+        return objectRectsLeft;
     }
 }

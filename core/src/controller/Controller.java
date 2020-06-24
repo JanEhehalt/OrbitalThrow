@@ -175,21 +175,66 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                                 } else if (rect.getWidth() == 1) {
                                     level.get(currentChapter).get(currentLevel).verticalCollision();
                                 }
-                                //break;
+                                break;
                             }
                         }
-                        if(gs.getObjectRects() != null) {
-                            for (Rectangle rect : gs.getObjectRects()) {
-                                if (Intersector.overlaps(gs.getProjectileCirc(), rect) && !collision) {
+
+                        if(gs.getObjectRectsBottom() != null) {
+                            for (Rectangle rect : gs.getObjectRectsBottom()) {
+                                if (Intersector.overlaps(gs.getProjectileCirc(), rect)) {
 
                                     collision = true;
                                     
-                                    if (rect.getHeight() == 1) {
+                                    if (level.get(currentChapter).get(currentLevel).getProjectile().getvY() >= 0){
                                         level.get(currentChapter).get(currentLevel).horizontalCollision();
-                                    } else if (rect.getWidth() == 1) {
+                                    }
+
+                                    break;
+
+                                }
+                            }
+                        }
+                        if(gs.getObjectRectsTop() != null) {
+                            for (Rectangle rect : gs.getObjectRectsTop()) {
+                                if (Intersector.overlaps(gs.getProjectileCirc(), rect)) {
+
+                                    collision = true;
+
+                                    if (level.get(currentChapter).get(currentLevel).getProjectile().getvY() <= 0) {
+                                        level.get(currentChapter).get(currentLevel).horizontalCollision();
+                                    }
+
+                                    break;
+
+                                }
+                            }
+                        }
+                        if(gs.getObjectRectsRight() != null) {
+                            for (Rectangle rect : gs.getObjectRectsRight()) {
+                                if (Intersector.overlaps(gs.getProjectileCirc(), rect)) {
+
+                                    collision = true;
+
+                                    if (level.get(currentChapter).get(currentLevel).getProjectile().getvX() <= 0) {
                                         level.get(currentChapter).get(currentLevel).verticalCollision();
                                     }
-                                    //break;
+
+                                    break;
+
+                                }
+                            }
+                        }
+                        if(gs.getObjectRectsLeft() != null) {
+                            for (Rectangle rect : gs.getObjectRectsLeft()) {
+                                if (Intersector.overlaps(gs.getProjectileCirc(), rect)) {
+
+                                    collision = true;
+
+                                    if (level.get(currentChapter).get(currentLevel).getProjectile().getvX() >= 0) {
+                                        level.get(currentChapter).get(currentLevel).verticalCollision();
+                                    }
+
+                                    break;
 
                                 }
                             }
