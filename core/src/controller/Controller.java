@@ -17,6 +17,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -82,7 +83,12 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         float aspectRatio = (float)Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth();
 
         camera = new OrthographicCamera();
-        viewport = new StretchViewport(GAME_WORLD_WIDTH/*  *aspectRatio*/, GAME_WORLD_HEIGHT, camera);
+        //if(aspectRatio == (9f/16f)){
+        //    viewport = new StretchViewport(GAME_WORLD_WIDTH/*  *aspectRatio*/, GAME_WORLD_HEIGHT, camera);
+        //}
+        //else{
+            viewport = new FitViewport(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera);
+        //}
         viewport.apply();
         camera.position.set(GAME_WORLD_WIDTH/2, GAME_WORLD_HEIGHT/2, 0);
 

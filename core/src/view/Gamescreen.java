@@ -87,13 +87,11 @@ public class Gamescreen{
         goalRects[6] = new Rectangle(x + w-1        ,y              ,1          ,h         );
         goalRects[7] = new Rectangle(x              ,y              ,w          ,1         );
 
-        if(objects != null) {
-            for (Rectangle object : objects) {
-                objectRects.add(new Rectangle(object.getX(), object.getY(), 1, object.getHeight()));
-                objectRects.add(new Rectangle(object.getX(), object.getY() + object.getHeight() - 1, object.getWidth(), 1));
-                objectRects.add(new Rectangle(object.getX() + object.getWidth() - 1, object.getY(), 1, object.getHeight()));
-                objectRects.add(new Rectangle(object.getX(), object.getY(), object.getWidth(), 1));
-            }
+        for (Rectangle object : objects) {
+            objectRects.add(new Rectangle(object.getX(), object.getY(), 1, object.getHeight()));
+            objectRects.add(new Rectangle(object.getX(), object.getY() + object.getHeight() - 1, object.getWidth(), 1));
+            objectRects.add(new Rectangle(object.getX() + object.getWidth() - 1, object.getY(), 1, object.getHeight()));
+            objectRects.add(new Rectangle(object.getX(), object.getY(), object.getWidth(), 1));
         }
         
         goalRect = new Rectangle(x + w*th, y + h*th, w * th * 3, h * 0.1f);
