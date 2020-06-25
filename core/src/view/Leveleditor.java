@@ -51,6 +51,8 @@ public class Leveleditor{
     boolean pivotSet;
     boolean toSave;
     int state; //-1: nothig selected, 0: place pivot, 2: pivot direction, 3: goal, 4: obstacles
+    int mouseX;
+    int mouseY;
 
     // BITMAP FONT
     BitmapFont font;
@@ -132,6 +134,29 @@ public class Leveleditor{
             }
         }
 
+        // DRAW SELECTED
+        if(state == 0){    // PIVOT
+            shapeRenderer.setColor(Color.LIGHT_GRAY);
+            shapeRenderer.circle(mouseX, mouseY, 150);
+            shapeRenderer.setColor(Color.BLACK);
+            shapeRenderer.rectLine(mouseX, mouseY, mouseX, mouseY + 150, 3);
+            shapeRenderer.setColor(Color.GRAY);
+            shapeRenderer.circle(mouseX, mouseY, 5);
+            shapeRenderer.setColor(Color.BLACK);
+            shapeRenderer.circle(mouseX, mouseY + 150, 10);
+        }
+        if(state == 1){    // goal
+            float w = level.getGoal().getSizeX();
+            float h = level.getGoal().getSizeY();
+            float th = level.getGoal().getThickness();
+            shapeRenderer.rect(mouseX, mouseY, th * w, h);
+            shapeRenderer.rect(mouseX + th * w, mouseY, th * 3 * w, th * h);
+            shapeRenderer.rect(mouseX + th * w + th * 3 * w, mouseY, th * w, h);
+        }
+        if(state == 2){
+            shapeRenderer.rect(mouseX,mouseY,200,100);
+        }
+
         // DRAW OBSTACLES
         for(Rectangle rect : level.getObjects()){
             shapeRenderer.rect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
@@ -185,18 +210,18 @@ public class Leveleditor{
                 break;
             case 0: // SET PIVOT
                 level.setPivot(x, y);
-                level.getProjectile().setxPos(x);
-                level.getProjectile().setyPos(y + 150);
+                level.getProjectile().setxPos(mouseX);
+                level.getProjectile().setyPos(mouseY + 150);
                 pivotSet = true;
                 state = -1;
                 break;
             case 1: // SET GOAL
-                level.setGoal(x, y);
+                level.setGoal(mouseX, mouseY);
                 state = -1;
                 goalSet = true;
                 break;
             case 2: // NEW OBSTACLE
-                level.addRectangle(x,y,200,100);
+                level.addRectangle(mouseX,mouseY,200,100);
                 state = -1;
                 break;
             default:
@@ -224,6 +249,11 @@ public class Leveleditor{
         FileHandle file = Gdx.files.local("levels/level2.json");
         file.writeString(json.toJson(level), false);
         toSave = true;
+    }
+
+    public void mouseMoved(int x, int y){
+        mouseX = x;
+        mouseY = y;
     }
     
 }

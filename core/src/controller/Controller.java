@@ -82,12 +82,12 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         float aspectRatio = (float)Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth();
 
         camera = new OrthographicCamera();
-        //if(aspectRatio == (9f/16f)){
-        //    viewport = new StretchViewport(GAME_WORLD_WIDTH/*  *aspectRatio*/, GAME_WORLD_HEIGHT, camera);
-        //}
-        //else{
+        if(aspectRatio == (9f/16f)){
+            viewport = new StretchViewport(GAME_WORLD_WIDTH/*  *aspectRatio*/, GAME_WORLD_HEIGHT, camera);
+        }
+        else{
             viewport = new FitViewport(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera);
-        //}
+        }
         viewport.apply();
         camera.position.set(GAME_WORLD_WIDTH/2, GAME_WORLD_HEIGHT/2, 0);
 
@@ -321,17 +321,17 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
         x = (int)((float)x / (float)Gdx.graphics.getWidth() * (float)GAME_WORLD_WIDTH);
         y = (int)GAME_WORLD_HEIGHT-(int)((float)y / Gdx.graphics.getHeight() * GAME_WORLD_HEIGHT);
         if(ts != null){
-            //if(x > 0.05 * GAME_WORLD_WIDTH){   // LEVELEDITOR AUSKOMMENTIERT
+            if(x > 0.05 * GAME_WORLD_WIDTH){   // LEVELEDITOR AUSKOMMENTIERT
                 ts.dispose();
                 ts = null;
                 //ls = new Levelscreen(beatenLevel, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
                 cs = new Chapterscreen(5, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
-            //}
-            //else{
-            //    ts.dispose();
-            //    ts = null;
-            //    le = new Leveleditor(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
-            //}
+            }
+            else{
+                ts.dispose();
+                ts = null;
+                le = new Leveleditor(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, camera.combined);
+            }
         }
         else if(ls != null){
             int n = ls.touchDown(x,y);
@@ -429,6 +429,9 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
     public boolean mouseMoved(int i, int i1) {
             float x = ((float)i / (float)Gdx.graphics.getWidth()) *(float) GAME_WORLD_WIDTH;
             float y = GAME_WORLD_HEIGHT - ((float)i1 / (float)Gdx.graphics.getHeight()) * (float)GAME_WORLD_HEIGHT;
+            if(le != null){
+                le.mouseMoved((int)x,(int)y);
+            }
             //System.out.println("x:" + x + "   y:" + y);
         return true;
     }
