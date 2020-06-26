@@ -49,8 +49,7 @@ public class Gamescreen{
     ShapeRenderer shapeRenderer;
     int pivotX;
     int pivotY;
-    
-    Rectangle[] goalRects;
+
     Rectangle goalRect;
     Circle projectileCirc;
     // 0: Left, 1: LeftTop, 2: CenterLeft, 3: CenterBottom, 4: CenterRight, 5: RightTop, 6: Right, 7: Bottom
@@ -109,18 +108,16 @@ public class Gamescreen{
         
         
         win = false;
-        
-        
-        goalRects = new Rectangle[8];
-        
-        goalRects[0] = new Rectangle(x              ,y              ,1          ,h         );
-        goalRects[1] = new Rectangle(x              ,y + h - 1      ,w * th     ,1         );
-        goalRects[2] = new Rectangle(x + th * w-1f  ,y + h * th     ,1          ,h * th*4  );
-        goalRects[3] = new Rectangle(x + th * w     ,y + h * th - 1 ,w *th*3    ,1         );
-        goalRects[4] = new Rectangle(x + th*4 * w   ,y + h * th     ,1          ,h * th*4  );
-        goalRects[5] = new Rectangle(x + th*4 * w   ,y + h - 1f     ,w *th      ,1         );
-        goalRects[6] = new Rectangle(x + w-1        ,y              ,1          ,h         );
-        goalRects[7] = new Rectangle(x              ,y              ,w          ,1         );
+
+        // 0: Left, 1: LeftTop, 2: CenterLeft, 3: CenterBottom, 4: CenterRight, 5: RightTop, 6: Right, 7: Bottom
+        objectRectsLeft.add(new Rectangle(x              ,y              ,1          ,h         ));
+        objectRectsTop.add(new Rectangle(x              ,y + h - 1      ,w * th     ,1         ));
+        objectRectsRight.add(new Rectangle(x + th * w-1f  ,y + h * th     ,1          ,h * th*4  ));
+        objectRectsTop.add(new Rectangle(x + th * w     ,y + h * th - 1 ,w *th*3    ,1         ));
+        objectRectsLeft.add(new Rectangle(x + th*4 * w   ,y + h * th     ,1          ,h * th*4  ));
+        objectRectsTop.add(new Rectangle(x + th*4 * w   ,y + h - 1f     ,w *th      ,1         ));
+        objectRectsRight.add(new Rectangle(x + w-1        ,y              ,1          ,h         ));
+        objectRectsBottom.add(new Rectangle(x              ,y              ,w          ,1         ));
 
         int hitboxWidth = 1;        // CHANGE IN STEP TIMER IN CONTROLLER TOO
         for (Rectangle object : objects) {
@@ -255,9 +252,6 @@ public class Gamescreen{
         return win;
     }
 
-    public Rectangle[] getGoalRects(){
-        return goalRects;
-    }
     public Circle getProjectileCirc(){
         return projectileCirc;
     }

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class Level {
     private final double G = 0.05;
     private final int RADIUS = 150;
-    private final double ELOSS = 0.7;
+    private final double ELOSS = 1;
 
     private Goal goal;
     private Projectile projectile;

@@ -65,7 +65,7 @@ public class Leveleditor{
         GAME_WORLD_HEIGHT = height;
 
         // CREATING LEVEL, TO BE EDITED AND SAVED
-        level = new Level(new Goal(0, 0, 200, 150, 0.2f), new Projectile(0, 0, 0), 0, 0);
+        level = new Level(new Goal(0, 0, 250, 140, 0.2f), new Projectile(0, 0, 0), 0, 0);
 
         // VARIABLES
         state = -1;

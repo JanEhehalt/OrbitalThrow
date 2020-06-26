@@ -166,6 +166,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                         double tempX = level.get(currentChapter).get(currentLevel).getProjectile().getxPos();
                         double tempY = level.get(currentChapter).get(currentLevel).getProjectile().getyPos();
 
+                        /*
                         for(Rectangle rect : gs.getGoalRects()){
                             if(Intersector.overlaps(gs.getProjectileCirc(), rect) && !collision) {
 
@@ -178,6 +179,7 @@ public class Controller extends ApplicationAdapter implements InputProcessor{
                                 break;
                             }
                         }
+                           */
 
                         if(gs.getObjectRectsBottom() != null) {
                             for (Rectangle rect : gs.getObjectRectsBottom()) {
