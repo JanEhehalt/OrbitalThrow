@@ -50,9 +50,11 @@ public class Leveleditor{
     boolean goalSet;
     boolean pivotSet;
     boolean toSave;
-    int state; //-1: nothig selected, 0: place pivot, 2: pivot direction, 3: goal, 4: obstacles
+    int state; //-1: nothig selected, 0: place pivot, 2: pivot direction, 3: goal, 4: obstacles, 5: obstacle dimensions
     int mouseX;
     int mouseY;
+    int currentRectX;
+    int currentRectY;
 
     // BITMAP FONT
     BitmapFont font;
@@ -70,6 +72,9 @@ public class Leveleditor{
         // VARIABLES
         state = -1;
         toSave = false;
+
+        currentRectX = -50;
+        currentRectY = -50;
 
         // SHAPE RENDERER
         shapeRenderer = new ShapeRenderer();
@@ -156,6 +161,9 @@ public class Leveleditor{
         if(state == 2){
             shapeRenderer.rect(mouseX,mouseY,200,100);
         }
+        if(state == 3){
+            shapeRenderer.rect(currentRectX, currentRectY, mouseX - currentRectX, mouseY - currentRectY);
+        }
 
         // DRAW OBSTACLES
         for(Rectangle rect : level.getObjects()){
@@ -220,8 +228,13 @@ public class Leveleditor{
                 state = -1;
                 goalSet = true;
                 break;
-            case 2: // NEW OBSTACLE
-                level.addRectangle(mouseX,mouseY,200,100);
+            case 2:
+                currentRectX = mouseX;
+                currentRectY = mouseY;
+                state = 3;
+                break;
+            case 3: // NEW OBSTACLE
+                level.addRectangle(currentRectX, currentRectY, mouseX - currentRectX, mouseY - currentRectY);
                 state = -1;
                 break;
             default:
